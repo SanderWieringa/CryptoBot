@@ -1,22 +1,36 @@
-import React from "react";
+import * as React from 'react';
+import { DataGrid } from '@material-ui/data-grid';
+
+const columns = [
+    { field: 'id', headerName: 'Coin', width: 150 },
+    {
+      field: 'symbol',
+      headerName: 'Symbol',
+      width: 150,
+      editable: true,
+    },
+    {
+        sortable: false,
+        width: 160,
+        valueGetter: (params) =>
+          `${params.getValue(params.id, 'symbol') || ''} ${
+            params.getValue(params.id, 'id') || ''
+          }`,
+      },
+]
+
 
 export default function Datatable({ data }) {
-    //console.log(data.symbols)
-    const columns = data.symbols[0] && Object.keys(data.symbols[0])
-    //console.log(data)
-    console.log(data.symbols)
+    
     return (
-        <table cellPadding={0} cellSpacing={0}>
-            <thead>
-                <tr>{data.symbols[0] && columns.map((heading, idx) => <th key={idx}>{heading}</th>)}</tr>
-            </thead>
-            <tbody>
-                {data.symbols.map((row, idx) => <tr key={idx}>
-                    {
-                        columns.map((column, idx) => <td key={idx}>{row[column]}</td>)
-                    }
-                </tr>)}
-            </tbody>
-        </table>
+        <div style={{ height: 580, width: '100%' }}>
+            <DataGrid 
+            rows={data.symbols}
+            columns={columns}
+            pageSize={9}
+            checkboxSelection
+            disableSelectionOnClick
+            />
+        </div>
     );
 }
