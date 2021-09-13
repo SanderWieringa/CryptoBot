@@ -1,12 +1,12 @@
 package CryptoTradingBot;
 
 public class Symbol {
-    private String baseAsset;
+    private String id;
 
     private String symbol;
 
-    public Symbol(String baseAsset, String symbol) {
-        this.baseAsset = baseAsset;
+    public Symbol(String id, String symbol) {
+        this.id = id;
         this.symbol = symbol;
 
     }
@@ -15,13 +15,9 @@ public class Symbol {
 
     }
 
-    public String getBaseAsset() {
-        return baseAsset;
-    }
+    public String getId() { return id; }
 
-    public void setBaseAsset(String baseAsset) {
-        this.baseAsset = baseAsset;
-    }
+    public void setId(String id) { this.id = id; }
 
     public String getSymbol() {
         return symbol;
