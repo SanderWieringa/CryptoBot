@@ -76,7 +76,7 @@ public class SymbolController {
             for (int i = 0; i < symbolList.length(); i++) {
                 JSONObject jsonObj = symbolList.getJSONObject(i);
                 Symbol symbol = new Symbol();
-                symbol.setBaseAsset(jsonObj.getString("baseAsset"));
+                symbol.setId(jsonObj.getString("baseAsset"));
                 symbol.setSymbol(jsonObj.getString("symbol"));
                 symbols.add(symbol);
             }
