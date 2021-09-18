@@ -7,7 +7,7 @@ export default class SymbolList extends React.Component {
     };
 
     componentDidMount() {
-        axios.get('http://localhost:8080/symbols')
+        axios.get('http://localhost:3337/symbols')
         .then(response => {
           console.log(response);
           this.setState({ symbols: response.data.symbols });

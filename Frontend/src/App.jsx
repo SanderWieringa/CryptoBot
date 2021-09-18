@@ -1,10 +1,12 @@
-
 import React, { useState, useEffect } from "react";
 import Datatable from "./datatable";
+import SignIn from "./SignIn";
+import SignUp from "./SignUp";
+import { Route, BrowserRouter as Router, Switch } from 'react-router-dom';
+import {ProtectedRoute} from './protected.route'
 
 require("es6-promise").polyfill();
 require("isomorphic-fetch");
-
 
 export default function App() {
   const [data, setData] = useState({symbols: []})
@@ -17,9 +19,15 @@ export default function App() {
   }, [])
 
   return (
-  <div>
-    <div>filter goes here</div>
-    <Datatable data={data}/>
-  </div>
+    <Router>
+      <Switch>
+        <Route path="/" exact component={SignIn}/>
+        <Route path="/signup" exact component={SignUp}/>
+        <ProtectedRoute path="/home" exact >
+          <Datatable data={data}/>
+        </ProtectedRoute>
+        <Route path="*" component={() => "404 NOT FOUND!"} />
+      </Switch>
+    </Router>
   );
 }
