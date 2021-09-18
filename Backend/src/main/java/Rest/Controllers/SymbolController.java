@@ -1,5 +1,7 @@
-package CryptoTradingBot;
+package Rest.Controllers;
 
+import Rest.Entities.Symbol;
+import Rest.Responses.SymbolCollectionResponse;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -20,48 +22,8 @@ public class SymbolController {
     private final String baseUrl = "https://api.binance.com";
     OkHttpClient client = new OkHttpClient();
 
-    @CrossOrigin(origins = "http://localhost:3000")
-    @GetMapping(value = "/")
-    String home() {
-        return "Home";
-    }
-
-    @CrossOrigin(origins = "http://localhost:3000")
-    @GetMapping(value = "/ping")
-    public String ping() {
-        Request request = new Request.Builder()
-                .url(baseUrl + "/api/v1/ping")
-                .build();
-
-        try {
-            Response response = client.newCall(request).execute();
-            return response.body().string();
-        } catch (IOException e) {
-            System.out.println(e);
-        }
-
-        return "Try again";
-    }
-
-    @CrossOrigin(origins = "http://localhost:3000")
-    @GetMapping(value = "info")
-    public String info() {
-        Request request = new Request.Builder()
-                .url(baseUrl + "/api/v3/exchangeInfo")
-                .build();
-
-        try {
-            Response response = client.newCall(request).execute();
-            return response.body().string();
-        } catch (IOException e) {
-            System.out.println(e);
-        }
-
-        return "Try again";
-    }
-
-    @CrossOrigin(origins = "http://localhost:3000")
-    @GetMapping(value = "symbols")
+    @CrossOrigin(origins = "http://localhost:3000/")
+    @GetMapping(value = "/symbols")
     public ResponseEntity<SymbolCollectionResponse> getAllSymbols() {
         Request request = new Request.Builder()
                 .url(baseUrl + "/api/v3/exchangeInfo")
@@ -84,8 +46,24 @@ public class SymbolController {
             return ResponseEntity.ok(symbolResponse);
         } catch (IOException e) {
             System.out.println(e);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @CrossOrigin(origins = "http://localhost:3000/")
+    @GetMapping(value = "/info")
+    public String info() {
+        Request request = new Request.Builder()
+                .url(baseUrl + "/api/v3/exchangeInfo")
+                .build();
+
+        try {
+            Response response = client.newCall(request).execute();
+            return response.body().string();
+        } catch (IOException e) {
+            System.out.println(e);
         }
 
-        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        return "Try again";
     }
 }

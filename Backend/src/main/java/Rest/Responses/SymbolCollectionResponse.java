@@ -1,4 +1,6 @@
-package CryptoTradingBot;
+package Rest.Responses;
+
+import Rest.Entities.Symbol;
 
 import java.util.List;
 

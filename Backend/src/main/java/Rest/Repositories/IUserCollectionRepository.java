@@ -1,4 +1,4 @@
-package Rest;
+package Rest.Repositories;
 
 import Rest.Entities.User;
 import org.springframework.stereotype.Repository;
