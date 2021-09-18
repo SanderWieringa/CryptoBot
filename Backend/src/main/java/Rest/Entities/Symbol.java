@@ -1,6 +1,12 @@
-package CryptoTradingBot;
+package Rest.Entities;
 
+import javax.persistence.*;
+
+@Table(name = "Symbol")
+@Entity
 public class Symbol {
+    @Column(unique=true, nullable=false)
+    @Id
     private String id;
 
     private String symbol;
