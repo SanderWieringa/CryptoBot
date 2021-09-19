@@ -29,7 +29,7 @@ public class UserController {
         } catch (Exception e) {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
-    }
+     }
 
     @CrossOrigin(origins = "http://localhost:3000/")
     @RequestMapping(value="/authenticate", method = RequestMethod.POST)
@@ -43,7 +43,7 @@ public class UserController {
         org.springframework.security.core.userdetails.User user = (org.springframework.security.core.userdetails.User) userCollectionService.loadUserByUsername(authenticationRequest.getUsername());
 
         final String jwt = jwtTokenUtil.generateToken(user);
-
+        System.out.println(jwt);
         return ResponseEntity.ok(new AuthenticationResponse(jwt));
     }
 }
