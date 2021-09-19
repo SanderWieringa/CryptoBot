@@ -29,7 +29,7 @@ function Copyright(props) {
 
 const theme = createTheme();
 
-export default function SignIn(props) {
+export const SignIn = (props) => {
   const handleSignInSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -45,9 +45,11 @@ export default function SignIn(props) {
     };
 
     fetch('http://localhost:8080/authenticate', requestOptions) 
+      .then(response => {
+        let token = response.data.token;
+        localStorage.setItem('jwtToken', token);
+      })
       .then(response => response.json())
-      .then(console.log(requestOptions.body))
-      .then(console.log(requestOptions.headers))
       .then(auth.login(() => {
         props.history.push("/home")
       }))

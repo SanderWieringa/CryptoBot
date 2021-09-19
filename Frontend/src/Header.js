@@ -1,17 +1,15 @@
-import React from "react";
-import { Button } from "@material-ui/core";
+import React from 'react'
 import auth from './auth'
 
-require("es6-promise").polyfill();
-require("isomorphic-fetch");
-
-export default function Header(props) {
-
-  return (
-    <button onClick={() => {
-      auth.logout(() => {
-        props.history.push("/");
-      })
-    }}>Logout</button>
-  );
+export const Header = (props) => {
+    return (
+        <div>
+            <h1>Protected React Router</h1>
+            <button onClick={() => {
+                auth.logout(() => {
+                    props.history.push('/')
+                })
+            }}>Logout</button>
+        </div>
+    )
 }

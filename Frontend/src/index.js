@@ -1,19 +1,32 @@
-import React from 'react';
+import React, { useState, useEffect } from "react";
 import ReactDOM from 'react-dom';
+import { Route, BrowserRouter as Router, Switch } from 'react-router-dom';
 import './index.css';
-import App from './App';
-import Header from './Header';
-import reportWebVitals from './reportWebVitals';
+import {SignIn} from './signIn';
+import {SignUp} from './signUp';
+import {ProtectedRoute} from './protected.route';
+import {Datatable} from './datatable';
 
-ReactDOM.render(
-  <React.StrictMode>
-    <Header />
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
-);
+require("es6-promise").polyfill();
+require("isomorphic-fetch");
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+function App() {
+  
+
+  
+
+  return (
+    <div className="App">
+      <div className="Border">
+        <Switch>
+          <Route exact path="/" component={SignIn} />
+          <Route exact path="/signup" component={SignUp} />
+          <ProtectedRoute path="/home" exact component={Datatable}/>
+        </Switch>
+      </div>
+    </div>
+  );
+}
+
+const rootElement = document.getElementById("root");
+ReactDOM.render(<Router><App /></Router>, rootElement);
