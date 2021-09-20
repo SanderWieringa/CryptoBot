@@ -2,10 +2,10 @@ import React, { useState, useEffect } from "react";
 import ReactDOM from 'react-dom';
 import { Route, BrowserRouter as Router, Switch } from 'react-router-dom';
 import './index.css';
-import {SignIn} from './signIn';
-import {SignUp} from './signUp';
 import {ProtectedRoute} from './protected.route';
 import {Datatable} from './datatable';
+import { SignIn } from "./signIn";
+import { SignUp } from "./signUp";
 
 require("es6-promise").polyfill();
 require("isomorphic-fetch");

@@ -45,10 +45,6 @@ export const SignIn = (props) => {
     };
 
     fetch('http://localhost:8080/authenticate', requestOptions) 
-      .then(response => {
-        let token = response.data.token;
-        localStorage.setItem('jwtToken', token);
-      })
       .then(response => response.json())
       .then(auth.login(() => {
         props.history.push("/home")

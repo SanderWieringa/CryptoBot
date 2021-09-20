@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { DataGrid } from '@material-ui/data-grid';
-import { Header } from "./header";
 import auth from './auth'
 
 const columns = [
