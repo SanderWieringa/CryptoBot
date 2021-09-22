@@ -26,7 +26,10 @@ export const Datatable = (props) => {
     useEffect(() => {
         fetch("http://localhost:8080/symbols")
         .then((response) => response.json())
-        .then((json) => setData(json));
+        .then((json) => setData(json))
+        .catch(function(error) {
+            console.log(error)
+        });
       }, [])
 
     return (
@@ -34,6 +37,7 @@ export const Datatable = (props) => {
             <div>
                 <button onClick={() => {
                     auth.logout(() => {
+                        localStorage.clear()
                         props.history.push('/')
                     })
                 }}>Logout</button>

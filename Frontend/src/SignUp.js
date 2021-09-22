@@ -47,6 +47,9 @@ export const SignUp = () => {
       .then(response => response.json())
       .then(data => this.setState({ userId: data.userId }))
       .then(console.log(requestOptions.body))
+      .catch(function(error) {
+        console.log(error)
+      })
       // .then(data => this.setState(newUser));
 
 

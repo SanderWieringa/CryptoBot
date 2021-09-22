@@ -30,6 +30,7 @@ function Copyright(props) {
 const theme = createTheme();
 
 export const SignIn = (props) => {
+  localStorage.clear()
   const handleSignInSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -45,10 +46,19 @@ export const SignIn = (props) => {
     };
 
     fetch('http://localhost:8080/authenticate', requestOptions) 
-      .then(response => response.json())
-      .then(auth.login(() => {
-        props.history.push("/home")
-      }))
+        .then(function(response){return response.json();})
+        .then(function(data) {
+            const items = data;
+            console.log(data)
+            if(items.jwt) {
+                localStorage.setItem('jwtToken', items.jwt)
+                auth.login(() => {
+                    props.history.push("/home")
+                })
+            }
+        }).catch(function(error) {
+            console.log(error)
+        })
     // eslint-disable-next-line no-console
     console.log({
       username: data.get('username'),

@@ -4,16 +4,13 @@ import { Route, BrowserRouter as Router, Switch } from 'react-router-dom';
 import './index.css';
 import {ProtectedRoute} from './protected.route';
 import {Datatable} from './datatable';
-import { SignIn } from "./signIn";
 import { SignUp } from "./signUp";
+import { SignIn } from "./signIn";
 
 require("es6-promise").polyfill();
 require("isomorphic-fetch");
 
 function App() {
-  
-
-  
 
   return (
     <div className="App">
