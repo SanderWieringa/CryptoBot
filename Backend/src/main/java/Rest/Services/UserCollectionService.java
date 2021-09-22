@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
+import java.nio.file.AccessDeniedException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.util.ArrayList;
@@ -21,7 +22,7 @@ public class UserCollectionService implements UserDetailsService {
     @Autowired
     private IUserCollectionRepository userCollectionRepository;
 
-    public User login(AuthenticationRequest authenticationRequest) throws InvalidKeySpecException, NoSuchAlgorithmException {
+    public User login(AuthenticationRequest authenticationRequest) throws InvalidKeySpecException, NoSuchAlgorithmException, AccessDeniedException {
         User user = new User();
         Optional<User> userToCheck = userCollectionRepository.findByUsername(authenticationRequest.getUsername());
         if (userToCheck.isPresent()) {
@@ -33,7 +34,7 @@ public class UserCollectionService implements UserDetailsService {
 
         }
 
-        return null;
+        throw new AccessDeniedException("Access Denied!");
     }
 
     public void addUser(User user) throws InvalidKeySpecException, NoSuchAlgorithmException {

@@ -51,10 +51,54 @@ public class SymbolController {
     }
 
     @CrossOrigin(origins = "http://localhost:3000/")
+    @GetMapping(value = "/products")
+    public ResponseEntity<SymbolCollectionResponse> getAllProducts() {
+        Request request = new Request.Builder()
+                .url("https://www.binance.com/exchange-api/v2/public/asset-service/product/get-products")
+                .build();
+
+        try {
+            SymbolCollectionResponse symbolResponse = new SymbolCollectionResponse();
+            Response response = client.newCall(request).execute();
+            JSONObject jsonObject = new JSONObject(response.body().string());
+            JSONArray symbolList = jsonObject.getJSONArray("symbols");
+            List<Symbol> symbols = new ArrayList<>();
+            for (int i = 0; i < symbolList.length(); i++) {
+                JSONObject jsonObj = symbolList.getJSONObject(i);
+                Symbol symbol = new Symbol();
+                symbol.setId(jsonObj.getString("b"));
+                symbols.add(symbol);
+            }
+            symbolResponse.setSymbols(symbols);
+            return ResponseEntity.ok(symbolResponse);
+        } catch (IOException e) {
+            System.out.println(e);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @CrossOrigin(origins = "http://localhost:3000/")
     @GetMapping(value = "/info")
     public String info() {
         Request request = new Request.Builder()
                 .url(baseUrl + "/api/v3/exchangeInfo")
+                .build();
+
+        try {
+            Response response = client.newCall(request).execute();
+            return response.body().string();
+        } catch (IOException e) {
+            System.out.println(e);
+        }
+
+        return "Try again";
+    }
+
+    @CrossOrigin(origins = "http://localhost:3000/")
+    @GetMapping(value = "/getAllProducts")
+    public String products() {
+        Request request = new Request.Builder()
+                .url("https://www.binance.com/exchange-api/v2/public/asset-service/product/get-products")
                 .build();
 
         try {

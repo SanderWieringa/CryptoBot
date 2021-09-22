@@ -12,6 +12,8 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.nio.file.AccessDeniedException;
+
 @Controller
 public class UserController {
     @Autowired
@@ -26,7 +28,7 @@ public class UserController {
         try {
             userCollectionService.addUser(user);
             return new ResponseEntity(HttpStatus.OK);
-        } catch (Exception e) {
+        }  catch (Exception e) {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
      }
@@ -36,8 +38,10 @@ public class UserController {
     public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
         try {
             userCollectionService.login(authenticationRequest);
-        } catch (BadCredentialsException e) {
-            throw new Exception("Incorrect username or password", e);
+        } catch (AccessDeniedException e) {
+            return new ResponseEntity(HttpStatus.FORBIDDEN);
+        } catch (Exception e) {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
 
         org.springframework.security.core.userdetails.User user = (org.springframework.security.core.userdetails.User) userCollectionService.loadUserByUsername(authenticationRequest.getUsername());
