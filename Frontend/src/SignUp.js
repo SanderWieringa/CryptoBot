@@ -42,6 +42,7 @@ export const SignUp = () => {
       mode: 'cors',
       body: JSON.stringify(newUser)
     };
+    
 
     fetch('http://localhost:3337/register', requestOptions) 
       .then(response => response.json())
