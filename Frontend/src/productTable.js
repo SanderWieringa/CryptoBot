@@ -5,8 +5,8 @@ import auth from './auth'
 const columns = [
     { field: 'id', headerName: 'Coin', width: 150 },
     {
-      field: 'symbol',
-      headerName: 'Symbol',
+      field: 'price',
+      headerName: 'Price',
       width: 150,
       editable: true,
     },
@@ -14,23 +14,23 @@ const columns = [
         sortable: false,
         width: 160,
         valueGetter: (params) =>
-          `${params.getValue(params.id, 'symbol') || ''} ${
+          `${params.getValue(params.id, 'price') || ''} ${
             params.getValue(params.id, 'id') || ''
           }`,
       },
 ]
 
-export const Datatable = (props) => {
-    const [data, setData] = useState({symbols: []})
+export const ProductTable = (props) => {
+    const [data, setData] = useState({products: []})
 
     useEffect(() => {
-        fetch("http://localhost:3337/symbols")
+        fetch("http://localhost:3337/products")
         .then((response) => response.json())
         .then((json) => setData(json))
         .catch(function(error) {
             console.log(error)
         });
-      }, [])
+    }, [])
 
     return (
         <div>
@@ -46,7 +46,7 @@ export const Datatable = (props) => {
             </div>
             <div style={{ height: 580, width: '100%' }}>
                 <DataGrid 
-                rows={data.symbols}
+                rows={data.products}
                 columns={columns}
                 pageSize={9}
                 checkboxSelection
@@ -54,5 +54,5 @@ export const Datatable = (props) => {
                 />
             </div>
         </div>
-    );
+    )
 }

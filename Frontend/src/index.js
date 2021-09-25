@@ -6,6 +6,7 @@ import {ProtectedRoute} from './protected.route';
 import {Datatable} from './datatable';
 import { SignUp } from "./signUp";
 import { SignIn } from "./signIn";
+import { ProductTable } from "./productTable";
 
 require("es6-promise").polyfill();
 require("isomorphic-fetch");
@@ -19,6 +20,7 @@ function App() {
           <Route exact path="/" component={SignIn} />
           <Route exact path="/signup" component={SignUp} />
           <ProtectedRoute path="/home" exact component={Datatable}/>
+          <Route path="/products" exact component={ProductTable}/>
         </Switch>
       </div>
     </div>

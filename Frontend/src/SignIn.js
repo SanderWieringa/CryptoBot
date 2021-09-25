@@ -45,7 +45,7 @@ export const SignIn = (props) => {
       body: JSON.stringify(userToLogin)
     };
 
-    fetch('http://localhost:8080/authenticate', requestOptions) 
+    fetch('http://localhost:3337/authenticate', requestOptions) 
         .then(function(response){return response.json();})
         .then(function(data) {
             const items = data;
@@ -53,7 +53,7 @@ export const SignIn = (props) => {
             if(items.jwt) {
                 localStorage.setItem('jwtToken', items.jwt)
                 auth.login(() => {
-                    props.history.push("/home")
+                    props.history.push("/products")
                 })
             }
         }).catch(function(error) {

@@ -43,7 +43,7 @@ export const SignUp = () => {
       body: JSON.stringify(newUser)
     };
 
-    fetch('http://localhost:8080/register', requestOptions) 
+    fetch('http://localhost:3337/register', requestOptions) 
       .then(response => response.json())
       .then(data => this.setState({ userId: data.userId }))
       .then(console.log(requestOptions.body))
