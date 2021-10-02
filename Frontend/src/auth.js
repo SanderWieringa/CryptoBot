@@ -3,6 +3,11 @@ class Auth {
         this.authenticated = false
     }
 
+    register(cb) {
+        this.authenticated = false
+        cb()
+    }
+
     login(cb) {
         this.authenticated = true
         cb()

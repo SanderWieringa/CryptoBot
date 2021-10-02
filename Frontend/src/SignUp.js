@@ -8,8 +8,7 @@ import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import { createTheme, ThemeProvider } from '@material-ui/core/styles';
-
-const cors = require('cors');
+import auth from './auth'
 
 function Copyright(props) {
   return (
@@ -26,7 +25,7 @@ function Copyright(props) {
 
 const theme = createTheme();
 
-export const SignUp = () => {
+export const SignUp = (props) => {
   const handleSignUpSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -46,7 +45,12 @@ export const SignUp = () => {
 
     fetch('http://localhost:3337/register', requestOptions) 
       .then(response => response.json())
-      .then(data => this.setState({ userId: data.userId }))
+      .then(data => {
+          this.setState({ userId: data.userId })
+          auth.register(() => {
+            props.history.push("/")
+        })
+      })
       .then(console.log(requestOptions.body))
       .catch(function(error) {
         console.log(error)

@@ -49,10 +49,8 @@ export const SignIn = (props) => {
     fetch('http://localhost:3337/authenticate', requestOptions) 
         .then(function(response){return response.json();})
         .then(function(data) {
-            const items = data;
-            console.log(data)
-            if(items.jwt) {
-                localStorage.setItem('jwtToken', items.jwt)
+            if(data.jwt) {
+                localStorage.setItem('jwtToken', data.jwt)
                 auth.login(() => {
                     props.history.push("/products")
                 })

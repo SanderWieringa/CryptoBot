@@ -20,7 +20,7 @@ const columns = [
       },
 ]
 
-export const Datatable = (props) => {
+export const DataTable = (props) => {
     const [data, setData] = useState({symbols: []})
 
     useEffect(() => {

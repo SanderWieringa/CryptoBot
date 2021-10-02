@@ -3,20 +3,24 @@ import { DataGrid } from '@material-ui/data-grid';
 import auth from './auth'
 
 const columns = [
-    { field: 'id', headerName: 'Coin', width: 150 },
+    {   field: 'id', headerName: 'Coin', width: 150 },
     {
-      field: 'price',
-      headerName: 'Price',
-      width: 150,
-      editable: true,
+        field: 'price',
+        headerName: 'Price',
+        width: 150,
+        editable: true,
+    },
+    {
+        field: 'marketCap',
+        headerName: 'Market Cap',
+        width: 150,
+        editable: true,
     },
     {
         sortable: false,
         width: 160,
         valueGetter: (params) =>
-          `${params.getValue(params.id, 'price') || ''} ${
-            params.getValue(params.id, 'id') || ''
-          }`,
+          `${params.getValue(params.id, 'id') || ''}`,
       },
 ]
 
