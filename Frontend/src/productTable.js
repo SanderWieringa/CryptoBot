@@ -3,18 +3,18 @@ import { DataGrid } from '@material-ui/data-grid';
 import auth from './auth'
 
 const columns = [
-    {   field: 'id', headerName: 'Coin', width: 150 },
+    {   field: 'fullName', headerName: 'Coin', width: 150 },
     {
         field: 'price',
         headerName: 'Price',
         width: 150,
-        editable: true,
+        editable: false,
     },
     {
         field: 'marketCap',
         headerName: 'Market Cap',
         width: 150,
-        editable: true,
+        editable: false,
     },
     {
         sortable: false,
@@ -26,6 +26,7 @@ const columns = [
 
 export const ProductTable = (props) => {
     const [data, setData] = useState({products: []})
+    
 
     useEffect(() => {
         fetch("http://localhost:3337/products")
