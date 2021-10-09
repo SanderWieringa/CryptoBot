@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Route, BrowserRouter as Router, Switch } from 'react-router-dom';
 import { DataTable } from './DataTable';
-import { ProductTable } from './Product.table';
+import { ProductTable } from './ProductTable';
 import { ProtectedRoute } from './Protected.route';
 import { SignIn } from './SignIn';
 import { SignUp } from './SignUp';

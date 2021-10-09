@@ -15,17 +15,12 @@ const columns = [
         headerName: 'Market Cap',
         width: 150,
         editable: false,
-    },
-    {
-        sortable: false,
-        width: 160,
-        valueGetter: (params) =>
-          `${params.getValue(params.id, 'id') || ''}`,
-      },
+    }
 ]
 
 export const ProductTable = (props) => {
     const [data, setData] = useState({products: []})
+    const [selectionModel, setSelectionModel] = React.useState([]);
 
     useEffect(() => {
         fetch('http://localhost:3337/products')
@@ -36,15 +31,50 @@ export const ProductTable = (props) => {
         });
     }, [])
 
+    const handleTradeSubmit = (() => {
+
+        const requestOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            mode: 'cors',
+            body: JSON.stringify(selectionModel)
+        };
+
+        fetch('http://localhost:3337/setProductsToTradeIn', requestOptions)
+        .then(response => response.json())
+        .then(data => {
+            console.log(data)
+          })
+        .catch(function(error) {
+            console.log(error)
+        })
+    })
+
+    const handleTradeLogging = (() => {
+        console.log(selectionModel);
+    })
+
     return (
         <div>
             <div>
-                <button onClick={() => {
-                    auth.logout(() => {
-                        localStorage.clear()
-                        props.history.push('/')
-                    })
-                }}>Logout</button>
+            <button onClick={() => {
+                handleTradeLogging()
+            }}>
+                Log Products
+            </button>
+            <button onClick={() => {
+                handleTradeSubmit()
+            }}>
+                Trade
+            </button>
+            <button onClick={() => {
+                auth.logout(() => {
+                    localStorage.clear()
+                    props.history.push('/')
+                })
+            }}>
+                Logout
+            </button>
                 <h1>Crypto Trading Bot Platform</h1>
                 
             </div>
@@ -55,6 +85,11 @@ export const ProductTable = (props) => {
                 pageSize={9}
                 checkboxSelection
                 disableSelectionOnClick
+                onSelectionModelChange={(newSelectionModel) => {
+                    setSelectionModel(newSelectionModel);
+                  }}
+                  selectionModel={selectionModel}
+                  {...data}
                 />
             </div>
         </div>

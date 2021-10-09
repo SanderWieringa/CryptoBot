@@ -58,11 +58,6 @@ export const SignIn = (props) => {
         }).catch(function(error) {
             console.log(error)
         })
-    // eslint-disable-next-line no-console
-    console.log({
-      username: data.get('username'),
-      password: data.get('password'),
-    });
   };
 
   return (

@@ -51,7 +51,6 @@ export const SignUp = (props) => {
             props.history.push("/")
         })
       })
-      .then(console.log(requestOptions.body))
       .catch(function(error) {
         console.log(error)
       })
