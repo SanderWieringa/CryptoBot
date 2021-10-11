@@ -21,15 +21,27 @@ const columns = [
 export const ProductTable = (props) => {
     const [data, setData] = useState({products: []})
     const [selectionModel, setSelectionModel] = React.useState([]);
+    const [fakeData, setFakeData] = React.useState([]);
 
     useEffect(() => {
         fetch('http://localhost:3337/products')
         .then((response) => response.json())
         .then((json) => setData(json))
+        .then(console.log(data))
         .catch(function(error) {
             console.log(error)
         });
     }, [])
+
+    const handleFakeTradeSubmit = (() => {
+        fetch('http://localhost:3337/setFakeProductsToTradeIn')
+        .then((response) => response.json())
+        .then((json) => setFakeData(json))
+        .then(console.log(fakeData))
+        .catch(function(error) {
+            console.log(error)
+        })
+    })
 
     const handleTradeSubmit = (() => {
 
@@ -41,7 +53,8 @@ export const ProductTable = (props) => {
         };
 
         fetch('http://localhost:3337/setProductsToTradeIn', requestOptions)
-        .then(response => response.json())
+        .then((response) => response.json())
+        .then((json) => console.log(json))
         .then(data => {
             console.log(data)
           })
@@ -57,6 +70,11 @@ export const ProductTable = (props) => {
     return (
         <div>
             <div>
+            <button onClick={() => {
+                handleFakeTradeSubmit()
+            }}>
+                Trade Fake Products
+            </button>
             <button onClick={() => {
                 handleTradeLogging()
             }}>
