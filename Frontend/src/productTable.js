@@ -28,7 +28,8 @@ export const ProductTable = (props) => {
     const [data, setData] = useState({products: []})
 
     useEffect(() => {
-        fetch("http://localhost:3337/products")
+
+        fetch("http://localhost:3337/products/list")
         .then((response) => response.json())
         .then((json) => setData(json))
         .catch(function(error) {

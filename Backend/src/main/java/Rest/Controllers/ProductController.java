@@ -18,7 +18,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-@CrossOrigin(origins = "http://localhost:3000/")
+@CrossOrigin(origins = "http://localhost:3000")
+@RequestMapping(value = "/products")
 @RestController
 public class ProductController {
     private static final String baseUrl = "https://api.binance.com";
@@ -27,7 +28,6 @@ public class ProductController {
     @Autowired
     private ProductCollectionService productCollectionService;
 
-    @CrossOrigin(origins = "http://localhost:3000/")
     @GetMapping(value = "/setFakeProductsToTradeIn")
     public ResponseEntity<String> setFakeProducts() {
         return ResponseEntity.ok("success");
@@ -48,7 +48,7 @@ public class ProductController {
     }
 
 
-    @GetMapping(value = "/products")
+    @GetMapping(value = "/list")
     public ResponseEntity<ProductCollectionResponse> getAllProducts() {
         Request request = new Request.Builder()
                 //.url("https://www.binance.com/exchange-api/v2/public/asset-service/product/get-products")

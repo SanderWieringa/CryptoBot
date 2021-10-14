@@ -9,12 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.nio.file.AccessDeniedException;
 
-@Controller
+@CrossOrigin(origins = "http://localhost:3000/")
+@RequestMapping(value = "/account")
+@RestController
 public class UserController {
     @Autowired
     private UserCollectionService userCollectionService;
@@ -22,7 +23,6 @@ public class UserController {
     @Autowired
     private JwtUtil jwtTokenUtil;
 
-    @CrossOrigin(origins = "http://localhost:3000/")
     @PostMapping(value = "/register")
     public ResponseEntity<?> addUser(@RequestBody User user) {
         try {
@@ -33,8 +33,7 @@ public class UserController {
         }
      }
 
-    @CrossOrigin(origins = "http://localhost:3000/")
-    @RequestMapping(value="/authenticate", method = RequestMethod.POST)
+    @PostMapping(value="/authenticate")
     public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
         try {
             userCollectionService.login(authenticationRequest);

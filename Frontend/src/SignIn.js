@@ -46,7 +46,7 @@ export const SignIn = (props) => {
       body: JSON.stringify(userToLogin)
     };
 
-    fetch('http://localhost:3337/authenticate', requestOptions) 
+    fetch('http://localhost:3337/account/authenticate', requestOptions) 
         .then(function(response){return response.json();})
         .then(function(data) {
             if(data.jwt) {
