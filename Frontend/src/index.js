@@ -4,7 +4,7 @@ import './index.css';
 import { Route, BrowserRouter as Router, Switch } from 'react-router-dom';
 import { SignIn } from './SignIn';
 import { SignUp } from './SignUp';
-import { ProtectedRoute } from './protected.route';
+import { ProtectedRoute } from './Protected.route';
 import { DataTable } from './DataTable';
 import { ProductTable } from './ProductTable';
 
