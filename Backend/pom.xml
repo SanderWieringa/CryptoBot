@@ -84,7 +84,13 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
-    </dependencies>
+		<dependency>
+			<groupId>tr.com.lucidcode</groupId>
+			<artifactId>binance-api-client</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+
+	</dependencies>
 
 	<build>
 		<defaultGoal>install</defaultGoal>
