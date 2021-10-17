@@ -1,5 +1,6 @@
 package Rest.Controllers;
 
+import Rest.Entities.Product;
 import Rest.Services.ProductCollectionService;
 import com.binance.api.client.BinanceApiClientFactory;
 import com.binance.api.client.domain.account.NewOrder;
@@ -47,7 +48,16 @@ public class BinanceController {
         return newOrderResponse.getClientOrderId();
     }
 
-
+    @PostMapping(value = "/placeUserMarketOrders")
+    public void placeUserMarketOrders() {
+        List<Product> productsToTradeIn = productCollectionService.getProductsToTradeIn();
+        for (Product product:productsToTradeIn) {
+            NewOrderResponse newOrderResponse = client
+                    .newOrder(NewOrder
+                            .marketBuy(product.getName(), "10")
+                            .newOrderRespType(NewOrderResponseType.FULL));
+        }
+    }
 
 
 }
