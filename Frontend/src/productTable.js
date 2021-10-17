@@ -3,7 +3,7 @@ import { DataGrid } from '@material-ui/data-grid';
 import auth from './auth'
 
 const columns = [
-    {   field: 'id', headerName: 'Coin', width: 150 },
+    {   field: 'fullName', headerName: 'Coin', width: 150 },
     {
         field: 'price',
         headerName: 'Price',

@@ -35,10 +35,12 @@ export const SignIn = (props) => {
   const handleSignInSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
+    
     const userToLogin = {
       username: data.get('username'),
       password: data.get('password'),
     };
+
     const requestOptions = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
