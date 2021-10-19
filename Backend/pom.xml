@@ -15,6 +15,7 @@
 	<description>Demo project for Spring Boot</description>
 	<properties>
 		<java.version>1.8</java.version>
+		<com.squareup.retrofit2.version>2.4.0</com.squareup.retrofit2.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -85,9 +86,38 @@
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
 		<dependency>
-			<groupId>tr.com.lucidcode</groupId>
+			<groupId>com.binance.api</groupId>
 			<artifactId>binance-api-client</artifactId>
-			<version>1.0.0</version>
+			<systemPath>${basedir}/binance-api-client-1.0.1.jar</systemPath>
+			<scope>system</scope>
+			<version>1.0.1</version>
+			<type>jar</type>
+		</dependency>
+		<dependency>
+			<groupId>com.squareup.retrofit2</groupId>
+			<artifactId>retrofit</artifactId>
+			<version>${com.squareup.retrofit2.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.squareup.retrofit2</groupId>
+			<artifactId>converter-jackson</artifactId>
+			<version>${com.squareup.retrofit2.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-codec</groupId>
+			<artifactId>commons-codec</artifactId>
+			<version>1.15</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.12.0</version>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.13.2</version>
+			<scope>test</scope>
 		</dependency>
 
 	</dependencies>

@@ -17,7 +17,12 @@ import java.util.List;
 @RequestMapping(value = "/binance")
 @RestController
 public class BinanceController {
-    BinanceApiClientFactory factory = BinanceApiClientFactory.newInstance("Efs7DF6bmMttqFJZ0bEMg5qrFqPYhK6oSR2OVbSqo8xlQhYiv32iMSSx5KDbS16T", "ycsMDZIub25oOJTWPQq9KDCfeDSmVrEVqJvxN212rSykJBNiBa5NsmqLTlP1HMLh");
+    BinanceApiClientFactory factory = BinanceApiClientFactory.newInstance(
+            "bNI0EhIhLvopBAR0DKLvjdl27SAZsjkpWpi1QBcNjlXGR3nA6pqQrTbaG27HUdQg",
+            "SxJ5xEXet7Ax9N67WandxrG4gKlPWtyEZh4ixJ0U55tVeY9sAS2nEuLLfO95iXGD",
+            true,
+            false
+    );
     BinanceApiRestClient client = factory.newRestClient();
 
     @Autowired
@@ -40,7 +45,7 @@ public class BinanceController {
     public String placeMarketOrder() {
         NewOrderResponse newOrderResponse = client
                 .newOrder(NewOrder
-                        .marketBuy("LINKETH", "10")
+                        .marketBuy("BTCUSDT", "1")
                         .newOrderRespType(NewOrderResponseType.FULL));
         List<Trade> fills = newOrderResponse.getFills();
         System.out.println(newOrderResponse.getClientOrderId());
@@ -54,7 +59,7 @@ public class BinanceController {
         for (Product product:productsToTradeIn) {
             NewOrderResponse newOrderResponse = client
                     .newOrder(NewOrder
-                            .marketBuy(product.getName(), "10")
+                            .marketBuy(product.getName(), "0.003")
                             .newOrderRespType(NewOrderResponseType.FULL));
         }
     }
