@@ -39,6 +39,12 @@ export const ProductTable = (props) => {
         });
     }, [])
 
+    var binanceSocket = new WebSocket('wss://stream.binance.com:9443/ws/btcusdt@traden');
+
+    binanceSocket.onmessage = function (event) {
+        console.log(event.data);
+    }
+
     const handleFakeTradeSubmit = (() => {
         fetch('http://localhost:3337/products/setFakeProductsToTradeIn')
         .then(function (response) {

@@ -10,7 +10,6 @@ import com.binance.api.client.domain.account.Trade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import com.binance.api.client.BinanceApiRestClient;
-
 import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:3000")
@@ -61,8 +60,11 @@ public class BinanceController {
                     .newOrder(NewOrder
                             .marketBuy(product.getName(), "0.003")
                             .newOrderRespType(NewOrderResponseType.FULL));
+            System.out.println(newOrderResponse.getClientOrderId());
         }
     }
+
+
 
 
 }
