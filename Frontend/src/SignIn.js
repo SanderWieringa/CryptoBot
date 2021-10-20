@@ -35,10 +35,12 @@ export const SignIn = (props) => {
   const handleSignInSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
+    
     const userToLogin = {
       username: data.get('username'),
       password: data.get('password'),
     };
+
     const requestOptions = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -46,7 +48,7 @@ export const SignIn = (props) => {
       body: JSON.stringify(userToLogin)
     };
 
-    fetch('http://localhost:3337/authenticate', requestOptions) 
+    fetch('http://localhost:3337/account/authenticate', requestOptions) 
         .then(function(response){return response.json();})
         .then(function(data) {
             if(data.jwt) {

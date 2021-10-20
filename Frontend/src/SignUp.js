@@ -43,7 +43,7 @@ export const SignUp = (props) => {
     };
     
 
-    fetch('http://localhost:3337/register', requestOptions) 
+    fetch('http://localhost:3337/account/register', requestOptions) 
       .then(response => response.json())
       .then(data => {
           this.setState({ userId: data.userId })
@@ -51,7 +51,6 @@ export const SignUp = (props) => {
             props.history.push("/")
         })
       })
-      .then(console.log(requestOptions.body))
       .catch(function(error) {
         console.log(error)
       })

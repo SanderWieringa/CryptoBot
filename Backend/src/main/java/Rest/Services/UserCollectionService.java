@@ -31,7 +31,6 @@ public class UserCollectionService implements UserDetailsService {
                 user.setPassword(authenticationRequest.getPassword());
                 return user;
             }
-
         }
 
         throw new AccessDeniedException("Access Denied!");
