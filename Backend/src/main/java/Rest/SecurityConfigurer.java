@@ -47,6 +47,7 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter
                 .antMatchers("/products/getProductsToTradeIn").permitAll()
                 .antMatchers("/products/getAllProducts").permitAll()
                 .antMatchers("/binance/serverTime").permitAll()
+                .antMatchers("/binance/subscribe").permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()
