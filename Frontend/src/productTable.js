@@ -20,7 +20,7 @@ const columns = [
         sortable: false,
         width: 160,
         valueGetter: (params) =>
-          `${params.getValue(params.id, 'id') || ''}`,
+          `${params.getValue(params.id, 'id') || ''}`, 
       },
 ]
 

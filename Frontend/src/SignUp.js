@@ -47,7 +47,7 @@ export const SignUp = (props) => {
       .then(response => response.json())
       .then(data => {
           this.setState({ userId: data.userId })
-          auth.register(() => {
+          auth.login(() => {
             props.history.push("/")
         })
       })

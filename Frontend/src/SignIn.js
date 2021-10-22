@@ -49,14 +49,14 @@ export const SignIn = (props) => {
     };
 
     fetch('http://localhost:3337/account/authenticate', requestOptions) 
-        .then(function(response){return response.json();})
-        .then(function(data) {
-            if(data.jwt) {
-                localStorage.setItem('jwtToken', data.jwt)
-                auth.login(() => {
-                    props.history.push("/products")
-                })
-            }
+      .then(function(response){return response.json();})
+      .then(function(data) {
+          if(data.jwt) {
+            localStorage.setItem('jwtToken', data.jwt)
+              auth.login(() => {
+                props.history.push("/products")
+              })
+          }
         }).catch(function(error) {
             console.log(error)
         })
