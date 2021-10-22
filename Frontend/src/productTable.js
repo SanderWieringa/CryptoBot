@@ -45,6 +45,23 @@ export const ProductTable = (props) => {
         console.log(event.data);
     }
 
+    const handleSubscribe = (() => {
+        fetch('http://localhost:3337/binance/subscribe')
+        .then(function (response) {
+            console.log(response)
+            console.log(response.body)
+        })
+        .catch(function(error) {
+            console.log(error)
+        })
+        // .then((response) => response.json())
+        // .then((json) => setFakeData(json))
+        // .then(console.log(fakeData))
+        // .catch(function(error) {
+        //     console.log(error)
+        // })
+    })
+
     const handleFakeTradeSubmit = (() => {
         fetch('http://localhost:3337/products/setFakeProductsToTradeIn')
         .then(function (response) {
@@ -99,7 +116,7 @@ export const ProductTable = (props) => {
                 <button onClick={() => {
                     handleFakeTradeSubmit()
                 }}>
-                    Trade Fake Products
+                    Set Fake Products
                 </button>
                 <button onClick={() => {
                     handleTradeLogging()
@@ -109,7 +126,12 @@ export const ProductTable = (props) => {
                 <button onClick={() => {
                     handleTradeSubmit()
                 }}>
-                    Trade
+                    Set Products
+                </button>
+                <button onClick={() => {
+                    handleSubscribe()
+                }}>
+                    Start Trading
                 </button>
                 <button onClick={() => {
                     auth.logout(() => {
