@@ -50,17 +50,6 @@ export const ProductTable = (props) => {
         })
     })
 
-    const handleFakeTradeSubmit = (() => {
-        fetch('http://localhost:3337/products/setFakeProductsToTradeIn')
-        .then(function (response) {
-            console.log(response)
-            console.log(response.body)
-        })
-        .catch(function(error) {
-            console.log(error)
-        })
-    })
-
     const handleTradeSubmit = (() => {
 
         const requestOptions = {
@@ -96,15 +85,10 @@ export const ProductTable = (props) => {
     return (
         <div>
             <div>
-            <button onClick={() => {
+                <button onClick={() => {
                     handleGetProductsToTradeIn()
                 }}>
                     Get Products
-                </button>
-                <button onClick={() => {
-                    handleFakeTradeSubmit()
-                }}>
-                    Set Fake Products
                 </button>
                 <button onClick={() => {
                     handleTradeLogging()
