@@ -19,6 +19,12 @@ const columns = [
         width: 150,
         editable: true,
     },
+    {
+        field: 'symbol',
+        headerName: 'Symbol',
+        width: 150,
+        editable: true,
+    },
 ]
 
 export const ProductTable = (props) => {
@@ -38,7 +44,6 @@ export const ProductTable = (props) => {
         fetch('http://localhost:3337/binance/subscribe')
         .then(function (response) {
             console.log(response)
-            console.log(response.body)
         })
         .catch(function(error) {
             console.log(error)

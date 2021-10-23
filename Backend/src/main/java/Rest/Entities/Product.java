@@ -19,15 +19,27 @@ public class Product {
     @JsonProperty("marketCap")
     private long marketCap;
 
-    public Product(int id, String name, float price, long marketCap) {
+    @JsonProperty("symbol")
+    private String symbol;
+
+    public Product(int id, String name, float price, long marketCap, String symbol) {
         this.id = id;
         this.name = name;
         this.price = price;
         this.marketCap = marketCap;
+        this.symbol = symbol;
     }
 
     public Product() {
 
+    }
+
+    public String getSymbol() {
+        return symbol;
+    }
+
+    public void setSymbol(String symbol) {
+        this.symbol = symbol;
     }
 
     public int getId() { return id; }
