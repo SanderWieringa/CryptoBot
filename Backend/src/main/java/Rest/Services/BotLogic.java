@@ -1,5 +1,6 @@
-package Rest.Entities;
+package Rest.Services;
 
+import Rest.Entities.Product;
 import Rest.Services.ProductCollectionService;
 import com.binance.api.client.BinanceApiClientFactory;
 import com.binance.api.client.BinanceApiWebSocketClient;

@@ -1,6 +1,6 @@
 package Rest.Controllers;
 
-import Rest.Entities.BotLogic;
+import Rest.Services.BotLogic;
 import Rest.Entities.Product;
 import Rest.Services.ProductCollectionService;
 import com.binance.api.client.BinanceApiClientFactory;
@@ -9,11 +9,9 @@ import com.binance.api.client.domain.account.NewOrderResponse;
 import com.binance.api.client.domain.account.NewOrderResponseType;
 import com.binance.api.client.domain.account.Trade;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.web.bind.annotation.*;
 import com.binance.api.client.BinanceApiRestClient;
 
-import java.awt.event.ActionEvent;
 import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:3000")
