@@ -15,7 +15,10 @@ public class ProductCollectionService {
 
     public void setProductCollection(List<Product> coinsToTradeIn) {
         for (Product product:coinsToTradeIn) {
-            productCollectionRepository.save(product);
+            if (!productCollectionRepository.existsById(product.getId())) {
+                productCollectionRepository.save(product);
+            }
+            continue;
         }
     }
 

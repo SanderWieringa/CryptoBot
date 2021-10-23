@@ -3,7 +3,11 @@ import { DataGrid } from '@material-ui/data-grid';
 import auth from './auth'
 
 const columns = [
-    {   field: 'fullName', headerName: 'Coin', width: 150 },
+    {   field: 'fullName', 
+        headerName: 'Coin', 
+        width: 150,
+    },
+        
     {
         field: 'price',
         headerName: 'Price',
@@ -16,18 +20,11 @@ const columns = [
         width: 150,
         editable: true,
     },
-    {
-        sortable: false,
-        width: 160,
-        valueGetter: (params) =>
-          `${params.getValue(params.id, 'id') || ''}`, 
-      },
 ]
 
 export const ProductTable = (props) => {
     const [data, setData] = useState({products: []})
-    const [selectionModel, setSelectionModel] = React.useState([]);
-    const [fakeData, setFakeData] = React.useState();
+    const [select, setSelection] = useState([]);
 
     useEffect(() => {
 
@@ -85,7 +82,7 @@ export const ProductTable = (props) => {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             mode: 'cors',
-            body: JSON.stringify(selectionModel)
+            body: JSON.stringify(select)
         };
 
         fetch('http://localhost:3337/products/setProductsToTradeIn', requestOptions)
@@ -107,12 +104,27 @@ export const ProductTable = (props) => {
     })
 
     const handleTradeLogging = (() => {
-        console.log(selectionModel);
+        console.log(select);
+    })
+
+    const handleGetProductsToTradeIn = (() => {
+        fetch('http://localhost:3337/products/getProductsToTradeIn')
+        .then(function(response){return response.json();})
+      .then(function(data) {
+          console.log(data)
+        }).catch(function(error) {
+            console.log(error)
+        })
     })
 
     return (
         <div>
             <div>
+            <button onClick={() => {
+                    handleGetProductsToTradeIn()
+                }}>
+                    Get Products
+                </button>
                 <button onClick={() => {
                     handleFakeTradeSubmit()
                 }}>
@@ -144,16 +156,22 @@ export const ProductTable = (props) => {
             </div>
             <div style={{ height: 580, width: '100%' }}>
                 <DataGrid 
-                rows={data.products}
-                columns={columns}
-                pageSize={9}
-                checkboxSelection
-                disableSelectionOnClick
-                onSelectionModelChange={(newSelectionModel) => {
-                    setSelectionModel(newSelectionModel);
-                }}
-                selectionModel={selectionModel}
-                {...data}
+                    rows={data.products}
+                    columns={columns}
+                    pageSize={9}
+                    checkboxSelection
+                    disableSelectionOnClick
+                    // onSelectionModelChange={(newSelection) => {
+                    //     setSelection(newSelection);
+                    // }}
+                    onSelectionModelChange={(ids) => {
+                        const selectedIDs = new Set(ids);
+                        const selectedRowData = data.products.filter((row) =>
+                          selectedIDs.has(row.id)
+                        );
+                        setSelection(selectedRowData);
+                        console.log("onSelectionModelChange:", selectedRowData);
+                    }}
                 />
             </div>
         </div>

@@ -35,11 +35,7 @@ public class ProductController {
 
     @PostMapping(value = "/setProductsToTradeIn")
     public void setAllProducts(@RequestBody List<Product> coinsToTradeIn) {
-        for (int i = 0; i < coinsToTradeIn.toArray().length; i++) {
-            System.out.println(coinsToTradeIn.get(i).toString());
-        }
-        //return ResponseEntity.ok("success");
-        //productCollectionService.setProductCollection(coinsToTradeIn);
+        productCollectionService.setProductCollection(coinsToTradeIn);
     }
 
     @GetMapping(value = "/getProductsToTradeIn")

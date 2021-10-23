@@ -7,6 +7,7 @@ import { SignUp } from './SignUp';
 import { ProtectedRoute } from './Protected.route';
 import { DataTable } from './DataTable';
 import { ProductTable } from './ProductTable';
+import Test from './test';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
           <Route exact path="/signup" component={SignUp} />
           <ProtectedRoute exact path="/home" component={DataTable} />
           <Route exact path="/products" component={ProductTable} />
+          <Route exact path="/test" component={Test} />
         </Switch>
       </div>
     </div>
