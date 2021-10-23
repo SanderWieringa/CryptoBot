@@ -51,20 +51,15 @@ export const SignIn = (props) => {
     fetch('http://localhost:3337/account/authenticate', requestOptions) 
       .then(function(response){return response.json();})
       .then(function(data) {
-          if(data.jwt) {
-            localStorage.setItem('jwtToken', data.jwt)
-              auth.login(() => {
-                props.history.push("/products")
-              })
-          }
-        }).catch(function(error) {
-            console.log(error)
-        })
-    // eslint-disable-next-line no-console
-    console.log({
-      username: data.get('username'),
-      password: data.get('password'),
-    });
+        if(data.jwt) {
+          localStorage.setItem('jwtToken', data.jwt)
+            auth.login(() => {
+              props.history.push("/products")
+            })
+        }
+      }).catch(function(error) {
+          console.log(error)
+      })
   };
 
   return (

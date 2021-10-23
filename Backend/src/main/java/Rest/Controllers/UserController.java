@@ -2,7 +2,8 @@ package Rest.Controllers;
 
 import Rest.Entities.User;
 import Rest.Responses.AuthenticationRequest;
-import Rest.Responses.AuthenticationResponse;
+import Rest.Responses.LoginResponse;
+import Rest.Responses.RegisterResponse;
 import Rest.Services.UserCollectionService;
 import Rest.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,29 +24,34 @@ public class UserController {
     private JwtUtil jwtTokenUtil;
 
     @PostMapping(value = "/register")
-    public ResponseEntity<?> addUser(@RequestBody User user) {
+    public ResponseEntity<RegisterResponse> addUser(@RequestBody User user) {
         try {
             userCollectionService.addUser(user);
-            return new ResponseEntity(HttpStatus.OK);
+            RegisterResponse registerResponse = new RegisterResponse();
+            registerResponse.setSuccess(true);
+
+            return ResponseEntity.ok(registerResponse);
         }  catch (Exception e) {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
      }
 
     @PostMapping(value="/authenticate")
-    public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
+    public ResponseEntity<LoginResponse> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) {
         try {
             userCollectionService.login(authenticationRequest);
+
+            org.springframework.security.core.userdetails.User user = (org.springframework.security.core.userdetails.User) userCollectionService.loadUserByUsername(authenticationRequest.getUsername());
+
+            final String jwt = jwtTokenUtil.generateToken(user);
+            LoginResponse loginResponse = new LoginResponse(jwt);
+            loginResponse.setSuccess(true);
+
+            return ResponseEntity.ok(loginResponse);
         } catch (AccessDeniedException e) {
             return new ResponseEntity(HttpStatus.FORBIDDEN);
         } catch (Exception e) {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
-
-        org.springframework.security.core.userdetails.User user = (org.springframework.security.core.userdetails.User) userCollectionService.loadUserByUsername(authenticationRequest.getUsername());
-
-        final String jwt = jwtTokenUtil.generateToken(user);
-        System.out.println(jwt);
-        return ResponseEntity.ok(new AuthenticationResponse(jwt));
     }
 }

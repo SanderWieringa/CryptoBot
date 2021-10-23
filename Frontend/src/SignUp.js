@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -44,26 +44,16 @@ export const SignUp = (props) => {
     
 
     fetch('http://localhost:3337/account/register', requestOptions) 
-      .then(response => response.json())
-      .then(data => {
-          this.setState({ userId: data.userId })
-          auth.login(() => {
-            props.history.push("/")
-        })
+    .then(function(response){return response.json();})
+      .then(function(data) {
+          if (data.success) {
+            auth.register(() => {
+              props.history.push("/")
+            })
+          }
+      }).catch(function(error) {
+          console.log(error)
       })
-      .catch(function(error) {
-        console.log(error)
-      })
-      // .then(data => this.setState(newUser));
-
-
-    // eslint-disable-next-line no-console
-    console.log({
-      user: requestOptions.body,
-      userName: newUser.username,
-      username: data.get('username'),
-      password: data.get('password'),
-    });
   };
 
   return (

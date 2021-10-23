@@ -4,7 +4,7 @@ import Rest.Entities.Product;
 
 import java.util.List;
 
-public class ProductCollectionResponse {
+public class GetProductCollectionResponse {
     private boolean success;
     private List<Product> products;
     public boolean isSuccess() { return success; }

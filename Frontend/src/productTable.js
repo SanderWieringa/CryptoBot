@@ -7,7 +7,6 @@ const columns = [
         headerName: 'Coin', 
         width: 150,
     },
-        
     {
         field: 'price',
         headerName: 'Price',
@@ -27,7 +26,6 @@ export const ProductTable = (props) => {
     const [select, setSelection] = useState([]);
 
     useEffect(() => {
-
         fetch("http://localhost:3337/products/list")
         .then((response) => response.json())
         .then((json) => setData(json))
@@ -35,12 +33,6 @@ export const ProductTable = (props) => {
             console.log(error)
         });
     }, [])
-
-    var binanceSocket = new WebSocket('wss://stream.binance.com:9443/ws/btcusdt@traden');
-
-    binanceSocket.onmessage = function (event) {
-        console.log(event.data);
-    }
 
     const handleSubscribe = (() => {
         fetch('http://localhost:3337/binance/subscribe')
@@ -140,16 +132,12 @@ export const ProductTable = (props) => {
                     pageSize={9}
                     checkboxSelection
                     disableSelectionOnClick
-                    // onSelectionModelChange={(newSelection) => {
-                    //     setSelection(newSelection);
-                    // }}
                     onSelectionModelChange={(ids) => {
                         const selectedIDs = new Set(ids);
                         const selectedRowData = data.products.filter((row) =>
                           selectedIDs.has(row.id)
                         );
                         setSelection(selectedRowData);
-                        console.log("onSelectionModelChange:", selectedRowData);
                     }}
                 />
             </div>
