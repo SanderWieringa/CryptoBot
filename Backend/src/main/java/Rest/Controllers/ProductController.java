@@ -34,15 +34,34 @@ public class ProductController {
     }
 
     @PostMapping(value = "/setProductsToTradeIn")
-    public void setAllProducts(@RequestBody List<Product> coinsToTradeIn) {
-        productCollectionService.setProductCollection(coinsToTradeIn);
+    public ResponseEntity<ProductCollectionResponse> setAllProducts(@RequestBody List<Product> coinsToTradeIn) {
+        try {
+            ProductCollectionResponse productCollectionResponse = new ProductCollectionResponse();
+            productCollectionService.setProductCollection(coinsToTradeIn);
+            productCollectionResponse.setSuccess(true);
+
+            return ResponseEntity.ok(productCollectionResponse);
+        } catch (Exception e) {
+            System.out.println(e);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
     }
 
     @GetMapping(value = "/getProductsToTradeIn")
-    public List<Product> getProductsToTradeIn() {
-        return productCollectionService.getProductsToTradeIn();
-    }
+    public ResponseEntity<ProductCollectionResponse> getProductsToTradeIn() {
+        try {
+            ProductCollectionResponse productCollectionResponse = new ProductCollectionResponse();
+            List<Product> products = productCollectionService.getProductsToTradeIn();
+            productCollectionResponse.setProducts(products);
+            productCollectionResponse.setSuccess(true);
 
+            return ResponseEntity.ok(productCollectionResponse);
+        } catch (Exception e) {
+            System.out.println(e);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
 
     @GetMapping(value = "/list")
     public ResponseEntity<ProductCollectionResponse> getAllProducts() {

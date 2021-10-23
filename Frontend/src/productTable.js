@@ -51,12 +51,6 @@ export const ProductTable = (props) => {
         .catch(function(error) {
             console.log(error)
         })
-        // .then((response) => response.json())
-        // .then((json) => setFakeData(json))
-        // .then(console.log(fakeData))
-        // .catch(function(error) {
-        //     console.log(error)
-        // })
     })
 
     const handleFakeTradeSubmit = (() => {
@@ -68,12 +62,6 @@ export const ProductTable = (props) => {
         .catch(function(error) {
             console.log(error)
         })
-        // .then((response) => response.json())
-        // .then((json) => setFakeData(json))
-        // .then(console.log(fakeData))
-        // .catch(function(error) {
-        //     console.log(error)
-        // })
     })
 
     const handleTradeSubmit = (() => {
@@ -86,21 +74,12 @@ export const ProductTable = (props) => {
         };
 
         fetch('http://localhost:3337/products/setProductsToTradeIn', requestOptions)
-        .then(function (response) {
-            console.log(response)
-            console.log(response.body)
-        })
-        .catch(function(error) {
-            console.log(error)
-        })
-        // .then((response) => response.json())
-        // .then((json) => console.log(json))
-        // .then(data => {
-        //     console.log(data)
-        //   })
-        // .catch(function(error) {
-        //     console.log(error)
-        // })
+        .then(function(response){return response.json();})
+            .then(function(data) {
+                console.log(data)
+            }).catch(function(error) {
+                console.log(error)
+            })
     })
 
     const handleTradeLogging = (() => {
@@ -109,12 +88,12 @@ export const ProductTable = (props) => {
 
     const handleGetProductsToTradeIn = (() => {
         fetch('http://localhost:3337/products/getProductsToTradeIn')
-        .then(function(response){return response.json();})
-      .then(function(data) {
-          console.log(data)
-        }).catch(function(error) {
-            console.log(error)
-        })
+            .then(function(response){return response.json();})
+            .then(function(data) {
+                console.log(data)
+            }).catch(function(error) {
+                console.log(error)
+            })
     })
 
     return (
