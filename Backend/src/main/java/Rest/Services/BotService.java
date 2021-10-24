@@ -1,7 +1,6 @@
 package Rest.Services;
 
 import Rest.Entities.Product;
-import Rest.Services.ProductCollectionService;
 import com.binance.api.client.BinanceApiClientFactory;
 import com.binance.api.client.BinanceApiWebSocketClient;
 import com.binance.api.client.domain.event.CandlestickEvent;
@@ -16,7 +15,7 @@ import java.util.Locale;
 @Data
 @Slf4j
 @Service
-public class BotLogic {
+public class BotService {
 
     @Autowired
     private ProductCollectionService productCollectionService;

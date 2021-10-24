@@ -1,13 +1,14 @@
 package Rest.Controllers;
 
-import Rest.Services.BotLogic;
+import Rest.Services.BotService;
 import Rest.Entities.Product;
 import Rest.Services.ProductCollectionService;
 import com.binance.api.client.BinanceApiClientFactory;
-import com.binance.api.client.domain.account.NewOrder;
-import com.binance.api.client.domain.account.NewOrderResponse;
-import com.binance.api.client.domain.account.NewOrderResponseType;
-import com.binance.api.client.domain.account.Trade;
+import com.binance.api.client.domain.OrderSide;
+import com.binance.api.client.domain.OrderType;
+import com.binance.api.client.domain.TimeInForce;
+import com.binance.api.client.domain.account.*;
+import com.binance.api.client.domain.account.request.OrderRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import com.binance.api.client.BinanceApiRestClient;
@@ -27,7 +28,7 @@ public class BinanceController {
     BinanceApiRestClient client = factory.newRestClient();
 
     @Autowired
-    private BotLogic botService;
+    private BotService botService;
 
     @Autowired
     private ProductCollectionService productCollectionService;
@@ -45,16 +46,44 @@ public class BinanceController {
         return serverTime;
     }
 
+    @PostMapping(value = "/placeTestMarketOrder")
+    public void placeTestMarketOrder() {
+        client.newOrderTest(NewOrder.marketBuy("BTCUSDT", "100"));
+    }
+
+    @GetMapping(value = "/getAllOpenOrders")
+    public List<Order> getAllOpenOrders() {
+        List<Order> openOrders = client.getOpenOrders(new OrderRequest("BTCUSDT"));
+        System.out.println(openOrders);
+        return openOrders;
+    }
+
     @PostMapping(value = "/placeMarketOrder")
     public String placeMarketOrder() {
         NewOrderResponse newOrderResponse = client
                 .newOrder(NewOrder
-                        .marketBuy("BTCUSDT", "1")
+                        .marketBuy("BTCUSDT", "100")
                         .newOrderRespType(NewOrderResponseType.FULL));
         List<Trade> fills = newOrderResponse.getFills();
         System.out.println(newOrderResponse.getClientOrderId());
 
         return newOrderResponse.getClientOrderId();
+    }
+
+    @PostMapping(value = "/placeStopLossOrder")
+    public String placeStopLossOrder() {
+        NewOrder order = new NewOrder("BTCUSDT", OrderSide.BUY, OrderType.STOP_LOSS, TimeInForce.GTC, "0.003", "0.001");
+        client.newOrder(order.stopPrice("0.001"));
+
+        return order.getNewClientOrderId();
+    }
+
+    @PostMapping(value = "/placeTakeProfitOrder")
+    public String placeTakeProfitOrder() {
+        NewOrder order = new NewOrder("BTCUSDT", OrderSide.BUY, OrderType.TAKE_PROFIT, TimeInForce.GTC, "0.003", "0.001");
+        client.newOrder(order.stopPrice("0.001"));
+
+        return order.getNewClientOrderId();
     }
 
     @PostMapping(value = "/placeUserMarketOrders")

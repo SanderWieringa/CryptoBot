@@ -18,7 +18,6 @@ public class Product {
     private float price;
     @JsonProperty("marketCap")
     private long marketCap;
-
     @JsonProperty("symbol")
     private String symbol;
 
