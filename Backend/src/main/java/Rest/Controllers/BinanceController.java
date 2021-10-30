@@ -1,6 +1,6 @@
 package Rest.Controllers;
 
-import Rest.Services.BotService;
+import Rest.Services.MarketService;
 import Rest.Entities.Product;
 import Rest.Services.ProductCollectionService;
 import com.binance.api.client.BinanceApiClientFactory;
@@ -28,7 +28,7 @@ public class BinanceController {
     BinanceApiRestClient client = factory.newRestClient();
 
     @Autowired
-    private BotService botService;
+    private MarketService marketService;
 
     @Autowired
     private ProductCollectionService productCollectionService;
@@ -100,6 +100,6 @@ public class BinanceController {
 
     @GetMapping(value = "/subscribe")
     public void subscribeCandlestickData() {
-        botService.startToListen();
+        marketService.startToListen();
     }
 }

@@ -5,20 +5,19 @@ import com.binance.api.client.BinanceApiClientFactory;
 import com.binance.api.client.BinanceApiWebSocketClient;
 import com.binance.api.client.domain.event.CandlestickEvent;
 import com.binance.api.client.domain.market.CandlestickInterval;
-import lombok.Data;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Locale;
 
-@Data
-@Slf4j
 @Service
-public class BotService {
+public class MarketService {
 
     @Autowired
     private ProductCollectionService productCollectionService;
+
+    @Autowired
+    private CandleCollectionService candleCollectionService;
 
     private void subscribeCandlestickData() {
 
@@ -46,6 +45,7 @@ public class BotService {
                 candleStickEvent.setTakerBuyBaseAssetVolume(response.getTakerBuyBaseAssetVolume());
                 candleStickEvent.setTakerBuyQuoteAssetVolume(response.getTakerBuyQuoteAssetVolume());
                 candleStickEvent.setBarFinal(response.getBarFinal());
+                candleCollectionService.addCandle(candleStickEvent);
                 System.out.println(candleStickEvent.toString());
             });
         }
