@@ -16,9 +16,9 @@ public class User {
     @Column(nullable=false)
     private String password;
     @ManyToMany
-    private List<Symbol> coinsToTradeIn = new ArrayList<>();
+    private List<Product> coinsToTradeIn = new ArrayList<>();
 
-    public void setCoinsToTradeIn(List<Symbol> coinsToTradeIn) {
+    public void setCoinsToTradeIn(List<Product> coinsToTradeIn) {
         this.coinsToTradeIn = coinsToTradeIn;
     }
 
@@ -46,7 +46,7 @@ public class User {
         this.password = password;
     }
 
-    public List<Symbol> getCoinsToTradeIn() {
+    public List<Product> getCoinsToTradeIn() {
         return coinsToTradeIn;
     }
 }
