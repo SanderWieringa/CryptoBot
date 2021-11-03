@@ -61,12 +61,12 @@ public class UserController {
         }
     }
 
-    @PutMapping(value = "userProducts")
-    public ResponseEntity<SetProductCollectionResponse> update(@RequestBody User user) {
+    @PutMapping(value = "setUserProducts")
+    public ResponseEntity<SetProductCollectionResponse> update(@RequestBody List<Product> coinsToTradeIn) {
         SetProductCollectionResponse setProductCollectionResponse = new SetProductCollectionResponse();
         List<Product> testProducts = new ArrayList<>();
         testProducts.add(new Product(0, "test", 123, 1234, "asdf"));
-        User testUser = new User(1, "asdf", "asdf", testProducts);
+        User testUser = new User(1, "asdf", "asdf", coinsToTradeIn);
         for (User userToPrint:userCollectionService.getAllUsers()) {
             System.out.println(userToPrint.getUserId());
         }
@@ -76,4 +76,15 @@ public class UserController {
 
         return ResponseEntity.ok(setProductCollectionResponse);
     }
+
+    @GetMapping(value = "/getUserProducts/{1}")
+    public ResponseEntity<GetProductCollectionResponse> getUserProducts(@PathVariable int userId) {
+        GetProductCollectionResponse getProductCollectionResponse = new GetProductCollectionResponse();
+        List<Product> coinsToTradeIn = userService.getUserProducts(userId);
+        getProductCollectionResponse.setProducts(coinsToTradeIn);
+        getProductCollectionResponse.setSuccess(true);
+
+        return ResponseEntity.ok(getProductCollectionResponse);
+    }
+
 }

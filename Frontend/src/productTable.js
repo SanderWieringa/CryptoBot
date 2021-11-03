@@ -72,10 +72,10 @@ export const ProductTable = (props) => {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       mode: "cors",
-      body: JSON.stringify(userToUpdate),
+      body: JSON.stringify(select),
     };
 
-    fetch("http://localhost:3337/account/userProducts", requestOptions)
+    fetch("http://localhost:3337/account/setUserProducts", requestOptions)
       .then(function (response) {
         return response.json();
       })
@@ -92,7 +92,19 @@ export const ProductTable = (props) => {
   };
 
   const handleGetProductsToTradeIn = () => {
-    fetch("http://localhost:3337/products/getProductsToTradeIn")
+    const userToGetProducts = {
+      id: 0,
+      username: "",
+      password: "",
+      coinsToTradeIn: select,
+    };
+    const requestOptions = {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+      mode: "cors",
+      body: JSON.stringify(userToGetProducts),
+    };
+    fetch(`http://localhost:3337/products/getUserProducts/${1}`)
       .then(function (response) {
         return response.json();
       })
