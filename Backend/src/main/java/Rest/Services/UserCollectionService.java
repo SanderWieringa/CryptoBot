@@ -15,12 +15,21 @@ import java.nio.file.AccessDeniedException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
 public class UserCollectionService implements UserDetailsService {
     @Autowired
     private IUserCollectionRepository userCollectionRepository;
+
+    public List<User> getAllUsers() {
+        List<User> users = new ArrayList<>();
+        for (User user:userCollectionRepository.findAll()) {
+            users.add(user);
+        }
+        return users;
+    }
 
     public User login(AuthenticationRequest authenticationRequest) throws InvalidKeySpecException, NoSuchAlgorithmException, AccessDeniedException {
         User user = new User();

@@ -7,6 +7,7 @@ import java.util.List;
 public class GetProductCollectionResponse {
     private boolean success;
     private List<Product> products;
+
     public boolean isSuccess() { return success; }
     public void setSuccess(boolean success) { this.success = success; }
     public List<Product> getProducts() { return products; }

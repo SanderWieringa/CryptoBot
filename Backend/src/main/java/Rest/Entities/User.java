@@ -7,7 +7,7 @@ import java.util.List;
 @Table(name = "profile")
 @Entity
 public class User {
-    @Column(unique=true, nullable=false)
+        @Column(unique=true, nullable=false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private int userId;
@@ -15,8 +15,19 @@ public class User {
     private String username;
     @Column(nullable=false)
     private String password;
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     private List<Product> coinsToTradeIn = new ArrayList<>();
+
+    public User() {
+
+    }
+
+    public User(int userId, String username, String password, List<Product> coinsToTradeIn) {
+        this.userId = userId;
+        this.username = username;
+        this.password = password;
+        this.coinsToTradeIn = coinsToTradeIn;
+    }
 
     public void setCoinsToTradeIn(List<Product> coinsToTradeIn) {
         this.coinsToTradeIn = coinsToTradeIn;
