@@ -46,7 +46,7 @@ public class UserController {
         try {
             userCollectionService.login(authenticationRequest);
 
-            org.springframework.security.core.userdetails.User user = (org.springframework.security.core.userdetails.User) userCollectionService.loadUserByUsername(authenticationRequest.getUsername());
+            User user = userCollectionService.loadUserByUsername(authenticationRequest.getUsername());
 
             final String jwt = jwtTokenUtil.generateToken(user);
             System.out.println(jwt);
@@ -77,10 +77,10 @@ public class UserController {
         return ResponseEntity.ok(setProductCollectionResponse);
     }
 
-    @GetMapping(value = "/getUserProducts/{1}")
-    public ResponseEntity<GetProductCollectionResponse> getUserProducts(@PathVariable int userId) {
+    @PostMapping(value = "/getUserProducts")
+    public ResponseEntity<GetProductCollectionResponse> getUserProducts(@RequestBody User user) {
         GetProductCollectionResponse getProductCollectionResponse = new GetProductCollectionResponse();
-        List<Product> coinsToTradeIn = userService.getUserProducts(userId);
+        List<Product> coinsToTradeIn = userService.getUserProducts(user.getUserId());
         getProductCollectionResponse.setProducts(coinsToTradeIn);
         getProductCollectionResponse.setSuccess(true);
 

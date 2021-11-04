@@ -58,7 +58,7 @@ export const ProductTable = (props) => {
 
   const handleLogParse = () => {
     let userInfo = parseJwt(localStorage.getItem("jwtToken"));
-    console.log(userInfo);
+    console.log(userInfo.sub.split(" ")[0]);
     console.log(localStorage.getItem("jwtToken"));
   };
 
@@ -93,18 +93,18 @@ export const ProductTable = (props) => {
 
   const handleGetProductsToTradeIn = () => {
     const userToGetProducts = {
-      id: 0,
-      username: "",
-      password: "",
+      userId: 1,
+      username: "asdf",
+      password: "asdf",
       coinsToTradeIn: select,
     };
     const requestOptions = {
-      method: "GET",
+      method: "POST",
       headers: { "Content-Type": "application/json" },
       mode: "cors",
       body: JSON.stringify(userToGetProducts),
     };
-    fetch(`http://localhost:3337/products/getUserProducts/${1}`)
+    fetch("http://localhost:3337/account/getUserProducts", requestOptions)
       .then(function (response) {
         return response.json();
       })

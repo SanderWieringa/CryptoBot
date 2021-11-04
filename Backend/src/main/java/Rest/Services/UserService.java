@@ -19,7 +19,6 @@ public class UserService {
     }
 
     public List<Product> getUserProducts(int userId) {
-        User user = userRepository.getById(userId);
-        return user.getCoinsToTradeIn();
+        return userRepository.getById(userId).getCoinsToTradeIn();
     }
 }

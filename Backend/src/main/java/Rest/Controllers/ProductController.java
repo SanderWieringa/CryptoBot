@@ -28,34 +28,34 @@ public class ProductController {
     @Autowired
     private ProductCollectionService productCollectionService;
 
-    @PostMapping(value = "/setProductsToTradeIn")
-    public ResponseEntity<SetProductCollectionResponse> setAllProducts(@RequestBody List<Product> coinsToTradeIn) {
-        try {
-            SetProductCollectionResponse setProductCollectionResponse = new SetProductCollectionResponse();
-            productCollectionService.setProductCollection(coinsToTradeIn);
-            setProductCollectionResponse.setSuccess(true);
+//    @PostMapping(value = "/setProductsToTradeIn")
+//    public ResponseEntity<SetProductCollectionResponse> setAllProducts(@RequestBody List<Product> coinsToTradeIn) {
+//        try {
+//            SetProductCollectionResponse setProductCollectionResponse = new SetProductCollectionResponse();
+//            productCollectionService.setProductCollection(coinsToTradeIn);
+//            setProductCollectionResponse.setSuccess(true);
+//
+//            return ResponseEntity.ok(setProductCollectionResponse);
+//        } catch (Exception e) {
+//            System.out.println(e);
+//            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+//        }
+//    }
 
-            return ResponseEntity.ok(setProductCollectionResponse);
-        } catch (Exception e) {
-            System.out.println(e);
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-    }
-
-    @GetMapping(value = "/getProductsToTradeIn")
-    public ResponseEntity<GetProductCollectionResponse> getProductsToTradeIn() {
-        try {
-            GetProductCollectionResponse getProductCollectionResponse = new GetProductCollectionResponse();
-            List<Product> products = productCollectionService.getProductsToTradeIn();
-            getProductCollectionResponse.setProducts(products);
-            getProductCollectionResponse.setSuccess(true);
-
-            return ResponseEntity.ok(getProductCollectionResponse);
-        } catch (Exception e) {
-            System.out.println(e);
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-    }
+//    @GetMapping(value = "/getProductsToTradeIn")
+//    public ResponseEntity<GetProductCollectionResponse> getProductsToTradeIn() {
+//        try {
+//            GetProductCollectionResponse getProductCollectionResponse = new GetProductCollectionResponse();
+//            List<Product> products = productCollectionService.getProductsToTradeIn();
+//            getProductCollectionResponse.setProducts(products);
+//            getProductCollectionResponse.setSuccess(true);
+//
+//            return ResponseEntity.ok(getProductCollectionResponse);
+//        } catch (Exception e) {
+//            System.out.println(e);
+//            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+//        }
+//    }
 
     @GetMapping(value = "/list")
     public ResponseEntity<GetProductCollectionResponse> getAllProducts() {

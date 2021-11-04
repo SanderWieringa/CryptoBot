@@ -6,10 +6,10 @@ import Rest.Responses.AuthenticationRequest;
 import Rest.util.PasswordHasher;
 import Rest.util.PasswordValidator;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
+//import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import org.springframework.security.core.userdetails.UserDetailsService;
+//import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.nio.file.AccessDeniedException;
 import java.security.NoSuchAlgorithmException;
@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class UserCollectionService implements UserDetailsService {
+public class UserCollectionService {
     @Autowired
     private IUserCollectionRepository userCollectionRepository;
 
@@ -54,15 +54,14 @@ public class UserCollectionService implements UserDetailsService {
         userCollectionRepository.save(user);
     }
 
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public User loadUserByUsername(String username) throws UsernameNotFoundException {
         Optional<User> userToConvert = userCollectionRepository.findByUsername((username));
         if (userToConvert.isPresent()) {
-            return new org.springframework.security.core.userdetails.User(
-                    userToConvert
-                    .get()
-                    .getUsername(), userToConvert.get()
-                    .getPassword(), new ArrayList<>());
+            return new User(
+                    userToConvert.get().getUserId(),
+                    userToConvert.get().getUsername(),
+                    userToConvert.get().getPassword(),
+                    new ArrayList<>());
         }
 
         return null;

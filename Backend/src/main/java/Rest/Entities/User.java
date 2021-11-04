@@ -7,10 +7,11 @@ import java.util.List;
 @Table(name = "profile")
 @Entity
 public class User {
-        @Column(unique=true, nullable=false)
+    @Column(unique=true, nullable=false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private int userId;
+
     @Column(unique=true, nullable=false)
     private String username;
     @Column(nullable=false)
@@ -27,6 +28,16 @@ public class User {
         this.username = username;
         this.password = password;
         this.coinsToTradeIn = coinsToTradeIn;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "userId=" + userId +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", coinsToTradeIn=" + coinsToTradeIn +
+                '}';
     }
 
     public void setCoinsToTradeIn(List<Product> coinsToTradeIn) {

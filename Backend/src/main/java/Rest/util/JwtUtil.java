@@ -1,8 +1,8 @@
 package Rest.util;
 
+import Rest.Entities.User;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import io.jsonwebtoken.Claims;
@@ -35,8 +35,8 @@ public class JwtUtil {
 
     public String generateToken(User user) {
         Map<String, Object> claims = new HashMap<>();
-        System.out.println("username: " + user.getUsername() + " password: " + user.getPassword());
-        return createToken(claims, String.format(user.getUsername() + user.getPassword()));
+        System.out.println("username: " + user.getUsername() + " password: " + user.getPassword() + " toString " + user.toString());
+        return createToken(claims, user.toString());
     }
 
     private String createToken(Map<String, Object> claims, String subject) {
