@@ -62,16 +62,17 @@ public class UserController {
     }
 
     @PutMapping(value = "setUserProducts")
-    public ResponseEntity<SetProductCollectionResponse> update(@RequestBody List<Product> coinsToTradeIn) {
+    public ResponseEntity<SetProductCollectionResponse> update(@RequestBody User user) {
         SetProductCollectionResponse setProductCollectionResponse = new SetProductCollectionResponse();
-        List<Product> testProducts = new ArrayList<>();
-        testProducts.add(new Product(0, "test", 123, 1234, "asdf"));
-        User testUser = new User(1, "asdf", "asdf", coinsToTradeIn);
-        for (User userToPrint:userCollectionService.getAllUsers()) {
-            System.out.println(userToPrint.getUserId());
-        }
 
-        userService.update(testUser);
+        List<Product> products = userService.getUserProducts(user.getUserId());
+        for (Product product:user.getCoinsToTradeIn()) {
+            if (!products.contains(product)) {
+                products.add(product);
+            }
+        }
+        user.setCoinsToTradeIn(products);
+        userService.update(user);
         setProductCollectionResponse.setSuccess(true);
 
         return ResponseEntity.ok(setProductCollectionResponse);

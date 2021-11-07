@@ -65,16 +65,18 @@ export const ProductTable = (props) => {
   };
 
   const handleTradeSubmit = () => {
+    let token = jwt(localStorage.getItem("jwtToken"), { header: true });
     const userToUpdate = {
-      username: "",
-      password: "",
+      userId: token["user"].userId,
+      username: token["user"].username,
+      password: token["user"].password,
       coinsToTradeIn: select,
     };
     const requestOptions = {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       mode: "cors",
-      body: JSON.stringify(select),
+      body: JSON.stringify(userToUpdate),
     };
 
     fetch("http://localhost:3337/account/setUserProducts", requestOptions)
@@ -94,10 +96,11 @@ export const ProductTable = (props) => {
   };
 
   const handleGetProductsToTradeIn = () => {
+    let token = jwt(localStorage.getItem("jwtToken"), { header: true });
     const userToGetProducts = {
-      userId: 1,
-      username: "asdf",
-      password: "asdf",
+      userId: token["user"].userId,
+      username: token["user"].username,
+      password: token["user"].password,
       coinsToTradeIn: select,
     };
     const requestOptions = {
