@@ -63,21 +63,29 @@ public class UserController {
 
     @PutMapping(value = "setUserProducts")
     public ResponseEntity<SetProductCollectionResponse> update(@RequestBody User user) {
-        SetProductCollectionResponse setProductCollectionResponse = new SetProductCollectionResponse();
-        userService.update(user);
-        setProductCollectionResponse.setSuccess(true);
+        try {
+            SetProductCollectionResponse setProductCollectionResponse = new SetProductCollectionResponse();
+            userService.update(user);
+            setProductCollectionResponse.setSuccess(true);
 
-        return ResponseEntity.ok(setProductCollectionResponse);
+            return ResponseEntity.ok(setProductCollectionResponse);
+        } catch (Exception e) {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PostMapping(value = "/getUserProducts")
     public ResponseEntity<GetProductCollectionResponse> getUserProducts(@RequestBody User user) {
-        GetProductCollectionResponse getProductCollectionResponse = new GetProductCollectionResponse();
-        List<Product> coinsToTradeIn = userService.getUserProducts(user.getUserId());
-        getProductCollectionResponse.setProducts(coinsToTradeIn);
-        getProductCollectionResponse.setSuccess(true);
+        try {
+            GetProductCollectionResponse getProductCollectionResponse = new GetProductCollectionResponse();
+            List<Product> coinsToTradeIn = userService.getUserProducts(user.getUserId());
+            getProductCollectionResponse.setProducts(coinsToTradeIn);
+            getProductCollectionResponse.setSuccess(true);
 
-        return ResponseEntity.ok(getProductCollectionResponse);
+            return ResponseEntity.ok(getProductCollectionResponse);
+        } catch (Exception e) {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
     }
 
 }
