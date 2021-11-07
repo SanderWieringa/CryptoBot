@@ -36,14 +36,14 @@ public class JwtUtil {
     public String generateToken(User user) {
         Map<String, Object> claims = new HashMap<>();
         System.out.println("username: " + user.getUsername() + " password: " + user.getPassword() + " toString " + user.toString());
-        return createToken(claims, user.toString());
+        return createToken(claims, user);
     }
 
-    private String createToken(Map<String, Object> claims, String subject) {
+    private String createToken(Map<String, Object> claims, User user) {
         return Jwts
                 .builder()
                 .setClaims(claims)
-                .setSubject(subject)
+                .setHeaderParam("user", user)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10))
                 .signWith(SignatureAlgorithm.HS256, SECRET_KEY).compact();

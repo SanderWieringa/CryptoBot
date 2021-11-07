@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { DataGrid } from "@material-ui/data-grid";
 import auth from "./auth";
+import jwt from "jwt-decode";
 
 const columns = [
   { field: "fullName", headerName: "Coin", width: 150 },
@@ -57,9 +58,10 @@ export const ProductTable = (props) => {
   };
 
   const handleLogParse = () => {
-    let userInfo = parseJwt(localStorage.getItem("jwtToken"));
-    console.log(userInfo.sub.split(" ")[0]);
-    console.log(localStorage.getItem("jwtToken"));
+    let token = localStorage.getItem("jwtToken");
+    console.log(token);
+    let user = jwt(token, { header: true });
+    console.log(user["user"]);
   };
 
   const handleTradeSubmit = () => {
