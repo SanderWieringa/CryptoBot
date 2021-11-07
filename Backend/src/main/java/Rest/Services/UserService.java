@@ -15,6 +15,13 @@ public class UserService {
     private IUserRepository userRepository;
 
     public void update(User user) {
+        List<Product> products = getUserProducts(user.getUserId());
+        for (Product product:user.getCoinsToTradeIn()) {
+            if (!products.contains(product)) {
+                products.add(product);
+            }
+        }
+        user.setCoinsToTradeIn(products);
         userRepository.save(user);
     }
 

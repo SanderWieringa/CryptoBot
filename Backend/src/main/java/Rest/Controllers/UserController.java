@@ -64,14 +64,6 @@ public class UserController {
     @PutMapping(value = "setUserProducts")
     public ResponseEntity<SetProductCollectionResponse> update(@RequestBody User user) {
         SetProductCollectionResponse setProductCollectionResponse = new SetProductCollectionResponse();
-
-        List<Product> products = userService.getUserProducts(user.getUserId());
-        for (Product product:user.getCoinsToTradeIn()) {
-            if (!products.contains(product)) {
-                products.add(product);
-            }
-        }
-        user.setCoinsToTradeIn(products);
         userService.update(user);
         setProductCollectionResponse.setSuccess(true);
 
