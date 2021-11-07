@@ -38,6 +38,16 @@ export const ProductTable = (props) => {
       });
   }, []);
 
+  const handleUnsubscribe = () => {
+    fetch("http://localhost:3337/binance/unsubscribe")
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+
   const handleSubscribe = () => {
     fetch("http://localhost:3337/binance/subscribe")
       .then(function (response) {
@@ -110,13 +120,6 @@ export const ProductTable = (props) => {
       <div>
         <button
           onClick={() => {
-            handleLogParse();
-          }}
-        >
-          Log Token Parse
-        </button>
-        <button
-          onClick={() => {
             handleGetProductsToTradeIn();
           }}
         >
@@ -124,17 +127,17 @@ export const ProductTable = (props) => {
         </button>
         <button
           onClick={() => {
-            handleTradeLogging();
-          }}
-        >
-          Log Products
-        </button>
-        <button
-          onClick={() => {
             handleTradeSubmit();
           }}
         >
           Set Products
+        </button>
+        <button
+          onClick={() => {
+            handleUnsubscribe();
+          }}
+        >
+          Stop Trading
         </button>
         <button
           onClick={() => {
