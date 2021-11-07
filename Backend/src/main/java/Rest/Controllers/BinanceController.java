@@ -102,4 +102,9 @@ public class BinanceController {
     public void subscribeCandlestickData() {
         marketService.startToListen();
     }
+
+    @GetMapping(value = "/unsubscribe")
+    public void unsubscribeCandlestickData() {
+        marketService.stopToListen();
+    }
 }
