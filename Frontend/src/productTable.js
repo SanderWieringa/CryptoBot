@@ -48,22 +48,6 @@ export const ProductTable = (props) => {
       });
   };
 
-  const parseJwt = (token) => {
-    if (!token) {
-      return;
-    }
-    const base64Url = token.split(".")[1];
-    const base64 = base64Url.replace("-", "+").replace("_", "/");
-    return JSON.parse(window.atob(base64));
-  };
-
-  const handleLogParse = () => {
-    let token = localStorage.getItem("jwtToken");
-    console.log(token);
-    let user = jwt(token, { header: true });
-    console.log(user["user"]);
-  };
-
   const handleTradeSubmit = () => {
     let token = jwt(localStorage.getItem("jwtToken"), { header: true });
     const userToUpdate = {
