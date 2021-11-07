@@ -38,6 +38,16 @@ export const ProductTable = (props) => {
       });
   }, []);
 
+  const handleUnsubscribe = () => {
+    fetch("http://localhost:3337/binance/unsubscribe")
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+
   const handleSubscribe = () => {
     let token = jwt(localStorage.getItem("jwtToken"), { header: true });
     const userToSubscribe = {
@@ -130,17 +140,17 @@ export const ProductTable = (props) => {
         </button>
         <button
           onClick={() => {
-            handleTradeLogging();
-          }}
-        >
-          Log Products
-        </button>
-        <button
-          onClick={() => {
             handleTradeSubmit();
           }}
         >
           Set Products
+        </button>
+        <button
+          onClick={() => {
+            handleUnsubscribe();
+          }}
+        >
+          Stop Trading
         </button>
         <button
           onClick={() => {
