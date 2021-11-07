@@ -1,8 +1,10 @@
 package Rest.Controllers;
 
+import Rest.Entities.User;
 import Rest.Services.MarketService;
 import Rest.Entities.Product;
 import Rest.Services.ProductCollectionService;
+import Rest.Services.UserService;
 import com.binance.api.client.BinanceApiClientFactory;
 import com.binance.api.client.domain.OrderSide;
 import com.binance.api.client.domain.OrderType;
@@ -31,7 +33,7 @@ public class BinanceController {
     private MarketService marketService;
 
     @Autowired
-    private ProductCollectionService productCollectionService;
+    private UserService userService;
 
     @GetMapping(value = "/ping")
     public void testConnection() {
@@ -87,8 +89,8 @@ public class BinanceController {
     }
 
     @PostMapping(value = "/placeUserMarketOrders")
-    public void placeUserMarketOrders() {
-        List<Product> productsToTradeIn = productCollectionService.getProductsToTradeIn();
+    public void placeUserMarketOrders(@RequestBody User user) {
+        List<Product> productsToTradeIn = userService.getUserProducts(user.getUserId());
         for (Product product:productsToTradeIn) {
             NewOrderResponse newOrderResponse = client
                     .newOrder(NewOrder
@@ -98,8 +100,8 @@ public class BinanceController {
         }
     }
 
-    @GetMapping(value = "/subscribe")
-    public void subscribeCandlestickData() {
-        marketService.startToListen();
+    @PostMapping(value = "/subscribe")
+    public void subscribeCandlestickData(@RequestBody User user) {
+        marketService.startToListen(user.getUserId());
     }
 }
