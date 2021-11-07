@@ -49,7 +49,20 @@ export const ProductTable = (props) => {
   };
 
   const handleSubscribe = () => {
-    fetch("http://localhost:3337/binance/subscribe")
+    let token = jwt(localStorage.getItem("jwtToken"), { header: true });
+    const userToSubscribe = {
+      userId: token["user"].userId,
+      username: token["user"].username,
+      password: token["user"].password,
+      coinsToTradeIn: select,
+    };
+    const requestOptions = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      mode: "cors",
+      body: JSON.stringify(userToSubscribe),
+    };
+    fetch("http://localhost:3337/binance/subscribe", requestOptions)
       .then(function (response) {
         console.log(response);
       })

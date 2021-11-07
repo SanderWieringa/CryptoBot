@@ -14,19 +14,18 @@ import java.util.Locale;
 public class MarketService {
 
     @Autowired
-    private ProductCollectionService productCollectionService;
+    private UserService userService;
 
     @Autowired
     private CandleCollectionService candleCollectionService;
 
+    private void subscribeCandlestickData(int userId) {
     boolean isRunning = false;
-
-    private void subscribeCandlestickData() {
 
         BinanceApiWebSocketClient client = createClient();
         isRunning = true;
 
-        for (Product product:findAllProductsToSubscribe()) {
+        for (Product product:findAllProductsToSubscribe(userId)) {
             client.onCandlestickEvent(product.getSymbol().toLowerCase(Locale.ROOT), CandlestickInterval.ONE_MINUTE, response -> {
 
                 if (isRunning){
@@ -56,8 +55,8 @@ public class MarketService {
         }
     }
 
-    private List<Product> findAllProductsToSubscribe() {
-        return productCollectionService.getProductsToTradeIn();
+    private List<Product> findAllProductsToSubscribe(int userId) {
+        return userService.getUserProducts(userId);
     }
 
     private BinanceApiWebSocketClient createClient() {
@@ -68,8 +67,8 @@ public class MarketService {
             ).newWebSocketClient();
     }
 
-    public void startToListen() {
-        this.subscribeCandlestickData();
+    public void startToListen(int userId) {
+        this.subscribeCandlestickData(userId);
     }
 
     public void stopToListen() {
