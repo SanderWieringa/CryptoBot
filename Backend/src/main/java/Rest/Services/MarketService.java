@@ -14,45 +14,50 @@ import java.util.Locale;
 public class MarketService {
 
     @Autowired
-    private ProductCollectionService productCollectionService;
+    private UserService userService;
 
     @Autowired
     private CandleCollectionService candleCollectionService;
 
-    private void subscribeCandlestickData() {
+    boolean isRunning = false;
+
+    private void subscribeCandlestickData(int userId) {
 
         BinanceApiWebSocketClient client = createClient();
+        isRunning = true;
 
-        for (Product product:findAllProductsToSubscribe()) {
+        for (Product product:findAllProductsToSubscribe(userId)) {
             client.onCandlestickEvent(product.getSymbol().toLowerCase(Locale.ROOT), CandlestickInterval.ONE_MINUTE, response -> {
 
-                CandlestickEvent candleStickEvent = new CandlestickEvent();
-                candleStickEvent.setEventType(response.getEventType());
-                candleStickEvent.setEventTime(response.getEventTime());
-                candleStickEvent.setSymbol(response.getSymbol());
-                candleStickEvent.setOpenTime(response.getOpenTime());
-                candleStickEvent.setOpen(response.getOpen());
-                candleStickEvent.setClose(response.getClose());
-                candleStickEvent.setHigh(response.getHigh());
-                candleStickEvent.setLow(response.getLow());
-                candleStickEvent.setVolume(response.getVolume());
-                candleStickEvent.setCloseTime(response.getCloseTime());
-                candleStickEvent.setIntervalId(response.getIntervalId());
-                candleStickEvent.setFirstTradeId(response.getFirstTradeId());
-                candleStickEvent.setLastTradeId(response.getLastTradeId());
-                candleStickEvent.setQuoteAssetVolume(response.getQuoteAssetVolume());
-                candleStickEvent.setNumberOfTrades(response.getNumberOfTrades());
-                candleStickEvent.setTakerBuyBaseAssetVolume(response.getTakerBuyBaseAssetVolume());
-                candleStickEvent.setTakerBuyQuoteAssetVolume(response.getTakerBuyQuoteAssetVolume());
-                candleStickEvent.setBarFinal(response.getBarFinal());
-                candleCollectionService.addCandle(candleStickEvent);
-                System.out.println(candleStickEvent.toString());
+                if (isRunning){
+                    CandlestickEvent candleStickEvent = new CandlestickEvent();
+                    candleStickEvent.setEventType(response.getEventType());
+                    candleStickEvent.setEventTime(response.getEventTime());
+                    candleStickEvent.setSymbol(response.getSymbol());
+                    candleStickEvent.setOpenTime(response.getOpenTime());
+                    candleStickEvent.setOpen(response.getOpen());
+                    candleStickEvent.setClose(response.getClose());
+                    candleStickEvent.setHigh(response.getHigh());
+                    candleStickEvent.setLow(response.getLow());
+                    candleStickEvent.setVolume(response.getVolume());
+                    candleStickEvent.setCloseTime(response.getCloseTime());
+                    candleStickEvent.setIntervalId(response.getIntervalId());
+                    candleStickEvent.setFirstTradeId(response.getFirstTradeId());
+                    candleStickEvent.setLastTradeId(response.getLastTradeId());
+                    candleStickEvent.setQuoteAssetVolume(response.getQuoteAssetVolume());
+                    candleStickEvent.setNumberOfTrades(response.getNumberOfTrades());
+                    candleStickEvent.setTakerBuyBaseAssetVolume(response.getTakerBuyBaseAssetVolume());
+                    candleStickEvent.setTakerBuyQuoteAssetVolume(response.getTakerBuyQuoteAssetVolume());
+                    candleStickEvent.setBarFinal(response.getBarFinal());
+                    candleCollectionService.addCandle(candleStickEvent);
+                    System.out.println(candleStickEvent.toString());
+                }
             });
         }
     }
 
-    private List<Product> findAllProductsToSubscribe() {
-        return productCollectionService.getProductsToTradeIn();
+    private List<Product> findAllProductsToSubscribe(int userId) {
+        return userService.getUserProducts(userId);
     }
 
     private BinanceApiWebSocketClient createClient() {
@@ -63,7 +68,11 @@ public class MarketService {
             ).newWebSocketClient();
     }
 
-    public void startToListen() {
-        this.subscribeCandlestickData();
+    public void startToListen(int userId) {
+        this.subscribeCandlestickData(userId);
+    }
+
+    public void stopToListen() {
+        isRunning = false;
     }
 }
