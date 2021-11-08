@@ -75,10 +75,6 @@ export const ProductTable = (props) => {
       });
   };
 
-  const handleTradeLogging = () => {
-    console.log(select);
-  };
-
   const handleGetProductsToTradeIn = () => {
     let token = jwt(localStorage.getItem("jwtToken"), { header: true });
     const userToGetProducts = {
@@ -110,24 +106,10 @@ export const ProductTable = (props) => {
       <div>
         <button
           onClick={() => {
-            handleLogParse();
-          }}
-        >
-          Log Token Parse
-        </button>
-        <button
-          onClick={() => {
             handleGetProductsToTradeIn();
           }}
         >
           Get Products
-        </button>
-        <button
-          onClick={() => {
-            handleTradeLogging();
-          }}
-        >
-          Log Products
         </button>
         <button
           onClick={() => {
