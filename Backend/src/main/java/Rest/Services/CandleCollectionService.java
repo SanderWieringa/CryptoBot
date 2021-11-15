@@ -18,6 +18,10 @@ public class CandleCollectionService {
         candleCollection.add(candlestickEvent);
     }
 
+    private List<CandlestickEvent> getCandles(CandlestickEvent candlestickEvent) {
+        return new ArrayList<>();
+    }
+
     private void checkCandles(CandlestickEvent candlestickEvent) {
         if (Float.parseFloat(candlestickEvent.getHigh()) > 61000.0 && !isOrderPlaced()) {
             setOrderPlaced(true);

@@ -14,12 +14,15 @@ import java.util.Locale;
 public class MarketService {
 
     @Autowired
+    private ClientCreatorService clientCreatorService;
+
+    @Autowired
     private UserService userService;
 
     @Autowired
     private CandleCollectionService candleCollectionService;
 
-    BinanceApiWebSocketClient client = createClient();
+    private final BinanceApiWebSocketClient client = clientCreatorService.createBinanceApiWebSocketClient();
 
     boolean isRunning = false;
 
@@ -59,14 +62,6 @@ public class MarketService {
 
     private List<Product> findAllProductsToSubscribe(int userId) {
         return userService.getUserProducts(userId);
-    }
-
-    private BinanceApiWebSocketClient createClient() {
-        return BinanceApiClientFactory
-            .newInstance(
-                "bNI0EhIhLvopBAR0DKLvjdl27SAZsjkpWpi1QBcNjlXGR3nA6pqQrTbaG27HUdQg",
-                "SxJ5xEXet7Ax9N67WandxrG4gKlPWtyEZh4ixJ0U55tVeY9sAS2nEuLLfO95iXGD"
-            ).newWebSocketClient();
     }
 
     public void startToListen(int userId) {

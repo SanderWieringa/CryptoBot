@@ -1,6 +1,7 @@
 package Rest.Controllers;
 
 import Rest.Entities.User;
+import Rest.Services.ClientCreatorService;
 import Rest.Services.MarketService;
 import Rest.Entities.Product;
 import Rest.Services.ProductCollectionService;
@@ -21,19 +22,17 @@ import java.util.List;
 @RequestMapping(value = "/binance")
 @RestController
 public class BinanceController {
-    BinanceApiClientFactory factory = BinanceApiClientFactory.newInstance(
-            "bNI0EhIhLvopBAR0DKLvjdl27SAZsjkpWpi1QBcNjlXGR3nA6pqQrTbaG27HUdQg",
-            "SxJ5xEXet7Ax9N67WandxrG4gKlPWtyEZh4ixJ0U55tVeY9sAS2nEuLLfO95iXGD",
-            true,
-            false
-    );
-    BinanceApiRestClient client = factory.newRestClient();
+
+    @Autowired
+    private ClientCreatorService clientCreatorService;
 
     @Autowired
     private MarketService marketService;
 
     @Autowired
     private UserService userService;
+
+    private final BinanceApiRestClient client = clientCreatorService.createBinanceApiRestClient();
 
     @GetMapping(value = "/ping")
     public void testConnection() {
