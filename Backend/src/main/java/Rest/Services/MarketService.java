@@ -24,7 +24,7 @@ public class MarketService {
 
     private final BinanceApiWebSocketClient client = clientCreatorService.createBinanceApiWebSocketClient();
 
-    boolean isRunning = false;
+    private boolean isRunning = false;
 
     private void subscribeCandlestickData(int userId) {
         isRunning = true;
