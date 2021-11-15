@@ -39,7 +39,7 @@ public class UserController {
         }  catch (Exception e) {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
-     }
+    }
 
     @PostMapping(value="/authenticate")
     public ResponseEntity<LoginResponse> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) {
@@ -87,5 +87,4 @@ public class UserController {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
     }
-
 }
