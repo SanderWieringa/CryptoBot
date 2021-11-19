@@ -1,65 +1,67 @@
-import * as React from 'react';
+import * as React from "react";
 
-import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import Link from '@material-ui/core/Link';
-import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
-import Typography from '@material-ui/core/Typography';
-import Container from '@material-ui/core/Container';
-import { createTheme, ThemeProvider } from '@material-ui/core/styles';
-import auth from './auth'
+import Avatar from "@material-ui/core/Avatar";
+import Button from "@material-ui/core/Button";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import TextField from "@material-ui/core/TextField";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Checkbox from "@material-ui/core/Checkbox";
+import Link from "@material-ui/core/Link";
+import Grid from "@material-ui/core/Grid";
+import Box from "@material-ui/core/Box";
+import Typography from "@material-ui/core/Typography";
+import Container from "@material-ui/core/Container";
+import { createTheme, ThemeProvider } from "@material-ui/core/styles";
+import auth from "./auth";
 
 function Copyright(props) {
   return (
     <Typography variant="body2" color="primary" align="center" {...props}>
-      {'Copyright © '}
+      {"Copyright © "}
       <Link color="inherit" href="https://material-ui.com/">
         Crypto Trading Bot
-      </Link>{' '}
+      </Link>{" "}
       {new Date().getFullYear()}
-      {'.'}
+      {"."}
     </Typography>
   );
 }
 
-
 const theme = createTheme();
 
 export const SignIn = (props) => {
-  localStorage.clear()
+  localStorage.clear();
   const handleSignInSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    
+
     const userToLogin = {
-      username: data.get('username'),
-      password: data.get('password'),
+      username: data.get("username"),
+      password: data.get("password"),
     };
 
     const requestOptions = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      mode: 'cors',
-      body: JSON.stringify(userToLogin)
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      mode: "cors",
+      body: JSON.stringify(userToLogin),
     };
 
-    fetch('http://localhost:3337/account/authenticate', requestOptions) 
-      .then(function(response){return response.json();})
-      .then(function(data) {
-        if(data.jwt) {
-          localStorage.setItem('jwtToken', data.jwt)
-            auth.login(() => {
-              props.history.push("/products")
-            })
-        }
-      }).catch(function(error) {
-          console.log(error)
+    fetch("http://localhost:3337/account/authenticate", requestOptions)
+      .then(function (response) {
+        return response.json();
       })
+      .then(function (data) {
+        if (data.jwt) {
+          localStorage.setItem("jwtToken", data.jwt);
+          auth.login(() => {
+            props.history.push("/products");
+          });
+        }
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   };
 
   return (
@@ -69,17 +71,21 @@ export const SignIn = (props) => {
         <Box
           sx={{
             marginTop: 8,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-          </Avatar>
+          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}></Avatar>
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
-          <Box component="form" onSubmit={handleSignInSubmit} noValidate sx={{ mt: 1 }}>
+          <Box
+            component="form"
+            onSubmit={handleSignInSubmit}
+            noValidate
+            sx={{ mt: 1 }}
+          >
             <TextField
               margin="normal"
               required
@@ -130,4 +136,4 @@ export const SignIn = (props) => {
       </Container>
     </ThemeProvider>
   );
-}
+};

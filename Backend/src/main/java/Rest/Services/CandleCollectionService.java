@@ -1,41 +1,73 @@
 package Rest.Services;
 
+import Rest.Entities.Product;
 import com.binance.api.client.BinanceApiRestClient;
 import com.binance.api.client.domain.market.Candlestick;
 import com.binance.api.client.domain.market.CandlestickInterval;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.binance.api.client.domain.event.CandlestickEvent;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 @Service
 public class CandleCollectionService {
-    //private HashMap<Integer, CandlestickEvent> candleCollection = new HashMap<>();
-    private final List<CandlestickEvent> candleCollection = new ArrayList<>();
 
-    @Autowired
-    private ClientCreatorService clientCreatorService;
+    private HashMap<Long, Candlestick> candlestickByCloseTime = new HashMap<>();
+
+    private ClientCreatorService clientCreatorService = new ClientCreatorService();
 
     private final BinanceApiRestClient client = clientCreatorService.createBinanceApiRestClient();
 
     private boolean orderPlaced;
 
-    public void addCandle(CandlestickEvent candlestickEvent) {
-        checkCandles(candlestickEvent);
-        candleCollection.add(candlestickEvent);
+    private Candlestick convertCandleStickEvent(CandlestickEvent candlestickEvent) {
+        Candlestick candlestick = new Candlestick();
+        candlestick.setOpenTime(candlestickEvent.getOpenTime());
+        candlestick.setOpen(candlestickEvent.getOpen());
+        candlestick.setHigh(candlestickEvent.getHigh());
+        candlestick.setLow(candlestickEvent.getLow());
+        candlestick.setClose(candlestickEvent.getClose());
+        candlestick.setVolume(candlestickEvent.getVolume());
+        candlestick.setCloseTime(candlestickEvent.getCloseTime());
+        candlestick.setQuoteAssetVolume(candlestickEvent.getQuoteAssetVolume());
+        candlestick.setNumberOfTrades(candlestickEvent.getNumberOfTrades());
+        candlestick.setTakerBuyBaseAssetVolume(candlestickEvent.getTakerBuyBaseAssetVolume());
+        candlestick.setTakerBuyQuoteAssetVolume(candlestickEvent.getTakerBuyQuoteAssetVolume());
+        return candlestick;
     }
 
-    private List<Candlestick> getCandles(CandlestickEvent candlestickEvent) {
-        return client.getCandlestickBars(candlestickEvent.getSymbol(), CandlestickInterval.ONE_MINUTE);
+    public void updateCandlesticks(List<Product> userCoins) {
+        for (Product product:userCoins) {
+            for (Candlestick candlestick:getCandles(product.getSymbol())) {
+                addCandlestick(candlestick);
+            }
+        }
+        System.out.println(candlestickByCloseTime);
     }
 
-    private void checkCandles(CandlestickEvent candlestickEvent) {
-        if (Float.parseFloat(candlestickEvent.getHigh()) > 61000.0 && !isOrderPlaced()) {
+    public void addCandlestick(Candlestick candlestick) {
+        candlestickByCloseTime.put(candlestick.getCloseTime(), candlestick);
+    }
+
+    public void addCandlestickEvent(CandlestickEvent candlestickEvent) {
+        Candlestick candlestick = convertCandleStickEvent(candlestickEvent);
+        checkCandles(candlestick);
+        candlestickByCloseTime.put(candlestick.getCloseTime(), candlestick);
+    }
+
+    private List<Candlestick> getCandles(String symbol) {
+        return client.getCandlestickBars(symbol, CandlestickInterval.ONE_MINUTE);
+    }
+
+    private void checkCandles(Candlestick candlestick) {
+        if (Float.parseFloat(candlestick.getHigh()) > 61000.0 && !isOrderPlaced()) {
             setOrderPlaced(true);
             System.out.println("PLACE ORDER");
         }
+    }
+
+    public HashMap<Long, Candlestick> getCandlestickByCloseTime() {
+        return candlestickByCloseTime;
     }
 
     public boolean isOrderPlaced() {

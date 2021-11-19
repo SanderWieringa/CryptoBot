@@ -1,20 +1,21 @@
 package Rest.Services;
 
 import Rest.Entities.Product;
-import com.binance.api.client.BinanceApiClientFactory;
 import com.binance.api.client.BinanceApiWebSocketClient;
 import com.binance.api.client.domain.event.CandlestickEvent;
+import com.binance.api.client.domain.market.Candlestick;
 import com.binance.api.client.domain.market.CandlestickInterval;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
 @Service
 public class MarketService {
 
-    @Autowired
-    private ClientCreatorService clientCreatorService;
+    private ClientCreatorService clientCreatorService = new ClientCreatorService();
 
     @Autowired
     private UserService userService;
@@ -24,9 +25,10 @@ public class MarketService {
 
     private final BinanceApiWebSocketClient client = clientCreatorService.createBinanceApiWebSocketClient();
 
-    private boolean isRunning = false;
+    private boolean isRunning;
 
     private void subscribeCandlestickData(int userId) {
+        candleCollectionService.updateCandlesticks(findAllProductsToSubscribe(userId));
         isRunning = true;
 
         for (Product product:findAllProductsToSubscribe(userId)) {
@@ -52,7 +54,7 @@ public class MarketService {
                     candleStickEvent.setTakerBuyBaseAssetVolume(response.getTakerBuyBaseAssetVolume());
                     candleStickEvent.setTakerBuyQuoteAssetVolume(response.getTakerBuyQuoteAssetVolume());
                     candleStickEvent.setBarFinal(response.getBarFinal());
-                    candleCollectionService.addCandle(candleStickEvent);
+                    candleCollectionService.addCandlestickEvent(candleStickEvent);
                     System.out.println(candleStickEvent.toString());
                 }
                 client.close();

@@ -1,18 +1,18 @@
 package Rest.Controllers;
 
 import Rest.Entities.User;
+import Rest.Responses.RegisterResponse;
 import Rest.Services.ClientCreatorService;
 import Rest.Services.MarketService;
 import Rest.Entities.Product;
-import Rest.Services.ProductCollectionService;
 import Rest.Services.UserService;
-import com.binance.api.client.BinanceApiClientFactory;
 import com.binance.api.client.domain.OrderSide;
 import com.binance.api.client.domain.OrderType;
 import com.binance.api.client.domain.TimeInForce;
 import com.binance.api.client.domain.account.*;
 import com.binance.api.client.domain.account.request.OrderRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.binance.api.client.BinanceApiRestClient;
 
@@ -23,8 +23,7 @@ import java.util.List;
 @RestController
 public class BinanceController {
 
-    @Autowired
-    private ClientCreatorService clientCreatorService;
+    private ClientCreatorService clientCreatorService = new ClientCreatorService();
 
     @Autowired
     private MarketService marketService;
