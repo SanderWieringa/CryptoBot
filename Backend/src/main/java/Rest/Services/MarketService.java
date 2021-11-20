@@ -54,7 +54,9 @@ public class MarketService {
                     candleStickEvent.setTakerBuyBaseAssetVolume(response.getTakerBuyBaseAssetVolume());
                     candleStickEvent.setTakerBuyQuoteAssetVolume(response.getTakerBuyQuoteAssetVolume());
                     candleStickEvent.setBarFinal(response.getBarFinal());
-                    candleCollectionService.addCandlestickEvent(candleStickEvent);
+                    if (candleStickEvent.getBarFinal()) {
+                        candleCollectionService.addCandlestickEvent(candleStickEvent);
+                    }
                     System.out.println(candleStickEvent.toString());
                 }
                 client.close();
