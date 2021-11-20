@@ -25,7 +25,7 @@ public class MarketService {
 
     private final BinanceApiWebSocketClient client = clientCreatorService.createBinanceApiWebSocketClient();
 
-    private boolean isRunning;
+    private boolean isRunning = false;
 
     private void subscribeCandlestickData(int userId) {
         candleCollectionService.updateCandlesticks(findAllProductsToSubscribe(userId));
@@ -58,8 +58,9 @@ public class MarketService {
                         candleCollectionService.addCandlestickEvent(candleStickEvent);
                     }
                     System.out.println(candleStickEvent.toString());
+                } else {
+                    client.close();
                 }
-                client.close();
             });
         }
     }

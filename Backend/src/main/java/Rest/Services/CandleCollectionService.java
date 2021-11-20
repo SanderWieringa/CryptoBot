@@ -6,13 +6,15 @@ import com.binance.api.client.domain.market.Candlestick;
 import com.binance.api.client.domain.market.CandlestickInterval;
 import org.springframework.stereotype.Service;
 import com.binance.api.client.domain.event.CandlestickEvent;
-import java.util.List;
-import java.util.TreeMap;
+
+import java.util.*;
 
 @Service
 public class CandleCollectionService {
 
-    private final int THIRTY_MINUTES = 1800;
+    private final Long THIRTY_MINUTES = 1800000L;
+
+    private final Long SEARCH_RANGE = 30000l;
 
     private TreeMap<Long, Candlestick> candlestickByCloseTime = new TreeMap<>();
 
@@ -52,7 +54,6 @@ public class CandleCollectionService {
     }
 
     public void addCandlestickEvent(CandlestickEvent candlestickEvent) {
-        System.out.println("candlestickByCloseTime: " + candlestickByCloseTime.get("1637421899999"));
         Candlestick candlestick = convertCandleStickEvent(candlestickEvent);
         checkCandles(candlestick);
         candlestickByCloseTime.put(candlestick.getCloseTime(), candlestick);
@@ -63,29 +64,27 @@ public class CandleCollectionService {
     }
 
     private Candlestick getOlderCandlestick(Candlestick candlestick) {
-        return candlestickByCloseTime.get(candlestick.getCloseTime() - THIRTY_MINUTES);
+        for (Long closeTime = candlestick.getCloseTime() - SEARCH_RANGE - THIRTY_MINUTES; closeTime < candlestick.getCloseTime() + SEARCH_RANGE; closeTime += 1000) {
+            if (candlestickByCloseTime.get(closeTime) != null) {
+                return candlestickByCloseTime.get(candlestick.getCloseTime());
+            }
+        }
+        return null;
     }
 
     private boolean checkForDrop(Candlestick currentCandlestick, Candlestick oldCandlestick) {
-        System.out.println("olderCandlestick: " + oldCandlestick.toString());
-        System.out.println("=====================================");
-        System.out.println("currentCandlestick: " + currentCandlestick.toString());
         double result = 100 - ((Float.parseFloat(currentCandlestick.getHigh()) / Float.parseFloat(oldCandlestick.getHigh())) * 100);
-        if (result > 0.45) {
+        if (result > 0.40) {
             return true;
         }
         return false;
     }
 
     private void checkCandles(Candlestick candlestick) {
-        if (checkForDrop(candlestick, getOlderCandlestick(candlestick)) && !isOrderPlaced()) {
+        if (checkForDrop(candlestick, getOlderCandlestick(candlestick)) && !isOrderPlaced() && getOlderCandlestick(candlestick) != null) {
             setOrderPlaced(true);
             System.out.println("PLACE ORDER");
         }
-//        if (Float.parseFloat(candlestick.getHigh()) > 61000.0 && !isOrderPlaced()) {
-//            setOrderPlaced(true);
-//            System.out.println("PLACE ORDER");
-//        }
     }
 
     public TreeMap<Long, Candlestick> getCandlestickByCloseTime() {
