@@ -1,6 +1,7 @@
 package Rest.Controllers;
 
 import Rest.Entities.User;
+import Rest.Responses.LoginResponse;
 import Rest.Responses.RegisterResponse;
 import Rest.Services.ClientCreatorService;
 import Rest.Services.MarketService;
@@ -10,12 +11,14 @@ import com.binance.api.client.domain.OrderSide;
 import com.binance.api.client.domain.OrderType;
 import com.binance.api.client.domain.TimeInForce;
 import com.binance.api.client.domain.account.*;
+import com.binance.api.client.domain.account.request.AllOrdersRequest;
 import com.binance.api.client.domain.account.request.OrderRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.binance.api.client.BinanceApiRestClient;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:3000")
@@ -49,6 +52,19 @@ public class BinanceController {
     @PostMapping(value = "/placeTestMarketOrder")
     public void placeTestMarketOrder() {
         client.newOrderTest(NewOrder.marketBuy("BTCUSDT", "100"));
+    }
+
+
+    @PostMapping(value = "/getUserOrders")
+    public ResponseEntity<List<List<Order>>> getAllOrders(@RequestBody User user) {
+        List<List<Order>> allOrders = new ArrayList<>();
+        for (Product product:userService.getUserProducts(user.getUserId())) {
+            List<Order> allProductOrders = client.getAllOrders(new AllOrdersRequest(product.getSymbol()));
+            System.out.println("allOrders: " + allProductOrders);
+            allOrders.add(allProductOrders);
+        }
+        System.out.println("allAllOrders: " + allOrders);
+        return ResponseEntity.ok(allOrders);
     }
 
     @GetMapping(value = "/getAllOpenOrders")

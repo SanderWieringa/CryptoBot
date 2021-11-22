@@ -71,6 +71,32 @@ export const ProductTable = (props) => {
       });
   };
 
+  const handleAllOrders = () => {
+    let token = jwt(localStorage.getItem("jwtToken"), { header: true });
+    const userToGetOrders = {
+      userId: token["user"].userId,
+      username: token["user"].username,
+      password: token["user"].password,
+      coinsToTradeIn: select,
+    };
+    const requestOptions = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      mode: "cors",
+      body: JSON.stringify(userToGetOrders),
+    };
+    fetch("http://localhost:3337/binance/getUserOrders", requestOptions)
+      .then(function (response) {
+        return response.json();
+      })
+      .then(function (data) {
+        console.log(data);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+
   const handleTradeSubmit = () => {
     let token = jwt(localStorage.getItem("jwtToken"), { header: true });
     const userToUpdate = {
@@ -127,6 +153,13 @@ export const ProductTable = (props) => {
   return (
     <div>
       <div>
+        <button
+          onClick={() => {
+            handleAllOrders();
+          }}
+        >
+          Get Orders
+        </button>
         <button
           onClick={() => {
             handleGetProductsToTradeIn();
