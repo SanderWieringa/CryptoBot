@@ -56,13 +56,23 @@ public class  UserCollectionService {
     }
 
     public User loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<User> userToConvert = userCollectionRepository.findByUsername((username));
+        return convertOptionalUser(userCollectionRepository.findByUsername(username));
+
+    }
+
+    public User getUserById(int userId) {
+        return convertOptionalUser(userCollectionRepository.findById(userId));
+
+    }
+
+    private User convertOptionalUser(Optional<User> userToConvert) {
         if (userToConvert.isPresent()) {
             return new User(
                     userToConvert.get().getUserId(),
                     userToConvert.get().getUsername(),
                     userToConvert.get().getPassword(),
-                    new ArrayList<>());
+                    userToConvert.get().getCoinsToTradeIn()
+            );
         }
 
         return null;

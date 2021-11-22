@@ -61,7 +61,16 @@ public class UserController {
         }
     }
 
-    @PutMapping(value = "setUserProducts")
+    @PostMapping(value = "/getUser")
+    public ResponseEntity<User> getUser(@RequestBody User user) {
+        try{
+            return ResponseEntity.ok(userCollectionService.getUserById(user.getUserId()));
+        } catch(Exception e) {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PutMapping(value = "/setUserProducts")
     public ResponseEntity<SetProductCollectionResponse> update(@RequestBody User user) {
         try {
             SetProductCollectionResponse setProductCollectionResponse = new SetProductCollectionResponse();

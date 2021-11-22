@@ -9,19 +9,16 @@ const columns = [
     field: "price",
     headerName: "Price",
     width: 150,
-    editable: true,
   },
   {
     field: "marketCap",
     headerName: "Market Cap",
     width: 150,
-    editable: true,
   },
   {
     field: "symbol",
     headerName: "Symbol",
     width: 150,
-    editable: true,
   },
 ];
 
@@ -46,6 +43,10 @@ export const ProductTable = (props) => {
       .catch(function (error) {
         console.log(error);
       });
+  };
+
+  const handleAccount = () => {
+    props.history.push("/products");
   };
 
   const handleSubscribe = () => {
@@ -153,6 +154,13 @@ export const ProductTable = (props) => {
   return (
     <div>
       <div>
+        <button
+          onClick={() => {
+            props.history.push("/account");
+          }}
+        >
+          Update Profile
+        </button>
         <button
           onClick={() => {
             handleAllOrders();
