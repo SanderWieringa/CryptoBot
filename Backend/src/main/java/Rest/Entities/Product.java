@@ -1,7 +1,9 @@
 package Rest.Entities;
 
+import com.binance.api.client.constant.BinanceApiConstants;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import javax.persistence.*;
 
@@ -31,6 +33,11 @@ public class Product {
 
     public Product() {
 
+    }
+
+    @Override
+    public String toString() {
+        return (new ToStringBuilder("id: " + this.id)).append("symbol: " + this.symbol).toString();
     }
 
     public String getSymbol() {

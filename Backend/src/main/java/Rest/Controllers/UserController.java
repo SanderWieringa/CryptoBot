@@ -70,6 +70,20 @@ public class UserController {
         }
     }
 
+    @PostMapping(value = "/removeUserProducts")
+    public ResponseEntity<GetProductCollectionResponse> removeUserProducts(@RequestBody User user) {
+        try {
+            GetProductCollectionResponse getProductCollectionResponse = new GetProductCollectionResponse();
+            List<Product> newCoins = userService.removeUserProducts(user);
+            getProductCollectionResponse.setSuccess(true);
+            getProductCollectionResponse.setProducts(newCoins);
+
+            return ResponseEntity.ok(getProductCollectionResponse);
+        } catch (Exception e) {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+    }
+
     @PutMapping(value = "/setUserProducts")
     public ResponseEntity<SetProductCollectionResponse> update(@RequestBody User user) {
         try {
