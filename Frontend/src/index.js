@@ -6,7 +6,7 @@ import { SignIn } from "./SignIn";
 import { SignUp } from "./SignUp";
 import { ProtectedRoute } from "./Protected.route";
 import { DataTable } from "./DataTable";
-import { ProductTable } from "./ProductTable";
+import { ProductTable } from "./Product.Table";
 import { Account } from "./Account";
 
 function App() {
