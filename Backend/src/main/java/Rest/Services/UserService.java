@@ -33,21 +33,33 @@ public class UserService {
 //    }
 
     private List<Product> checkMatch(List<Product> allProducts, List<Product> productsToDelete) {
-        List<Product> newProducts = new ArrayList<>();
-        Iterator<Product> productsToIterate = allProducts.iterator();
-        while (productsToIterate.hasNext()) {
-            Product productIter = productsToIterate.next();
+        List<Product> newProducts = allProducts;
+        for (int iterator = 0; iterator < allProducts.toArray().length; iterator++) {
             for (Product productToDelete : productsToDelete) {
-                System.out.println("product: " + productIter.toString());
-                System.out.println("productToDelete: " + productToDelete);
-                if (productIter.getSymbol().equals(productToDelete.getSymbol())) {
-                    productsToIterate.remove();
+                if (allProducts.get(iterator).getId() == productToDelete.getId()) {
+                    newProducts.remove(iterator);
                 }
             }
         }
 
-        productsToIterate.forEachRemaining(newProducts::add);
         return newProducts;
+
+
+//        List<Product> newProducts = new ArrayList<>();
+//        Iterator<Product> productsToIterate = allProducts.iterator();
+//        while (productsToIterate.hasNext()) {
+//            Product productIter = productsToIterate.next();
+//            for (Product productToDelete : productsToDelete) {
+//                System.out.println("product: " + productIter.toString());
+//                System.out.println("productToDelete: " + productToDelete);
+//                if (productIter.getSymbol().equals(productToDelete.getSymbol())) {
+//                    productsToIterate.remove();
+//                }
+//            }
+//        }
+//
+//        productsToIterate.forEachRemaining(newProducts::add);
+//        return newProducts;
     }
 
     public List<Product> removeUserProducts(User user) {
