@@ -2,6 +2,7 @@ package Rest.Controllers;
 
 import Rest.Entities.User;
 import Rest.Responses.LoginResponse;
+import Rest.Responses.OrderResponse;
 import Rest.Responses.RegisterResponse;
 import Rest.Services.ClientCreatorService;
 import Rest.Services.MarketService;
@@ -56,22 +57,35 @@ public class BinanceController {
 
 
     @PostMapping(value = "/getUserOrders")
-    public ResponseEntity<List<List<Order>>> getAllOrders(@RequestBody User user) {
+    public ResponseEntity<OrderResponse> getAllOrders(@RequestBody User user) {
         List<List<Order>> allOrders = new ArrayList<>();
-        for (Product product:userService.getUserProducts(user.getUserId())) {
+        OrderResponse orderResponse = new OrderResponse();
+        for (Product product : userService.getUserProducts(user.getUserId())) {
             List<Order> allProductOrders = client.getAllOrders(new AllOrdersRequest(product.getSymbol()));
             System.out.println("allOrders: " + allProductOrders);
             allOrders.add(allProductOrders);
         }
+
+        orderResponse.setSuccess(true);
+        orderResponse.setOrders(allOrders);
         System.out.println("allAllOrders: " + allOrders);
-        return ResponseEntity.ok(allOrders);
+        return ResponseEntity.ok(orderResponse);
     }
 
-    @GetMapping(value = "/getAllOpenOrders")
-    public List<Order> getAllOpenOrders() {
-        List<Order> openOrders = client.getOpenOrders(new OrderRequest("BTCUSDT"));
-        System.out.println(openOrders);
-        return openOrders;
+    @PostMapping(value = "/getAllOpenOrders")
+    public ResponseEntity<OrderResponse> getAllOpenOrders(@RequestBody User user) {
+        List<List<Order>> allOpenOrders = new ArrayList<>();
+        OrderResponse orderResponse = new OrderResponse();
+        for (Product product : userService.getUserProducts(user.getUserId())) {
+            List<Order> AllOpenOrders = client.getOpenOrders(new OrderRequest(product.getSymbol()));
+            System.out.println(AllOpenOrders);
+            allOpenOrders.add(AllOpenOrders);
+        }
+
+        orderResponse.setSuccess(true);
+        orderResponse.setOrders(allOpenOrders);
+        System.out.println("allAllOpenOrders: " + allOpenOrders);
+        return ResponseEntity.ok(orderResponse);
     }
 
     @PostMapping(value = "/placeMarketOrder")

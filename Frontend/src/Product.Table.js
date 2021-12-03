@@ -46,7 +46,7 @@ export const ProductTable = (props) => {
   };
 
   const handleAccount = () => {
-    props.history.push("/products");
+    props.history.push("/orders");
   };
 
   const handleSubscribe = () => {
@@ -163,10 +163,10 @@ export const ProductTable = (props) => {
         </button>
         <button
           onClick={() => {
-            handleAllOrders();
+            handleAccount();
           }}
         >
-          Get Orders
+          Account Orders
         </button>
         <button
           onClick={() => {
