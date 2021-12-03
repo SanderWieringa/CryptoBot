@@ -70,7 +70,6 @@ export const Account = (props) => {
     fetch("http://localhost:3337/account/removeUserProducts", requestOptions)
       .then((response) => response.json())
       .then((json) => setData(json))
-      .then(console.log("data: ", data))
       .catch(function (error) {
         console.log(error);
       });

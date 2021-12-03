@@ -28,10 +28,6 @@ public class UserService {
         userRepository.save(user);
     }
 
-//    private void removeProduct(List<Product> allProducts, Product productToRemove) {
-//        allProducts.remove(productToRemove);
-//    }
-
     private List<Product> checkMatch(List<Product> allProducts, List<Product> productsToDelete) {
         List<Product> newProducts = allProducts;
         for (int iterator = 0; iterator < allProducts.toArray().length; iterator++) {
@@ -43,23 +39,6 @@ public class UserService {
         }
 
         return newProducts;
-
-
-//        List<Product> newProducts = new ArrayList<>();
-//        Iterator<Product> productsToIterate = allProducts.iterator();
-//        while (productsToIterate.hasNext()) {
-//            Product productIter = productsToIterate.next();
-//            for (Product productToDelete : productsToDelete) {
-//                System.out.println("product: " + productIter.toString());
-//                System.out.println("productToDelete: " + productToDelete);
-//                if (productIter.getSymbol().equals(productToDelete.getSymbol())) {
-//                    productsToIterate.remove();
-//                }
-//            }
-//        }
-//
-//        productsToIterate.forEachRemaining(newProducts::add);
-//        return newProducts;
     }
 
     public List<Product> removeUserProducts(User user) {
