@@ -64,7 +64,6 @@ public class BinanceController {
         try {
             for (Product product : userService.getUserProducts(user.getUserId())) {
                 List<Order> allProductOrders = client.getAllOrders(new AllOrdersRequest(product.getSymbol()));
-                System.out.println("allOrders: " + allProductOrders);
                 allOrders.add(allProductOrders);
             }
         } catch(Exception e) {
@@ -73,7 +72,6 @@ public class BinanceController {
 
         orderResponse.setSuccess(true);
         orderResponse.setOrders(allOrders);
-        System.out.println("allAllOrders: " + allOrders);
 
         return ResponseEntity.ok(orderResponse);
     }
@@ -85,7 +83,6 @@ public class BinanceController {
         try {
             for (Product product : userService.getUserProducts(user.getUserId())) {
                 List<Order> AllOpenOrders = client.getOpenOrders(new OrderRequest(product.getSymbol()));
-                System.out.println(AllOpenOrders);
                 allOpenOrders.add(AllOpenOrders);
             }
         } catch(Exception e) {
@@ -94,7 +91,6 @@ public class BinanceController {
 
         orderResponse.setSuccess(true);
         orderResponse.setOrders(allOpenOrders);
-        System.out.println("allAllOpenOrders: " + allOpenOrders);
 
         return ResponseEntity.ok(orderResponse);
     }
