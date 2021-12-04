@@ -42,9 +42,16 @@ public class CandleCollectionService {
 
     public void updateCandlesticks(List<Product> userCoins) {
         for (Product product:userCoins) {
-            for (Candlestick candlestick:getCandles(product.getSymbol())) {
-                addCandlestick(candlestick);
+            System.out.println("Symbol: " + product.getSymbol());
+            try {
+                for (Candlestick candlestick:getCandles(product.getSymbol())) {
+                    System.out.println("CandleStick: " + candlestick.toString());
+                    addCandlestick(candlestick);
+                }
+            } catch (Exception e) {
+                System.out.println("Exception: " + e);
             }
+
         }
         System.out.println(candlestickByCloseTime);
     }

@@ -25,14 +25,16 @@ public class MarketService {
 
     private final BinanceApiWebSocketClient client = clientCreatorService.createBinanceApiWebSocketClient();
 
-    private boolean isRunning = false;
+    private boolean isRunning;
 
     private void subscribeCandlestickData(int userId) {
         candleCollectionService.updateCandlesticks(findAllProductsToSubscribe(userId));
         isRunning = true;
 
         for (Product product:findAllProductsToSubscribe(userId)) {
-            client.onCandlestickEvent(product.getSymbol().toLowerCase(Locale.ROOT), CandlestickInterval.ONE_MINUTE, response -> {
+            final String channel = String.format(product.getSymbol().toLowerCase());
+            System.out.println("channel: " + channel);
+            client.onCandlestickEvent(channel, CandlestickInterval.ONE_MINUTE, response -> {
 
                 if (isRunning){
                     CandlestickEvent candleStickEvent = new CandlestickEvent();
