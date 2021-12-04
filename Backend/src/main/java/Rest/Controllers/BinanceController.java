@@ -28,7 +28,7 @@ import java.util.List;
 @RestController
 public class BinanceController {
 
-    private ClientCreatorService clientCreatorService = new ClientCreatorService();
+    private final ClientCreatorService clientCreatorService = new ClientCreatorService();
 
     @Autowired
     private MarketService marketService;
@@ -68,7 +68,7 @@ public class BinanceController {
                 allOrders.add(allProductOrders);
             }
         } catch(Exception e) {
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
         orderResponse.setSuccess(true);
@@ -89,7 +89,7 @@ public class BinanceController {
                 allOpenOrders.add(AllOpenOrders);
             }
         } catch(Exception e) {
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
         orderResponse.setSuccess(true);
@@ -100,52 +100,85 @@ public class BinanceController {
     }
 
     @PostMapping(value = "/placeMarketOrder")
-    public String placeMarketOrder() {
+    public ResponseEntity<String> placeMarketOrder() {
         NewOrderResponse newOrderResponse = client
                 .newOrder(NewOrder
                         .marketBuy("BTCUSDT", "100")
                         .newOrderRespType(NewOrderResponseType.FULL));
-        List<Trade> fills = newOrderResponse.getFills();
-        System.out.println(newOrderResponse.getClientOrderId());
 
-        return newOrderResponse.getClientOrderId();
+        try {
+
+            List<Trade> fills = newOrderResponse.getFills();
+            System.out.println(newOrderResponse.getClientOrderId());
+        } catch(Exception e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        return ResponseEntity.ok(newOrderResponse.getClientOrderId());
     }
 
     @PostMapping(value = "/placeStopLossOrder")
-    public String placeStopLossOrder() {
+    public ResponseEntity<String> placeStopLossOrder() {
         NewOrder order = new NewOrder("BTCUSDT", OrderSide.BUY, OrderType.STOP_LOSS, TimeInForce.GTC, "0.003", "0.001");
-        client.newOrder(order.stopPrice("0.001"));
+        try {
+            client.newOrder(order.stopPrice("0.001"));
+        } catch(Exception e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
 
-        return order.getNewClientOrderId();
+        return ResponseEntity.ok(order.getNewClientOrderId());
     }
 
     @PostMapping(value = "/placeTakeProfitOrder")
-    public String placeTakeProfitOrder() {
+    public ResponseEntity<String> placeTakeProfitOrder() {
         NewOrder order = new NewOrder("BTCUSDT", OrderSide.BUY, OrderType.TAKE_PROFIT, TimeInForce.GTC, "0.003", "0.001");
-        client.newOrder(order.stopPrice("0.001"));
+        try {
+            client.newOrder(order.stopPrice("0.001"));
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
 
-        return order.getNewClientOrderId();
+        return ResponseEntity.ok(order.getNewClientOrderId());
     }
 
     @PostMapping(value = "/placeUserMarketOrders")
-    public void placeUserMarketOrders(@RequestBody User user) {
+    public ResponseEntity<Boolean> placeUserMarketOrders(@RequestBody User user) {
         List<Product> productsToTradeIn = userService.getUserProducts(user.getUserId());
-        for (Product product:productsToTradeIn) {
-            NewOrderResponse newOrderResponse = client
-                    .newOrder(NewOrder
-                            .marketBuy(product.getName(), "0.003")
-                            .newOrderRespType(NewOrderResponseType.FULL));
-            System.out.println(newOrderResponse.getClientOrderId());
+
+        try {
+            for (Product product : productsToTradeIn) {
+                NewOrderResponse newOrderResponse = client
+                        .newOrder(NewOrder
+                                .marketBuy(product.getName(), "0.003")
+                                .newOrderRespType(NewOrderResponseType.FULL));
+                System.out.println(newOrderResponse.getClientOrderId());
+            }
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
+
+        return ResponseEntity.ok(true);
     }
 
     @PostMapping(value = "/subscribe")
-    public void subscribeCandlestickData(@RequestBody User user) {
-        marketService.startToListen(user.getUserId());
+    public ResponseEntity<Boolean> subscribeCandlestickData(@RequestBody User user) {
+        try {
+            marketService.startToListen(user.getUserId());
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        return ResponseEntity.ok(true);
     }
 
     @GetMapping(value = "/unsubscribe")
-    public void unsubscribeCandlestickData() {
-        marketService.stopToListen();
+    public ResponseEntity<Boolean> unsubscribeCandlestickData() {
+        try {
+            marketService.stopToListen();
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        return ResponseEntity.ok(true);
     }
 }

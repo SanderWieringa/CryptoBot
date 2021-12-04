@@ -38,7 +38,7 @@ public class UserController {
 
             return ResponseEntity.ok(registerResponse);
         }  catch (Exception e) {
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -56,9 +56,9 @@ public class UserController {
 
             return ResponseEntity.ok(loginResponse);
         } catch (AccessDeniedException e) {
-            return new ResponseEntity(HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         } catch (Exception e) {
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -67,7 +67,7 @@ public class UserController {
         try{
             return ResponseEntity.ok(userCollectionService.getUserById(user.getUserId()));
         } catch(Exception e) {
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -81,7 +81,7 @@ public class UserController {
 
             return ResponseEntity.ok(getProductCollectionResponse);
         } catch (Exception e) {
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -94,7 +94,7 @@ public class UserController {
 
             return ResponseEntity.ok(setProductCollectionResponse);
         } catch (Exception e) {
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -108,7 +108,7 @@ public class UserController {
 
             return ResponseEntity.ok(getProductCollectionResponse);
         } catch (Exception e) {
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 }

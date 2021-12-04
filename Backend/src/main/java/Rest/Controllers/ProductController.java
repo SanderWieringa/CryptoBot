@@ -37,6 +37,7 @@ public class ProductController {
         try {
             GetProductCollectionResponse productResponse = new GetProductCollectionResponse();
             Response response = client.newCall(request).execute();
+            assert response.body() != null;
             JSONObject jsonObject = new JSONObject(response.body().string());
             JSONArray productList = jsonObject.getJSONArray("data");
             List<Product> products = new ArrayList<>();
@@ -48,31 +49,9 @@ public class ProductController {
 
             productResponse.setProducts(products);
             return ResponseEntity.ok(productResponse);
-        } catch (IOException e) {
-            System.out.println(e);
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        } catch (NumberFormatException e) {
-            System.out.println(e);
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
             System.out.println(e);
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-    }
-
-    @GetMapping(value = "/getAllProducts")
-    public String products() {
-        Request request = new Request.Builder()
-                .url("https://www.binance.com/exchange-api/v2/public/asset-service/product/get-products")
-                .build();
-
-        try {
-            Response response = client.newCall(request).execute();
-            return response.body().string();
-        } catch (IOException e) {
-            System.out.println(e);
-        }
-
-        return "Try again";
     }
 }
