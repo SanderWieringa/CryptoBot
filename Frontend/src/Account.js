@@ -7,15 +7,11 @@ export const Account = (props) => {
   const [select, setSelection] = useState([]);
   let token = jwt(localStorage.getItem("jwtToken"), { header: true });
   const userToGetProducts = {
-    userId: token["user"].userId,
-    username: token["user"].username,
-    password: token["user"].password,
+    userId: token.userId,
+    username: "",
+    password: "",
     coinsToTradeIn: [],
   };
-  const userColumns = [
-    { field: "username", headerName: "Username", width: 150, editable: true },
-    { field: "password", headerName: "Password", width: 150, editable: true },
-  ];
 
   const coinColumns = [
     { field: "fullName", headerName: "Coin", width: 150 },
@@ -54,9 +50,9 @@ export const Account = (props) => {
   const handleRemoveCoins = () => {
     let token = jwt(localStorage.getItem("jwtToken"), { header: true });
     const userToUpdate = {
-      userId: token["user"].userId,
-      username: token["user"].username,
-      password: token["user"].password,
+      userId: token.userId,
+      username: "",
+      password: "",
       coinsToTradeIn: select,
     };
     const requestOptions = {

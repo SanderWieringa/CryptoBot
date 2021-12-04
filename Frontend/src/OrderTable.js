@@ -6,9 +6,9 @@ export const OrderTable = (props) => {
   const [data, setData] = useState({ orders: [] });
   let token = jwt(localStorage.getItem("jwtToken"), { header: true });
   const userToGetOrders = {
-    userId: token["user"].userId,
-    username: token["user"].username,
-    password: token["user"].password,
+    userId: token.userId,
+    username: "",
+    password: "",
     coinsToTradeIn: [],
   };
 
@@ -52,10 +52,10 @@ export const OrderTable = (props) => {
   const handleGetOpenOrders = () => {
     let token = jwt(localStorage.getItem("jwtToken"), { header: true });
     const userToGetOpenOrders = {
-      userId: token["user"].userId,
-      username: token["user"].username,
-      password: token["user"].password,
-      coinsToTradeIn: token["user"].coinsToTradeIn,
+      userId: token.userId,
+      username: "",
+      password: "",
+      coinsToTradeIn: [],
     };
     const requestOptions = {
       method: "POST",
