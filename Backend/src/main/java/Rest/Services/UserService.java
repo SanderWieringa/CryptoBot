@@ -2,6 +2,7 @@ package Rest.Services;
 
 import Rest.Entities.Product;
 import Rest.Entities.User;
+import Rest.Repositories.IUserCollectionRepository;
 import Rest.Repositories.IUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,15 +18,19 @@ public class UserService {
     @Autowired
     private IUserRepository userRepository;
 
+    @Autowired
+    private UserCollectionService userCollectionService;
+
     public void update(User user) {
         List<Product> products = getUserProducts(user.getUserId());
-        for (Product product:user.getCoinsToTradeIn()) {
+        for (Product product : user.getCoinsToTradeIn()) {
             if (!products.contains(product)) {
                 products.add(product);
             }
         }
-        user.setCoinsToTradeIn(products);
-        userRepository.save(user);
+        User usetToSetCoins = userCollectionService.getUserById(user.getUserId());
+        usetToSetCoins.setCoinsToTradeIn(products);
+        userRepository.save(usetToSetCoins);
     }
 
     private List<Product> checkMatch(List<Product> allProducts, List<Product> productsToDelete) {

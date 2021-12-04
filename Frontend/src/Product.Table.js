@@ -101,11 +101,13 @@ export const ProductTable = (props) => {
   const handleTradeSubmit = () => {
     let token = jwt(localStorage.getItem("jwtToken"), { header: true });
     const userToUpdate = {
-      userId: token["user"].userId,
-      username: token["user"].username,
-      password: token["user"].password,
+      userId: token.userId,
+      username: "",
+      password: "",
       coinsToTradeIn: select,
     };
+    // const coinsToTradeIn = select;
+    // const userId = token.userId;
     const requestOptions = {
       method: "PUT",
       headers: { "Content-Type": "application/json" },

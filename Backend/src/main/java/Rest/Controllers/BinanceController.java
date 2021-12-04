@@ -15,6 +15,7 @@ import com.binance.api.client.domain.account.*;
 import com.binance.api.client.domain.account.request.AllOrdersRequest;
 import com.binance.api.client.domain.account.request.OrderRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.binance.api.client.BinanceApiRestClient;
@@ -60,15 +61,20 @@ public class BinanceController {
     public ResponseEntity<OrderResponse> getAllOrders(@RequestBody User user) {
         List<List<Order>> allOrders = new ArrayList<>();
         OrderResponse orderResponse = new OrderResponse();
-        for (Product product : userService.getUserProducts(user.getUserId())) {
-            List<Order> allProductOrders = client.getAllOrders(new AllOrdersRequest(product.getSymbol()));
-            System.out.println("allOrders: " + allProductOrders);
-            allOrders.add(allProductOrders);
+        try {
+            for (Product product : userService.getUserProducts(user.getUserId())) {
+                List<Order> allProductOrders = client.getAllOrders(new AllOrdersRequest(product.getSymbol()));
+                System.out.println("allOrders: " + allProductOrders);
+                allOrders.add(allProductOrders);
+            }
+        } catch(Exception e) {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
 
         orderResponse.setSuccess(true);
         orderResponse.setOrders(allOrders);
         System.out.println("allAllOrders: " + allOrders);
+
         return ResponseEntity.ok(orderResponse);
     }
 
@@ -76,15 +82,20 @@ public class BinanceController {
     public ResponseEntity<OrderResponse> getAllOpenOrders(@RequestBody User user) {
         List<List<Order>> allOpenOrders = new ArrayList<>();
         OrderResponse orderResponse = new OrderResponse();
-        for (Product product : userService.getUserProducts(user.getUserId())) {
-            List<Order> AllOpenOrders = client.getOpenOrders(new OrderRequest(product.getSymbol()));
-            System.out.println(AllOpenOrders);
-            allOpenOrders.add(AllOpenOrders);
+        try {
+            for (Product product : userService.getUserProducts(user.getUserId())) {
+                List<Order> AllOpenOrders = client.getOpenOrders(new OrderRequest(product.getSymbol()));
+                System.out.println(AllOpenOrders);
+                allOpenOrders.add(AllOpenOrders);
+            }
+        } catch(Exception e) {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
 
         orderResponse.setSuccess(true);
         orderResponse.setOrders(allOpenOrders);
         System.out.println("allAllOpenOrders: " + allOpenOrders);
+
         return ResponseEntity.ok(orderResponse);
     }
 

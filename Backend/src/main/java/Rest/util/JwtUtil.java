@@ -35,14 +35,14 @@ public class JwtUtil {
 
     public String generateToken(User user) {
         Map<String, Object> claims = new HashMap<>();
-        return createToken(claims, user);
+        return createToken(claims, user.getUserId());
     }
 
-    private String createToken(Map<String, Object> claims, User user) {
+    private String createToken(Map<String, Object> claims, int userId) {
         return Jwts
                 .builder()
                 .setClaims(claims)
-                .setHeaderParam("user", user)
+                .setHeaderParam("userId", userId)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10))
                 .signWith(SignatureAlgorithm.HS256, SECRET_KEY).compact();

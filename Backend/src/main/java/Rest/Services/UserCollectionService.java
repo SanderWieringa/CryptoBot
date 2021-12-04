@@ -62,7 +62,6 @@ public class  UserCollectionService {
 
     public User getUserById(int userId) {
         return convertOptionalUser(userCollectionRepository.findById(userId));
-
     }
 
     private User convertOptionalUser(Optional<User> userToConvert) {
