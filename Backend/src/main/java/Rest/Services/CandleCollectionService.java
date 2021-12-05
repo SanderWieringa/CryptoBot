@@ -50,6 +50,7 @@ public class CandleCollectionService {
                 }
             } catch (Exception e) {
                 System.out.println("Exception: " + e);
+
             }
 
         }

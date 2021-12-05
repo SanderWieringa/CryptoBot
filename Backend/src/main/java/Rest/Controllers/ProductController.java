@@ -30,28 +30,31 @@ public class ProductController {
 
     @GetMapping(value = "/list")
     public ResponseEntity<GetProductCollectionResponse> getAllProducts() {
+        GetProductCollectionResponse productResponse = new GetProductCollectionResponse();
+        List<Product> products = new ArrayList<>();
         Request request = new Request.Builder()
                 .url("https://www.binance.com/bapi/composite/v1/public/marketing/symbol/list")
                 .build();
 
         try {
-            GetProductCollectionResponse productResponse = new GetProductCollectionResponse();
             Response response = client.newCall(request).execute();
             assert response.body() != null;
             JSONObject jsonObject = new JSONObject(response.body().string());
             JSONArray productList = jsonObject.getJSONArray("data");
-            List<Product> products = new ArrayList<>();
             ObjectMapper objectMapper = new ObjectMapper();
+
             for (int i = 0; i < productList.length(); i++) {
                 Product product = objectMapper.readValue(productList.get(i).toString(), Product.class);
                 products.add(product);
             }
-
-            productResponse.setProducts(products);
-            return ResponseEntity.ok(productResponse);
         } catch (Exception e) {
             System.out.println(e);
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
+
+        productResponse.setSuccess(true);
+        productResponse.setProducts(products);
+
+        return ResponseEntity.ok(productResponse);
     }
 }
