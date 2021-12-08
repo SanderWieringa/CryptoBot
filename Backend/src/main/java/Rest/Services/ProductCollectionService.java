@@ -22,6 +22,12 @@ public class ProductCollectionService {
         }
     }
 
+    public void setBlackList(Product product) {
+        if (!productCollectionRepository.existsById(product.getId())) {
+            productCollectionRepository.save(product);
+        }
+    }
+
     public List<Product> getProductsToTradeIn() {
         List<Product> coinsToTradeIn = new ArrayList<>();
         productCollectionRepository.findAll().forEach(coinsToTradeIn::add);

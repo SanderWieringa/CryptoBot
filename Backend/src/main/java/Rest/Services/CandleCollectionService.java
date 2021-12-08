@@ -4,6 +4,7 @@ import Rest.Entities.Product;
 import com.binance.api.client.BinanceApiRestClient;
 import com.binance.api.client.domain.market.Candlestick;
 import com.binance.api.client.domain.market.CandlestickInterval;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.binance.api.client.domain.event.CandlestickEvent;
 
@@ -23,6 +24,9 @@ public class CandleCollectionService {
     private final BinanceApiRestClient client = clientCreatorService.createBinanceApiRestClient();
 
     private boolean orderPlaced;
+
+    @Autowired
+    private ProductCollectionService productCollectionService;
 
     private Candlestick convertCandleStickEvent(CandlestickEvent candlestickEvent) {
         Candlestick candlestick = new Candlestick();
@@ -50,9 +54,8 @@ public class CandleCollectionService {
                 }
             } catch (Exception e) {
                 System.out.println("Exception: " + e);
-
+                productCollectionService.setBlackList(product);
             }
-
         }
         System.out.println(candlestickByCloseTime);
     }
