@@ -32,6 +32,7 @@ public class ProductController {
     public ResponseEntity<GetProductCollectionResponse> getAllProducts() {
         GetProductCollectionResponse productResponse = new GetProductCollectionResponse();
         List<Product> products = new ArrayList<>();
+        List<Product> whitelist = productCollectionService.getWhitelist();
         Request request = new Request.Builder()
                 .url("https://www.binance.com/bapi/composite/v1/public/marketing/symbol/list")
                 .build();
@@ -44,8 +45,17 @@ public class ProductController {
             ObjectMapper objectMapper = new ObjectMapper();
 
             for (int i = 0; i < productList.length(); i++) {
-                Product product = objectMapper.readValue(productList.get(i).toString(), Product.class);
-                products.add(product);
+                for (int y = -1; y <= whitelist.size(); y++) {
+                    String symbolToCheck = productList.getJSONObject(i).getString("symbol");
+                    if (whitelist.size() == 0) {
+                        Product product = objectMapper.readValue(productList.get(i).toString(), Product.class);
+                        products.add(product);
+                    }
+                    else if(whitelist.get(y).getSymbol().equals(symbolToCheck)) {
+                        Product product = objectMapper.readValue(productList.get(i).toString(), Product.class);
+                        products.add(product);
+                    }
+                }
             }
         } catch (Exception e) {
             System.out.println(e);

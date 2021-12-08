@@ -18,19 +18,22 @@ public class ProductCollectionService {
             if (!productCollectionRepository.existsById(product.getId())) {
                 productCollectionRepository.save(product);
             }
-            continue;
         }
     }
 
-    public void setBlackList(Product product) {
+    public void removeFromWhiteList(Product product) {
+        if (productCollectionRepository.existsById(product.getId())) {
+            productCollectionRepository.delete(product);
+        }
+    }
+
+    public void setWhitelist(Product product) {
         if (!productCollectionRepository.existsById(product.getId())) {
             productCollectionRepository.save(product);
         }
     }
 
-    public List<Product> getProductsToTradeIn() {
-        List<Product> coinsToTradeIn = new ArrayList<>();
-        productCollectionRepository.findAll().forEach(coinsToTradeIn::add);
-        return coinsToTradeIn;
+    public List<Product> getWhitelist() {
+        return new ArrayList<>(productCollectionRepository.findAll());
     }
 }

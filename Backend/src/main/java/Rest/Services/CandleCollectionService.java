@@ -54,7 +54,7 @@ public class CandleCollectionService {
                 }
             } catch (Exception e) {
                 System.out.println("Exception: " + e);
-                productCollectionService.setBlackList(product);
+                productCollectionService.removeFromWhiteList(product);
             }
         }
         System.out.println(candlestickByCloseTime);
@@ -75,7 +75,7 @@ public class CandleCollectionService {
     }
 
     private Candlestick getOlderCandlestick(Candlestick candlestick) {
-        for (Long closeTime = candlestick.getCloseTime() - SEARCH_RANGE - THIRTY_MINUTES; closeTime < candlestick.getCloseTime() + SEARCH_RANGE; closeTime += 1000) {
+        for (long closeTime = candlestick.getCloseTime() - SEARCH_RANGE - THIRTY_MINUTES; closeTime < candlestick.getCloseTime() + SEARCH_RANGE; closeTime += 1000) {
             if (candlestickByCloseTime.get(closeTime) != null) {
                 return candlestickByCloseTime.get(candlestick.getCloseTime());
             }
