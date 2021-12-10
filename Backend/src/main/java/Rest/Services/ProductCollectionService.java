@@ -21,19 +21,7 @@ public class ProductCollectionService {
         }
     }
 
-    public void removeFromWhiteList(Product product) {
-        if (productCollectionRepository.existsById(product.getId())) {
-            productCollectionRepository.delete(product);
-        }
-    }
-
-    public void setWhitelist(Product product) {
-        if (!productCollectionRepository.existsById(product.getId())) {
-            productCollectionRepository.save(product);
-        }
-    }
-
-    public List<Product> getWhitelist() {
+    public List<Product> getProductCollection() {
         return new ArrayList<>(productCollectionRepository.findAll());
     }
 }

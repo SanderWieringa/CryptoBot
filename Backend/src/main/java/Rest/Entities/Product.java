@@ -15,12 +15,16 @@ public class Product {
     @Id
     private int id;
     @JsonProperty("fullName")
+    @Column(nullable=false)
     private String name;
     @JsonProperty("price")
+    @Column(nullable=false)
     private float price;
     @JsonProperty("marketCap")
+    @Column
     private long marketCap;
     @JsonProperty("symbol")
+    @Column(nullable=false)
     private String symbol;
 
     public Product(int id, String name, float price, long marketCap, String symbol) {

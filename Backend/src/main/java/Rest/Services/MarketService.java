@@ -28,12 +28,10 @@ public class MarketService {
     private boolean isRunning;
 
     private void subscribeCandlestickData(int userId) {
-        candleCollectionService.updateCandlesticks(findAllProductsToSubscribe(userId));
         isRunning = true;
 
         for (Product product:findAllProductsToSubscribe(userId)) {
             final String channel = String.format(product.getSymbol().toLowerCase());
-            System.out.println("channel: " + channel);
             client.onCandlestickEvent(channel, CandlestickInterval.ONE_MINUTE, response -> {
 
                 if (isRunning){

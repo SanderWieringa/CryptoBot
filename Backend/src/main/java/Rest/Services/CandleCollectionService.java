@@ -25,9 +25,6 @@ public class CandleCollectionService {
 
     private boolean orderPlaced;
 
-    @Autowired
-    private ProductCollectionService productCollectionService;
-
     private Candlestick convertCandleStickEvent(CandlestickEvent candlestickEvent) {
         Candlestick candlestick = new Candlestick();
         candlestick.setOpenTime(candlestickEvent.getOpenTime());
@@ -44,34 +41,10 @@ public class CandleCollectionService {
         return candlestick;
     }
 
-    public void updateCandlesticks(List<Product> userCoins) {
-        for (Product product:userCoins) {
-            System.out.println("Symbol: " + product.getSymbol());
-            try {
-                for (Candlestick candlestick:getCandles(product.getSymbol())) {
-                    System.out.println("CandleStick: " + candlestick.toString());
-                    addCandlestick(candlestick);
-                }
-            } catch (Exception e) {
-                System.out.println("Exception: " + e);
-                productCollectionService.removeFromWhiteList(product);
-            }
-        }
-        System.out.println(candlestickByCloseTime);
-    }
-
-    public void addCandlestick(Candlestick candlestick) {
-        candlestickByCloseTime.put(candlestick.getCloseTime(), candlestick);
-    }
-
     public void addCandlestickEvent(CandlestickEvent candlestickEvent) {
         Candlestick candlestick = convertCandleStickEvent(candlestickEvent);
         checkCandles(candlestick);
         candlestickByCloseTime.put(candlestick.getCloseTime(), candlestick);
-    }
-
-    private List<Candlestick> getCandles(String symbol) {
-        return client.getCandlestickBars(symbol, CandlestickInterval.ONE_MINUTE);
     }
 
     private Candlestick getOlderCandlestick(Candlestick candlestick) {
