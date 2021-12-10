@@ -1,13 +1,8 @@
 package Rest.Services;
 
-import Rest.Entities.Product;
-import com.binance.api.client.BinanceApiRestClient;
 import com.binance.api.client.domain.market.Candlestick;
-import com.binance.api.client.domain.market.CandlestickInterval;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.binance.api.client.domain.event.CandlestickEvent;
-
 import java.util.*;
 
 @Service
@@ -15,13 +10,9 @@ public class CandleCollectionService {
 
     private final Long THIRTY_MINUTES = 1800000L;
 
-    private final Long SEARCH_RANGE = 30000l;
+    private final Long SEARCH_RANGE = 30000L;
 
-    private TreeMap<Long, Candlestick> candlestickByCloseTime = new TreeMap<>();
-
-    private ClientCreatorService clientCreatorService = new ClientCreatorService();
-
-    private final BinanceApiRestClient client = clientCreatorService.createBinanceApiRestClient();
+    private final TreeMap<Long, Candlestick> candlestickByCloseTime = new TreeMap<>();
 
     private boolean orderPlaced;
 
@@ -58,21 +49,14 @@ public class CandleCollectionService {
 
     private boolean checkForDrop(Candlestick currentCandlestick, Candlestick oldCandlestick) {
         double result = 100 - ((Float.parseFloat(currentCandlestick.getHigh()) / Float.parseFloat(oldCandlestick.getHigh())) * 100);
-        if (result > 0.40) {
-            return true;
-        }
-        return false;
+        return result > 0.40;
     }
 
     private void checkCandles(Candlestick candlestick) {
-        if (checkForDrop(candlestick, getOlderCandlestick(candlestick)) && !isOrderPlaced() && getOlderCandlestick(candlestick) != null) {
+        if (checkForDrop(candlestick, Objects.requireNonNull(getOlderCandlestick(candlestick))) && !isOrderPlaced() && getOlderCandlestick(candlestick) != null) {
             setOrderPlaced(true);
             System.out.println("PLACE ORDER");
         }
-    }
-
-    public TreeMap<Long, Candlestick> getCandlestickByCloseTime() {
-        return candlestickByCloseTime;
     }
 
     public boolean isOrderPlaced() {

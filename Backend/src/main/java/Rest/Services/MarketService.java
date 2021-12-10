@@ -3,19 +3,15 @@ package Rest.Services;
 import Rest.Entities.Product;
 import com.binance.api.client.BinanceApiWebSocketClient;
 import com.binance.api.client.domain.event.CandlestickEvent;
-import com.binance.api.client.domain.market.Candlestick;
 import com.binance.api.client.domain.market.CandlestickInterval;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 
 @Service
 public class MarketService {
 
-    private ClientCreatorService clientCreatorService = new ClientCreatorService();
+    private final ClientCreatorService clientCreatorService = new ClientCreatorService();
 
     @Autowired
     private UserService userService;
@@ -31,7 +27,7 @@ public class MarketService {
         isRunning = true;
 
         for (Product product:findAllProductsToSubscribe(userId)) {
-            final String channel = String.format(product.getSymbol().toLowerCase());
+            final String channel = product.getSymbol().toLowerCase();
             client.onCandlestickEvent(channel, CandlestickInterval.ONE_MINUTE, response -> {
 
                 if (isRunning){

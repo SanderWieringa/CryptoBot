@@ -30,13 +30,13 @@ public class BinanceController {
 
     private final ClientCreatorService clientCreatorService = new ClientCreatorService();
 
+    private final BinanceApiRestClient client = clientCreatorService.createBinanceApiRestClient();
+
     @Autowired
     private MarketService marketService;
 
     @Autowired
     private UserService userService;
-
-    private final BinanceApiRestClient client = clientCreatorService.createBinanceApiRestClient();
 
     @GetMapping(value = "/ping")
     public void testConnection() {

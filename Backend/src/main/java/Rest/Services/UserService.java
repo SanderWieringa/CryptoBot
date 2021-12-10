@@ -2,14 +2,9 @@ package Rest.Services;
 
 import Rest.Entities.Product;
 import Rest.Entities.User;
-import Rest.Repositories.IUserCollectionRepository;
 import Rest.Repositories.IUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 
 @Service
@@ -34,16 +29,15 @@ public class UserService {
     }
 
     private List<Product> checkMatch(List<Product> allProducts, List<Product> productsToDelete) {
-        List<Product> newProducts = allProducts;
         for (int iterator = 0; iterator < allProducts.toArray().length; iterator++) {
             for (Product productToDelete : productsToDelete) {
                 if (allProducts.get(iterator).getId() == productToDelete.getId()) {
-                    newProducts.remove(iterator);
+                    allProducts.remove(iterator);
                 }
             }
         }
 
-        return newProducts;
+        return allProducts;
     }
 
     public List<Product> removeUserProducts(User user) {

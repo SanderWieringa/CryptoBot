@@ -8,9 +8,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class ClientCreatorService {
 
-    private String apiKey = "bNI0EhIhLvopBAR0DKLvjdl27SAZsjkpWpi1QBcNjlXGR3nA6pqQrTbaG27HUdQg";
+    private final String apiKey = "bNI0EhIhLvopBAR0DKLvjdl27SAZsjkpWpi1QBcNjlXGR3nA6pqQrTbaG27HUdQg";
 
-    private String secret = "SxJ5xEXet7Ax9N67WandxrG4gKlPWtyEZh4ixJ0U55tVeY9sAS2nEuLLfO95iXGD";
+    private final String secret = "SxJ5xEXet7Ax9N67WandxrG4gKlPWtyEZh4ixJ0U55tVeY9sAS2nEuLLfO95iXGD";
 
     public BinanceApiWebSocketClient createBinanceApiWebSocketClient() {
         return BinanceApiClientFactory
