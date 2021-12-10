@@ -27,7 +27,7 @@ export const ProductTable = (props) => {
   const [select, setSelection] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:3337/products/list")
+    fetch("http://localhost:3337/binance/list")
       .then((response) => response.json())
       .then((json) => setData(json))
       .catch(function (error) {

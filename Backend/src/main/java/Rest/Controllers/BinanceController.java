@@ -1,6 +1,7 @@
 package Rest.Controllers;
 
 import Rest.Entities.User;
+import Rest.Responses.GetProductCollectionResponse;
 import Rest.Responses.LoginResponse;
 import Rest.Responses.OrderResponse;
 import Rest.Responses.RegisterResponse;
@@ -14,6 +15,12 @@ import com.binance.api.client.domain.TimeInForce;
 import com.binance.api.client.domain.account.*;
 import com.binance.api.client.domain.account.request.AllOrdersRequest;
 import com.binance.api.client.domain.account.request.OrderRequest;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,6 +35,8 @@ import java.util.List;
 @RestController
 public class BinanceController {
 
+    OkHttpClient httpClient = new OkHttpClient();
+
     private final ClientCreatorService clientCreatorService = new ClientCreatorService();
 
     private final BinanceApiRestClient client = clientCreatorService.createBinanceApiRestClient();
@@ -37,6 +46,36 @@ public class BinanceController {
 
     @Autowired
     private UserService userService;
+
+    @GetMapping(value = "/list")
+    public ResponseEntity<GetProductCollectionResponse> getAllProducts() {
+        GetProductCollectionResponse productResponse = new GetProductCollectionResponse();
+        List<Product> products = new ArrayList<>();
+        Request request = new Request.Builder()
+                .url("https://www.binance.com/bapi/composite/v1/public/marketing/symbol/list")
+                .build();
+
+        try {
+            Response response = httpClient.newCall(request).execute();
+            assert response.body() != null;
+            JSONObject jsonObject = new JSONObject(response.body().string());
+            JSONArray productList = jsonObject.getJSONArray("data");
+            ObjectMapper objectMapper = new ObjectMapper();
+
+            for (int i = 0; i < productList.length(); i++) {
+                Product product = objectMapper.readValue(productList.get(i).toString(), Product.class);
+                products.add(product);
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        productResponse.setSuccess(true);
+        productResponse.setProducts(products);
+
+        return ResponseEntity.ok(productResponse);
+    }
 
     @GetMapping(value = "/ping")
     public void testConnection() {

@@ -60,7 +60,6 @@ export const SignIn = (props) => {
         return response.json();
       })
       .then(function (data) {
-        console.log(data);
         if (data.jwt) {
           localStorage.setItem("jwtToken", data.jwt);
           auth.login(() => {
