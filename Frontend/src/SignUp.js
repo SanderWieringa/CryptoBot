@@ -1,24 +1,24 @@
-import React from "react";
-import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import TextField from '@material-ui/core/TextField';
-import Link from '@material-ui/core/Link';
-import Box from '@material-ui/core/Box';
-import Typography from '@material-ui/core/Typography';
-import Container from '@material-ui/core/Container';
-import { createTheme, ThemeProvider } from '@material-ui/core/styles';
-import auth from './auth'
+import React, { useState } from "react";
+import Avatar from "@material-ui/core/Avatar";
+import Button from "@material-ui/core/Button";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import TextField from "@material-ui/core/TextField";
+import Link from "@material-ui/core/Link";
+import Box from "@material-ui/core/Box";
+import Typography from "@material-ui/core/Typography";
+import Container from "@material-ui/core/Container";
+import { createTheme, ThemeProvider } from "@material-ui/core/styles";
+import auth from "./auth";
 
 function Copyright(props) {
   return (
     <Typography variant="body2" color="primary" align="center" {...props}>
-      {'Copyright © '}
+      {"Copyright © "}
       <Link color="inherit" href="https://material-ui.com/">
         Crypto Trading Bot
-      </Link>{' '}
+      </Link>{" "}
       {new Date().getFullYear()}
-      {'.'}
+      {"."}
     </Typography>
   );
 }
@@ -31,29 +31,39 @@ export const SignUp = (props) => {
     const data = new FormData(event.currentTarget);
 
     const newUser = {
-      username: data.get('username'),
-      password: data.get('password'),
+      username: data.get("username"),
+      password: data.get("password"),
     };
-   
-    const requestOptions = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      mode: 'cors',
-      body: JSON.stringify(newUser)
-    };
-    
 
-    fetch('http://localhost:3337/account/register', requestOptions) 
-    .then(function(response){return response.json();})
-      .then(function(data) {
-          if (data.success) {
-            auth.register(() => {
-              props.history.push("/")
-            })
-          }
-      }).catch(function(error) {
-          console.log(error)
+    if (!newUser.username.trim()) {
+      alert("Please Enter Name");
+      return;
+    } else if (!newUser.password.trim()) {
+      alert("Please Enter Password");
+      return;
+    }
+
+    const requestOptions = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      mode: "cors",
+      body: JSON.stringify(newUser),
+    };
+
+    fetch("http://localhost:3337/account/register", requestOptions)
+      .then(function (response) {
+        return response.json();
       })
+      .then(function (data) {
+        if (data.success) {
+          auth.register(() => {
+            props.history.push("/");
+          });
+        }
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   };
 
   return (
@@ -63,17 +73,21 @@ export const SignUp = (props) => {
         <Box
           sx={{
             marginTop: 8,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-          </Avatar>
+          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}></Avatar>
           <Typography component="h1" variant="h5">
             Sign up
           </Typography>
-          <Box component="form" onSubmit={handleSignUpSubmit} noValidate sx={{ mt: 1 }}>
+          <Box
+            component="form"
+            onSubmit={handleSignUpSubmit}
+            noValidate
+            sx={{ mt: 1 }}
+          >
             <TextField
               margin="normal"
               required
@@ -108,4 +122,4 @@ export const SignUp = (props) => {
       </Container>
     </ThemeProvider>
   );
-}
+};
