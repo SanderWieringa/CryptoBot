@@ -40,6 +40,14 @@ export const SignIn = (props) => {
       password: data.get("password"),
     };
 
+    if (!userToLogin.username.trim()) {
+      alert("Please Enter Name");
+      return;
+    } else if (!userToLogin.password.trim()) {
+      alert("Please Enter Password");
+      return;
+    }
+
     const requestOptions = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -52,6 +60,7 @@ export const SignIn = (props) => {
         return response.json();
       })
       .then(function (data) {
+        console.log(data);
         if (data.jwt) {
           localStorage.setItem("jwtToken", data.jwt);
           auth.login(() => {
@@ -60,6 +69,7 @@ export const SignIn = (props) => {
         }
       })
       .catch(function (error) {
+        alert("Incorrect Credentials");
         console.log(error);
       });
   };
