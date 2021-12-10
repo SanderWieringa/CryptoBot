@@ -25,9 +25,6 @@ import java.util.List;
 public class ProductController {
     OkHttpClient client = new OkHttpClient();
 
-    @Autowired
-    private ProductCollectionService productCollectionService;
-
     @GetMapping(value = "/list")
     public ResponseEntity<GetProductCollectionResponse> getAllProducts() {
         GetProductCollectionResponse productResponse = new GetProductCollectionResponse();
