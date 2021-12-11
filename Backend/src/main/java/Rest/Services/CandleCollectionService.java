@@ -7,11 +7,6 @@ import java.util.*;
 
 @Service
 public class CandleCollectionService {
-
-    private final Long THIRTY_MINUTES = 1800000L;
-
-    private final Long SEARCH_RANGE = 30000L;
-
     private final TreeMap<Long, Candlestick> candlestickByCloseTime = new TreeMap<>();
 
     private boolean orderPlaced;
@@ -39,7 +34,11 @@ public class CandleCollectionService {
     }
 
     private Candlestick getOlderCandlestick(Candlestick candlestick) {
-        for (long closeTime = candlestick.getCloseTime() - SEARCH_RANGE - THIRTY_MINUTES; closeTime < candlestick.getCloseTime() + SEARCH_RANGE; closeTime += 1000) {
+        long THIRTY_MINUTES = 1800000L;
+        long SEARCH_RANGE = 30000L;
+        long closeTime = candlestick.getCloseTime() - SEARCH_RANGE - THIRTY_MINUTES;
+
+        for (long olderCloseTime = closeTime; olderCloseTime < candlestick.getCloseTime() + SEARCH_RANGE; closeTime += 1000) {
             if (candlestickByCloseTime.get(closeTime) != null) {
                 return candlestickByCloseTime.get(candlestick.getCloseTime());
             }
