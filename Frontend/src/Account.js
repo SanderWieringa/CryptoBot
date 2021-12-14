@@ -41,6 +41,7 @@ export const Account = (props) => {
     };
     fetch("http://localhost:3337/account/getUserProducts", requestOptions)
       .then((response) => response.json())
+      // .then((json) => console.log("json: ", json))
       .then((json) => setData(json))
       .catch(function (error) {
         console.log(error);

@@ -1,11 +1,16 @@
 package Rest.Services;
 
 import Rest.Entities.Product;
+import com.binance.api.client.BinanceApiCallback;
 import com.binance.api.client.BinanceApiWebSocketClient;
 import com.binance.api.client.domain.event.CandlestickEvent;
 import com.binance.api.client.domain.market.CandlestickInterval;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.io.Closeable;
+import java.io.IOException;
 import java.util.List;
 
 @Service
@@ -23,12 +28,14 @@ public class MarketService {
 
     private boolean isRunning;
 
+    private Closeable socket;
+
     private void subscribeCandlestickData(int userId) {
         isRunning = true;
 
         for (Product product:findAllProductsToSubscribe(userId)) {
             final String channel = product.getSymbol().toLowerCase();
-            client.onCandlestickEvent(channel, CandlestickInterval.ONE_MINUTE, response -> {
+            socket = client.onCandlestickEvent(channel, CandlestickInterval.ONE_MINUTE, response -> {
 
                 if (isRunning){
                     CandlestickEvent candleStickEvent = new CandlestickEvent();
@@ -55,7 +62,11 @@ public class MarketService {
                     }
                     System.out.println(candleStickEvent.toString());
                 } else {
-                    client.close();
+                    try {
+                        socket.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             });
         }
