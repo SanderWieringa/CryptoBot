@@ -102,13 +102,14 @@ export const InteractiveOrderTable = (props) => {
 
     if (message.type === "CONNECT") {
       console.log("here3");
+      console.log("message: ", message);
       messageElement.classList.add("event-message");
     } else if (message.type === "DISCONNECT") {
       messageElement.classList.add("event-message");
       message.content = message.sender + " left!";
     } else {
       messageElement.classList.add("chat-message");
-
+      console.log("message: ", message);
       const avatarContainer = document.createElement("div");
       avatarContainer.className = "img_cont_msg";
       const avatarElement = document.createElement("div");
