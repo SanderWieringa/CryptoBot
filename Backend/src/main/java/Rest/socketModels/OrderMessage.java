@@ -13,7 +13,7 @@ public class OrderMessage {
     @Setter
     private String content;
     @Getter
-    private String sender;
+    private int sender;
 
 
 }

@@ -29,11 +29,11 @@ public class WebSocketEventListener {
     public void handleWebSocketDisconnectListener(final SessionDisconnectEvent event){
         final StompHeaderAccessor headerAccessor = StompHeaderAccessor.wrap(event.getMessage());
 
-        final String username = (String) headerAccessor.getSessionAttributes().get("username");
+        final int userId = (int) headerAccessor.getSessionAttributes().get("userId");
 
         final OrderMessage chatMessage = OrderMessage.builder()
                 .type(MessageType.DISCONNECT)
-                .sender(username)
+                .sender(userId)
                 .build();
 
         sendingOperations.convertAndSend("/topic/public", chatMessage);
