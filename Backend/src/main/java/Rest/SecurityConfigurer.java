@@ -50,6 +50,7 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter
                 .antMatchers("/binance/getAllOpenOrders").permitAll()
                 .antMatchers("/binance/getCandlestickByCloseTime").permitAll()
                 .antMatchers("/binance/getUserOrders").permitAll()
+                .antMatchers("/binance/hello").permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()
