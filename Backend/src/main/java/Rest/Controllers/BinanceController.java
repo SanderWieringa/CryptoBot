@@ -184,7 +184,7 @@ public class BinanceController {
             for (Product product : productsToTradeIn) {
                 NewOrderResponse newOrderResponse = client
                         .newOrder(NewOrder
-                                .marketBuy(product.getName(), "0.003")
+                                .marketBuy(product.getSymbol(), "0.003")
                                 .newOrderRespType(NewOrderResponseType.FULL));
                 System.out.println(newOrderResponse.getClientOrderId());
             }

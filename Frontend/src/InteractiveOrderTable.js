@@ -109,6 +109,7 @@ export const InteractiveOrderTable = (props) => {
       message.content = message.sender + " left!";
     } else {
       messageElement.classList.add("chat-message");
+      console.log("herenew: ");
       console.log("message: ", message);
       const avatarContainer = document.createElement("div");
       avatarContainer.className = "img_cont_msg";
