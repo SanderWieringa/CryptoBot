@@ -13,13 +13,37 @@ export const OrderTable = (props) => {
   };
 
   const fillData = (json) => {
-    const values = Object.values(json.orders);
+    // const values = Object.values(json.orders);
+    // console.log("values: ", values);
 
-    for (let index = 0; index < values.length; index++) {
-      const element = values[index];
-      console.log("element: ", element);
+    for (let index = 0; index < json.orders.length; index++) {
+      const element = json.orders[index];
       setData(element);
+      console.log("element: ", element);
     }
+
+    // for (let index = 0; index < json.orders.length; index++) {
+    //   // const element = json.orders[index];
+    //   // console.log("element: ", element);
+    //   for (
+    //     let secondIndex = 0;
+    //     secondIndex < json.orders[0].length;
+    //     secondIndex++
+    //   ) {
+    //     console.log("item: ", json.orders[index][secondIndex]);
+    //     setData(json.orders[index][secondIndex]);
+    //     // const elementItem = element[secondIndex];
+    //     // setData(element[secondIndex]);
+    //     // console.log("element[]: ", elementItem);
+    //   }
+    // }
+
+    // for (let index = 0; index < values.length; index++) {
+    //   const element = values[index];
+    //   console.log("element: ", element);
+    //   setData(element[0]);
+    //   // setData(element);
+    // }
 
     // for (let index = 0; index < json.orders.length; index++) {
     //   const element = Object.keys(json.orders[index]).map((u) => {
@@ -55,81 +79,102 @@ export const OrderTable = (props) => {
       headerName: "Symbol",
       width: 150,
     },
-    { field: "orderId", headerName: "Order Id", width: 150 },
-    {
-      field: "clientOrderId",
-      headerName: "Client Order Id",
-      width: 150,
-    },
     {
       field: "price",
       headerName: "Price",
       width: 150,
     },
     {
-      field: "origQty",
-      headerName: "OrigQty",
-      width: 150,
-    },
-    {
-      field: "executedQty",
-      headerName: "Executed Quantity",
-      width: 150,
-    },
-    {
-      field: "status",
-      headerName: "Status",
-      width: 150,
-    },
-    {
-      field: "timeInForce",
-      headerName: "TimeInForce",
-      width: 150,
+      field: "stopPrice",
+      headerName: "StopPrice",
+      width: 130,
     },
     {
       field: "type",
       headerName: "Type",
+      width: 110,
+    },
+    {
+      field: "executedQty",
+      headerName: "ExecutedQty",
       width: 150,
     },
     {
       field: "side",
       headerName: "Side",
+      width: 110,
+    },
+    {
+      field: "time",
+      headerName: "Time",
       width: 150,
     },
     {
-      field: "stopPrice",
-      headerName: "StopPrice",
+      field: "clientOrderId",
+      headerName: "ClientOrderId",
       width: 150,
-    },
-    {
-      field: "stopLimitPrice",
-      headerName: "StopLimitPrice",
-      width: 150,
-    },
-    {
-      field: "icebergQty",
-      headerName: "IcebergQty",
-      width: 150,
+      hide: true,
     },
     {
       field: "cummulativeQuoteQty",
       headerName: "CummulativeQuoteQty",
       width: 150,
+      hide: true,
     },
     {
-      field: "updateTime",
-      headerName: "UpdateTime",
+      field: "icebergQty",
+      headerName: "IcebergQty",
       width: 150,
+      hide: true,
     },
     {
-      field: "working",
-      headerName: "Working",
+      field: "isWorking",
+      headerName: "IsWorking",
       width: 150,
+      hide: true,
+    },
+    {
+      field: "orderId",
+      headerName: "OrderId",
+      width: 150,
+      hide: true,
+    },
+    {
+      field: "origQty",
+      headerName: "OrigQty",
+      width: 150,
+      hide: true,
     },
     {
       field: "origQuoteOrderQty",
       headerName: "OrigQuoteOrderQty",
       width: 150,
+      hide: true,
+    },
+    {
+      field: "status",
+      headerName: "Status",
+      width: 150,
+      hide: true,
+    },
+    {
+      field: "stopLimitPrice",
+      headerName: "StopLimitPrice",
+      width: 150,
+      hide: true,
+    },
+    {
+      field: "timeInForce",
+      headerName: "TimeInForce",
+      width: 150,
+      hide: true,
+    },
+
+    {
+      field: "updateTime",
+      headerName: "UpdateTime",
+      width: 150,
+      hide: true,
     },
   ];
 
@@ -142,7 +187,7 @@ export const OrderTable = (props) => {
     };
     fetch("http://localhost:3337/binance/getUserOrders", requestOptions)
       .then((response) => response.json())
-      .then((json) => fillData(json))
+      .then((json) => setData(json))
       .catch(function (error) {
         console.log(error);
       });
@@ -206,7 +251,12 @@ export const OrderTable = (props) => {
         </button>
       </div>
       <div style={{ height: 580, width: "100%" }}>
-        <DataGrid rows={data.orders} columns={orderColumns} pageSize={9} />
+        <DataGrid
+          getRowId={(r) => r.orderId}
+          rows={data.orders}
+          columns={orderColumns}
+          pageSize={9}
+        />
       </div>
     </div>
   );

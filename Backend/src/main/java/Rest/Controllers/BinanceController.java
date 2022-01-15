@@ -98,12 +98,14 @@ public class BinanceController {
 
     @PostMapping(value = "/getUserOrders")
     public ResponseEntity<OrderResponse> getAllOrders(@RequestBody User user) {
-        List<List<Order>> allOrders = new ArrayList<>();
+        List<Order> allOrders = new ArrayList<>();
         OrderResponse orderResponse = new OrderResponse();
         try {
             for (Product product : userService.getUserProducts(user.getUserId())) {
                 List<Order> allProductOrders = client.getAllOrders(new AllOrdersRequest(product.getSymbol()));
-                allOrders.add(allProductOrders);
+                for (Order order : allProductOrders) {
+                    allOrders.add(order);
+                }
             }
         } catch(Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -117,12 +119,14 @@ public class BinanceController {
 
     @PostMapping(value = "/getAllOpenOrders")
     public ResponseEntity<OrderResponse> getAllOpenOrders(@RequestBody User user) {
-        List<List<Order>> allOpenOrders = new ArrayList<>();
+        List<Order> allOpenOrders = new ArrayList<>();
         OrderResponse orderResponse = new OrderResponse();
         try {
             for (Product product : userService.getUserProducts(user.getUserId())) {
                 List<Order> AllOpenOrders = client.getOpenOrders(new OrderRequest(product.getSymbol()));
-                allOpenOrders.add(AllOpenOrders);
+                for (Order order : AllOpenOrders) {
+                    allOpenOrders.add(order);
+                }
             }
         } catch(Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
