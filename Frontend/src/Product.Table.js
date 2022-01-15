@@ -73,7 +73,7 @@ export const ProductTable = (props) => {
   };
 
   const handleAccount = () => {
-    props.history.push("/orders");
+    props.history.push("/interactiveOrders");
   };
 
   const handleSubscribe = () => {

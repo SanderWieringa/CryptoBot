@@ -81,6 +81,7 @@ export const Account = (props) => {
         >
           Remove Coin
         </button>
+        <h1>Crypto Trading Bot Platform</h1>
       </div>
       <div style={{ height: 580, width: "100%" }}>
         <DataGrid

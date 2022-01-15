@@ -1,20 +1,16 @@
 package Rest.socketModels;
 
-import com.binance.api.client.domain.account.Order;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
 @Builder
-public class OrderMessage {
-
+public class MarginMessage {
     @Getter
-    private MessageType type;
+    private String symbol;
     @Getter
     @Setter
-    private MarginMessage content;
+    private String clientOrderId;
     @Getter
     private int sender;
-
-
 }

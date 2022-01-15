@@ -114,7 +114,7 @@ public class BinanceController {
         orderResponse.setSuccess(true);
         orderResponse.setOrders(allOrders);
 
-        return ResponseEntity.ok(orderResponse);
+        return ResponseEntity.ok(orderResponse); 
     }
 
     @PostMapping(value = "/getAllOpenOrders")

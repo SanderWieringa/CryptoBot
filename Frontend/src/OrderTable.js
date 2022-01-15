@@ -4,73 +4,13 @@ import jwt from "jwt-decode";
 
 export const OrderTable = (props) => {
   const [data, setData] = useState({ orders: [] });
+  const [select, setSelection] = useState([]);
   let token = jwt(localStorage.getItem("jwtToken"), { header: true });
   const userToGetOrders = {
     userId: token.userId,
     username: "",
     password: "",
     coinsToTradeIn: [],
-  };
-
-  const fillData = (json) => {
-    // const values = Object.values(json.orders);
-    // console.log("values: ", values);
-
-    for (let index = 0; index < json.orders.length; index++) {
-      const element = json.orders[index];
-      setData(element);
-      console.log("element: ", element);
-    }
-
-    // for (let index = 0; index < json.orders.length; index++) {
-    //   // const element = json.orders[index];
-    //   // console.log("element: ", element);
-    //   for (
-    //     let secondIndex = 0;
-    //     secondIndex < json.orders[0].length;
-    //     secondIndex++
-    //   ) {
-    //     console.log("item: ", json.orders[index][secondIndex]);
-    //     setData(json.orders[index][secondIndex]);
-    //     // const elementItem = element[secondIndex];
-    //     // setData(element[secondIndex]);
-    //     // console.log("element[]: ", elementItem);
-    //   }
-    // }
-
-    // for (let index = 0; index < values.length; index++) {
-    //   const element = values[index];
-    //   console.log("element: ", element);
-    //   setData(element[0]);
-    //   // setData(element);
-    // }
-
-    // for (let index = 0; index < json.orders.length; index++) {
-    //   const element = Object.keys(json.orders[index]).map((u) => {
-    //     console.log("u: ", u);
-    //   });
-    // }
-
-    // Object.keys(json.orders).map((u) => {
-    //   for (let index = 0; index < u.length; index++) {
-    //     const element = u[index].toString;
-    //     console.log("u.element: ", element);
-    //   }
-    // });
-
-    // for (let index = 0; index < json.orders.length; index++) {
-    //   for (
-    //     let secondIndex = 0;
-    //     secondIndex < json.orders[index].length;
-    //     secondIndex++
-    //   ) {
-    //     const element = json.orders[index][secondIndex];
-    //     console.log("element: ", element);
-    //     setData(json.orders[index][secondIndex]);
-    //   }
-    // }
-    console.log("json: ", json);
-    console.log("data: ", data);
   };
 
   const orderColumns = [
@@ -249,6 +189,7 @@ export const OrderTable = (props) => {
         >
           Get All Orders
         </button>
+        <h1>Crypto Trading Bot Platform</h1>
       </div>
       <div style={{ height: 580, width: "100%" }}>
         <DataGrid
@@ -256,6 +197,15 @@ export const OrderTable = (props) => {
           rows={data.orders}
           columns={orderColumns}
           pageSize={9}
+          checkboxSelection
+          disableSelectionOnClick
+          onSelectionModelChange={(ids) => {
+            const selectedIDs = new Set(ids);
+            const selectedRowData = data.orders.filter((row) =>
+              selectedIDs.has(row.id)
+            );
+            setSelection(selectedRowData);
+          }}
         />
       </div>
     </div>
