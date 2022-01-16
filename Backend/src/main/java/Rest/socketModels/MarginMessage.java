@@ -10,7 +10,7 @@ public class MarginMessage {
     private String symbol;
     @Getter
     @Setter
-    private String clientOrderId;
+    private String price;
     @Getter
     private int sender;
 }

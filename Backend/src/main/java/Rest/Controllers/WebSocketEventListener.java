@@ -1,4 +1,4 @@
-package Rest.socketController;
+package Rest.Controllers;
 
 import Rest.socketModels.MessageType;
 import Rest.socketModels.OrderMessage;

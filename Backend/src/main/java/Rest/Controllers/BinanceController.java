@@ -103,9 +103,7 @@ public class BinanceController {
         try {
             for (Product product : userService.getUserProducts(user.getUserId())) {
                 List<Order> allProductOrders = client.getAllOrders(new AllOrdersRequest(product.getSymbol()));
-                for (Order order : allProductOrders) {
-                    allOrders.add(order);
-                }
+                allOrders.addAll(allProductOrders);
             }
         } catch(Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -114,7 +112,7 @@ public class BinanceController {
         orderResponse.setSuccess(true);
         orderResponse.setOrders(allOrders);
 
-        return ResponseEntity.ok(orderResponse); 
+        return ResponseEntity.ok(orderResponse);
     }
 
     @PostMapping(value = "/getAllOpenOrders")
@@ -124,9 +122,7 @@ public class BinanceController {
         try {
             for (Product product : userService.getUserProducts(user.getUserId())) {
                 List<Order> AllOpenOrders = client.getOpenOrders(new OrderRequest(product.getSymbol()));
-                for (Order order : AllOpenOrders) {
-                    allOpenOrders.add(order);
-                }
+                allOpenOrders.addAll(AllOpenOrders);
             }
         } catch(Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

@@ -12,7 +12,7 @@ public class OrderMessage {
     private MessageType type;
     @Getter
     @Setter
-    private MarginMessage content;
+    private String content;
     @Getter
     private int sender;
 

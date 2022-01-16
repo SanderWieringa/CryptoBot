@@ -224,6 +224,12 @@ export const InteractiveOrderTable = (props) => {
 
   const sendMessage = (event) => {
     event.preventDefault();
+    console.log("select: ", select);
+    for (let index = 0; index < select.length; index++) {
+      const element = select[index];
+      console.log("select.element.orderId: ", element.orderId);
+    }
+    console.log("orderId: ", select);
     let messageContent = select;
     console.log("1messageContent: ", messageContent);
 
@@ -342,8 +348,10 @@ export const InteractiveOrderTable = (props) => {
           onSelectionModelChange={(ids) => {
             const selectedIDs = new Set(ids);
             const selectedRowData = data.orders.filter((row) =>
-              selectedIDs.has(row.id)
+              selectedIDs.has(row.orderId)
             );
+            console.log("selectedRowData: ", selectedRowData);
+            console.log("orderId: ", selectedRowData.orderId);
             setSelection(selectedRowData);
           }}
         />
