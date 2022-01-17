@@ -71,8 +71,8 @@ public class CandleCollectionService {
     }
 
     public void placeOrder(CandlestickEvent candlestickEvent){
-        NewOrder order = new NewOrder(candlestickEvent.getSymbol(), OrderSide.BUY, OrderType.TAKE_PROFIT, TimeInForce.GTC, "0.003", getPrice());
-        client.newOrder(order.stopPrice("0.001"));
+        NewOrder order = new NewOrder(candlestickEvent.getSymbol(), OrderSide.BUY, OrderType.TAKE_PROFIT, TimeInForce.GTC, "0.003");
+        client.newOrder(order.stopPrice(getPrice()));
     }
 
     public boolean isOrderPlaced() {

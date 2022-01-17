@@ -1,10 +1,8 @@
 package Rest.Controllers;
 
 import Rest.Entities.User;
-import Rest.Responses.GetProductCollectionResponse;
-import Rest.Responses.LoginResponse;
-import Rest.Responses.OrderResponse;
-import Rest.Responses.RegisterResponse;
+import Rest.Responses.*;
+import Rest.Services.CandleCollectionService;
 import Rest.Services.ClientCreatorService;
 import Rest.Services.MarketService;
 import Rest.Entities.Product;
@@ -46,6 +44,9 @@ public class BinanceController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private CandleCollectionService candleCollectionService;
 
     @GetMapping(value = "/list")
     public ResponseEntity<GetProductCollectionResponse> getAllProducts() {
@@ -138,7 +139,7 @@ public class BinanceController {
     public ResponseEntity<String> placeMarketOrder() {
         NewOrderResponse newOrderResponse = client
                 .newOrder(NewOrder
-                        .marketBuy("BTCUSDT", "100")
+                        .marketBuy("BTCUSDT", "0.003")
                         .newOrderRespType(NewOrderResponseType.FULL));
 
         try {
@@ -164,16 +165,22 @@ public class BinanceController {
         return ResponseEntity.ok(order.getNewClientOrderId());
     }
 
-    @PostMapping(value = "/placeTakeProfitOrder")
-    public ResponseEntity<String> placeTakeProfitOrder() {
-        NewOrder order = new NewOrder("BTCUSDT", OrderSide.BUY, OrderType.TAKE_PROFIT, TimeInForce.GTC, "0.003", "0.001");
+    @PostMapping(value = "/placeUserTakeProfitOrder")
+    public ResponseEntity<PlaceOrderResponse> placeTakeProfitOrder(@RequestBody User user) {
+        List<Product> productsToTradeIn = userService.getUserProducts(user.getUserId());
+        PlaceOrderResponse placeOrderResponse = new PlaceOrderResponse();
         try {
-            client.newOrder(order.stopPrice("0.001"));
+            for (Product product : productsToTradeIn) {
+                NewOrder order = new NewOrder(product.getSymbol(), OrderSide.BUY, OrderType.TAKE_PROFIT, TimeInForce.GTC, "0.003");
+                client.newOrder(order.stopPrice(candleCollectionService.getPrice()));
+            }
+
+        placeOrderResponse.setSuccess(true);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
-        return ResponseEntity.ok(order.getNewClientOrderId());
+        return ResponseEntity.ok(placeOrderResponse);
     }
 
     @PostMapping(value = "/placeUserMarketOrders")

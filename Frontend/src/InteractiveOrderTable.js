@@ -6,6 +6,10 @@ import Stomp from "stompjs";
 export const InteractiveOrderTable = (props) => {
   const [data, setData] = useState({ orders: [] });
   const [select, setSelection] = useState([]);
+  const [price, setMessage] = useState();
+  // const inputChange = (e) => {
+  //   setMessage({ ...price, [e.target.name]: e.target.value });
+  // };
   let token = jwt(localStorage.getItem("jwtToken"), { header: true });
   const userToGetOrders = {
     userId: token.userId,
@@ -224,25 +228,33 @@ export const InteractiveOrderTable = (props) => {
 
   const sendMessage = (event) => {
     event.preventDefault();
-    console.log("select: ", select);
-    for (let index = 0; index < select.length; index++) {
-      const element = select[index];
-      console.log("select.element.orderId: ", element.orderId);
-    }
-    console.log("orderId: ", select);
-    let messageContent = select;
-    console.log("1messageContent: ", messageContent);
+
+    const data = new FormData(event.currentTarget);
+
+    const price = data.get("price");
+
+    console.log("price: ", price);
+    let messageContent = price;
+
+    // console.log("select: ", select);
+    // for (let index = 0; index < select.length; index++) {
+    //   const element = select[index];
+    //   console.log("select.element.orderId: ", element.orderId);
+    // }
+    // console.log("orderId: ", select);
+    // let messageContent = select;
+    // console.log("1messageContent: ", messageContent);
 
     if (messageContent && global.stompClient) {
-      const orderMessage = {
+      const marginMessage = {
         sender: global.userId,
-        content: messageContent,
+        price: messageContent,
         type: "CHAT",
       };
       global.stompClient.send(
         "/app/orders.send",
         {},
-        JSON.stringify(orderMessage)
+        JSON.stringify(marginMessage)
       );
       messageContent = data;
     }
@@ -310,7 +322,21 @@ export const InteractiveOrderTable = (props) => {
         </div>
         <div id="checkers-page" className="hide main">
           <div className="row justify-content-center h-100">
-            <div className="col-md-8 col-xl-6">
+            <div className="body">
+              <form className="form" onSubmit={(e) => sendMessage(e)}>
+                <h1 className="login-title"></h1>
+                <input
+                  name="price"
+                  type="text"
+                  className="input"
+                  placeholder="0.003"
+                ></input>
+                <button className="button" type="submit">
+                  Change Take Profit
+                </button>
+              </form>
+            </div>
+            {/* <div className="col-md-8 col-xl-6">
               <div className="card-header">
                 <div className="d-flex bd-highlight"></div>
               </div>
@@ -318,6 +344,8 @@ export const InteractiveOrderTable = (props) => {
               <div className="card-body">
                 <div id="chat"></div>
               </div>
+
+
 
               <form
                 id="message-controls"
@@ -333,7 +361,7 @@ export const InteractiveOrderTable = (props) => {
                   </div>
                 </div>
               </form>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

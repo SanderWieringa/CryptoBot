@@ -23,8 +23,9 @@ public class OrderController {
 
     @MessageMapping("/orders.send")
     @SendTo("/topic/public")
-    public void sendMessage(@Payload final OrderMessage orderMessage) {
-        candleCollectionService.setPrice(orderMessage.getContent());
+    public void sendMessage(@Payload final MarginMessage marginMessage) {
+        System.out.println("marginMessage.price: " + marginMessage.getPrice());
+        candleCollectionService.setPrice(marginMessage.getPrice());
     }
 
     @MessageMapping("/orders.newUser")

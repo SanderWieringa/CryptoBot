@@ -49,7 +49,10 @@ export const ProductTable = (props) => {
       mode: "cors",
       body: JSON.stringify(userToSubscribe),
     };
-    fetch("http://localhost:3337/binance/placeUserMarketOrders", requestOptions)
+    fetch(
+      "http://localhost:3337/binance/placeUserTakeProfitOrder",
+      requestOptions
+    )
       .then(function (response) {
         console.log(response);
       })
