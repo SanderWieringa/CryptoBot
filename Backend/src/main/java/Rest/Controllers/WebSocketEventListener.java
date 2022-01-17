@@ -12,6 +12,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.socket.messaging.SessionConnectedEvent;
 import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 
+import java.util.Objects;
+
 @Component
 public class WebSocketEventListener {
 
@@ -29,7 +31,7 @@ public class WebSocketEventListener {
     public void handleWebSocketDisconnectListener(final SessionDisconnectEvent event){
         final StompHeaderAccessor headerAccessor = StompHeaderAccessor.wrap(event.getMessage());
 
-        final int userId = (int) headerAccessor.getSessionAttributes().get("userId");
+        final int userId = (int) Objects.requireNonNull(headerAccessor.getSessionAttributes()).get("userId");
 
         final OrderMessage chatMessage = OrderMessage.builder()
                 .type(MessageType.DISCONNECT)

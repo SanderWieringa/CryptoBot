@@ -31,7 +31,7 @@ public class OrderController {
     @MessageMapping("/orders.newUser")
     @SendTo("/topic/public")
     public OrderMessage newUser(@Payload final OrderMessage orderMessage, SimpMessageHeaderAccessor headerAccessor) {
-        Objects.requireNonNull(headerAccessor.getSessionAttributes()).put("username", orderMessage.getSender());
+        Objects.requireNonNull(headerAccessor.getSessionAttributes()).put("userId", orderMessage.getSender());
         return orderMessage;
     }
 }

@@ -171,8 +171,24 @@ public class BinanceController {
         PlaceOrderResponse placeOrderResponse = new PlaceOrderResponse();
         try {
             for (Product product : productsToTradeIn) {
-                NewOrder order = new NewOrder(product.getSymbol(), OrderSide.BUY, OrderType.TAKE_PROFIT, TimeInForce.GTC, "0.003");
-                client.newOrder(order.stopPrice(candleCollectionService.getPrice()));
+                NewOrder order = NewOrder.marketBuy(product.getSymbol(), "0.003");
+//                order.stopPrice(candleCollectionService.getPrice());
+//                NewOrder order = NewOrder.marketBuy(product.getSymbol(), "0.003");
+//                NewOrder order1 = order.stopPrice(candleCollectionService.getPrice());
+//                client.newOrderTest(order1);
+//                NewOrder order = new NewOrder(product.getSymbol(), OrderSide.BUY, OrderType.TAKE_PROFIT, TimeInForce.GTC, "0.003");
+//                client.newOrder(order);
+//                NewOrder order1 = NewOrder.marketBuy(product.getSymbol(), "0.003");
+                //                order.stopPrice(candleCollectionService.getPrice());
+//                NewOrder order2 = new NewOrder(product.getSymbol(), OrderSide.BUY, OrderType.TAKE_PROFIT, TimeInForce.GTC, "0.003");
+//                client.newOrder(order2);
+//                NewOrder order = new NewOrder( product.getSymbol(), OrderSide.BUY, OrderType.TAKE_PROFIT, "0.003");
+
+//                NewOrder order = (NewOrder.marketBuy(product.getSymbol(), "0.003")).stopPrice(candleCollectionService.getPrice());
+//                NewOrder order = new NewOrder(product.getSymbol(), OrderSide.BUY, OrderType.TAKE_PROFIT, TimeInForce.IOC, "0.003", "0");
+//                order.stopPrice(candleCollectionService.getPrice());
+                client.newOrder(order);
+
             }
 
         placeOrderResponse.setSuccess(true);
