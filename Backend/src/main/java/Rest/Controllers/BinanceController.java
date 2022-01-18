@@ -2,11 +2,8 @@ package Rest.Controllers;
 
 import Rest.Entities.User;
 import Rest.Responses.*;
-import Rest.Services.CandleCollectionService;
-import Rest.Services.ClientCreatorService;
-import Rest.Services.MarketService;
+import Rest.Services.*;
 import Rest.Entities.Product;
-import Rest.Services.UserService;
 import com.binance.api.client.domain.OrderSide;
 import com.binance.api.client.domain.OrderType;
 import com.binance.api.client.domain.TimeInForce;
@@ -31,7 +28,7 @@ import java.util.List;
 @CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping(value = "/binance")
 @RestController
-public class BinanceController {
+public class BinanceController implements ISubject {
 
     OkHttpClient httpClient = new OkHttpClient();
 
@@ -47,6 +44,8 @@ public class BinanceController {
 
     @Autowired
     private CandleCollectionService candleCollectionService;
+
+    private List<IObserver> subs = new ArrayList<>();
 
     @GetMapping(value = "/list")
     public ResponseEntity<GetProductCollectionResponse> getAllProducts() {
@@ -171,7 +170,7 @@ public class BinanceController {
         PlaceOrderResponse placeOrderResponse = new PlaceOrderResponse();
         try {
             for (Product product : productsToTradeIn) {
-                NewOrder order = NewOrder.marketBuy(product.getSymbol(), "0.003");
+                NewOrder order = NewOrder.marketBuy(product.getSymbol(), candleCollectionService.getQuantity());
 //                order.stopPrice(candleCollectionService.getPrice());
 //                NewOrder order = NewOrder.marketBuy(product.getSymbol(), "0.003");
 //                NewOrder order1 = order.stopPrice(candleCollectionService.getPrice());
@@ -186,8 +185,8 @@ public class BinanceController {
 
 //                NewOrder order = (NewOrder.marketBuy(product.getSymbol(), "0.003")).stopPrice(candleCollectionService.getPrice());
 //                NewOrder order = new NewOrder(product.getSymbol(), OrderSide.BUY, OrderType.TAKE_PROFIT, TimeInForce.IOC, "0.003", "0");
-//                order.stopPrice(candleCollectionService.getPrice());
                 client.newOrder(order);
+                notifySubs();
 
             }
 
@@ -238,5 +237,22 @@ public class BinanceController {
         }
 
         return ResponseEntity.ok(true);
+    }
+
+    @Override
+    public void subscribe(IObserver sub) {
+        subs.add(sub);
+    }
+
+    @Override
+    public void unsubscribe(IObserver sub) {
+        subs.remove(sub);
+    }
+
+    @Override
+    public void notifySubs() {
+        for (IObserver sub : subs) {
+            sub.update();
+        }
     }
 }

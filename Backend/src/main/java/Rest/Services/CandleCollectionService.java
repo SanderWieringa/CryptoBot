@@ -11,16 +11,20 @@ import com.binance.api.client.domain.event.CandlestickEvent;
 import java.util.*;
 
 @Service
-public class CandleCollectionService {
+public class CandleCollectionService implements ISubject {
     private final TreeMap<Long, CandlestickEvent> candlestickByCloseTime = new TreeMap<>();
 
     private String price = "0.001";
+
+    private String quantity = "0.003";
 
     private boolean orderPlaced;
 
     private final ClientCreatorService clientCreatorService = new ClientCreatorService();
 
     private final BinanceApiRestClient client = clientCreatorService.createBinanceApiRestClient();
+
+    private List<IObserver> subs = new ArrayList<>();
 
 //    private Candlestick convertCandleStickEvent(CandlestickEvent candlestickEvent) {
 //        Candlestick candlestick = new Candlestick();
@@ -65,14 +69,16 @@ public class CandleCollectionService {
 
     private void checkCandles(CandlestickEvent candlestickEvent) {
         if (checkForDrop(candlestickEvent, Objects.requireNonNull(getOlderCandlestick(candlestickEvent))) && !isOrderPlaced() && getOlderCandlestick(candlestickEvent) != null) {
+            placeOrder(candlestickEvent);
             setOrderPlaced(true);
             System.out.println("PLACE ORDER");
         }
     }
 
     public void placeOrder(CandlestickEvent candlestickEvent){
-        NewOrder order = new NewOrder(candlestickEvent.getSymbol(), OrderSide.BUY, OrderType.TAKE_PROFIT, TimeInForce.GTC, "0.003");
-        client.newOrder(order.stopPrice(getPrice()));
+        NewOrder order = NewOrder.marketBuy(candlestickEvent.getSymbol(), getQuantity());
+        client.newOrder(order);
+        notifySubs();
     }
 
     public boolean isOrderPlaced() {
@@ -89,5 +95,30 @@ public class CandleCollectionService {
 
     public void setPrice(String price) {
         this.price = price;
+    }
+
+    public String getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(String quantity) {
+        this.quantity = quantity;
+    }
+
+    @Override
+    public void subscribe(IObserver sub) {
+        subs.add(sub);
+    }
+
+    @Override
+    public void unsubscribe(IObserver sub) {
+        subs.remove(sub);
+    }
+
+    @Override
+    public void notifySubs() {
+        for (IObserver sub : subs) {
+            sub.update();
+        }
     }
 }

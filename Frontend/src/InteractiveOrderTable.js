@@ -6,7 +6,7 @@ import Stomp from "stompjs";
 export const InteractiveOrderTable = (props) => {
   const [data, setData] = useState({ orders: [] });
   const [select, setSelection] = useState([]);
-  const [price, setMessage] = useState();
+  const [quantity, setMessage] = useState();
   // const inputChange = (e) => {
   //   setMessage({ ...price, [e.target.name]: e.target.value });
   // };
@@ -177,6 +177,32 @@ export const InteractiveOrderTable = (props) => {
       });
   };
 
+  const handlePlaceUserOrder = () => {
+    let token = jwt(localStorage.getItem("jwtToken"), { header: true });
+    const userToSubscribe = {
+      userId: token.userId,
+      username: "",
+      password: "",
+      coinsToTradeIn: [],
+    };
+    const requestOptions = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      mode: "cors",
+      body: JSON.stringify(userToSubscribe),
+    };
+    fetch(
+      "http://localhost:3337/binance/placeUserTakeProfitOrder",
+      requestOptions
+    )
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+
   const connect = (e) => {
     e.preventDefault();
 
@@ -231,10 +257,10 @@ export const InteractiveOrderTable = (props) => {
 
     const data = new FormData(event.currentTarget);
 
-    const price = data.get("price");
+    const quantity = data.get("quantity");
 
-    console.log("price: ", price);
-    let messageContent = price;
+    console.log("quantity: ", quantity);
+    let messageContent = quantity;
 
     // console.log("select: ", select);
     // for (let index = 0; index < select.length; index++) {
@@ -248,7 +274,7 @@ export const InteractiveOrderTable = (props) => {
     if (messageContent && global.stompClient) {
       const marginMessage = {
         sender: global.userId,
-        price: messageContent,
+        quantity: messageContent,
         type: "CHAT",
       };
       global.stompClient.send(
@@ -297,6 +323,13 @@ export const InteractiveOrderTable = (props) => {
       <div>
         <button
           onClick={() => {
+            handlePlaceUserOrder();
+          }}
+        >
+          Place User Order
+        </button>
+        <button
+          onClick={() => {
             handleGetOpenOrders();
           }}
         >
@@ -326,7 +359,7 @@ export const InteractiveOrderTable = (props) => {
               <form className="form" onSubmit={(e) => sendMessage(e)}>
                 <h1 className="login-title"></h1>
                 <input
-                  name="price"
+                  name="quantity"
                   type="text"
                   className="input"
                   placeholder="0.003"
