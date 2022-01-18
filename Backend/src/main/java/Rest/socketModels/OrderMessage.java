@@ -11,12 +11,22 @@ import java.util.List;
 public class OrderMessage {
 
     @Getter
+    @Setter
     private MessageType type;
     @Getter
     @Setter
     private List<Order> content;
     @Getter
+    @Setter
     private int sender;
 
+    public OrderMessage(MessageType type, List<Order> content, int sender) {
+        this.type = type;
+        this.content = content;
+        this.sender = sender;
+    }
 
+    public OrderMessage() {
+
+    }
 }

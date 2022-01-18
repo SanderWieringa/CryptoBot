@@ -119,6 +119,10 @@ export const InteractiveOrderTable = (props) => {
     },
   ];
 
+  useEffect(() => {
+    connect();
+  }, []);
+
   const handlePlaceUserOrder = () => {
     let token = jwt(localStorage.getItem("jwtToken"), { header: true });
     const userToSubscribe = {
@@ -145,8 +149,8 @@ export const InteractiveOrderTable = (props) => {
       });
   };
 
-  const connect = (e) => {
-    e.preventDefault();
+  const connect = () => {
+    //e.preventDefault();
 
     console.log("here1");
 
@@ -235,6 +239,8 @@ export const InteractiveOrderTable = (props) => {
     } else if (message.type === "DISCONNECT") {
       messageElement.classList.add("event-message");
       message.content = message.sender + " left!";
+    } else if (message.type === "UPDATE") {
+      console.log("UPDATE");
     } else {
       messageElement.classList.add("chat-message");
       console.log("herenew: ");

@@ -1,11 +1,7 @@
 package Rest.Services;
 
 import com.binance.api.client.BinanceApiRestClient;
-import com.binance.api.client.domain.OrderSide;
-import com.binance.api.client.domain.OrderType;
-import com.binance.api.client.domain.TimeInForce;
 import com.binance.api.client.domain.account.NewOrder;
-import com.binance.api.client.domain.market.Candlestick;
 import org.springframework.stereotype.Service;
 import com.binance.api.client.domain.event.CandlestickEvent;
 import java.util.*;
@@ -26,25 +22,7 @@ public class CandleCollectionService implements ISubject {
 
     private List<IObserver> subs = new ArrayList<>();
 
-//    private Candlestick convertCandleStickEvent(CandlestickEvent candlestickEvent) {
-//        Candlestick candlestick = new Candlestick();
-//        candlestick.setOpenTime(candlestickEvent.getOpenTime());
-//        candlestick.setOpen(candlestickEvent.getOpen());
-//        candlestick.setHigh(candlestickEvent.getHigh());
-//        candlestick.setLow(candlestickEvent.getLow());
-//        candlestick.setClose(candlestickEvent.getClose());
-//        candlestick.setVolume(candlestickEvent.getVolume());
-//        candlestick.setCloseTime(candlestickEvent.getCloseTime());
-//        candlestick.setQuoteAssetVolume(candlestickEvent.getQuoteAssetVolume());
-//        candlestick.setNumberOfTrades(candlestickEvent.getNumberOfTrades());
-//        candlestick.setTakerBuyBaseAssetVolume(candlestickEvent.getTakerBuyBaseAssetVolume());
-//        candlestick.setTakerBuyQuoteAssetVolume(candlestickEvent.getTakerBuyQuoteAssetVolume());
-//        return candlestick;
-//    }
-
     public void addCandlestickEvent(CandlestickEvent candlestickEvent) {
-//        Candlestick candlestick = convertCandleStickEvent(candlestickEvent);
-//        candlestickEvent.getSy
         checkCandles(candlestickEvent);
         candlestickByCloseTime.put(candlestickEvent.getCloseTime(), candlestickEvent);
     }

@@ -8,7 +8,6 @@ import com.binance.api.client.domain.OrderSide;
 import com.binance.api.client.domain.OrderType;
 import com.binance.api.client.domain.TimeInForce;
 import com.binance.api.client.domain.account.*;
-import com.binance.api.client.domain.account.request.AllOrdersRequest;
 import com.binance.api.client.domain.account.request.OrderRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import okhttp3.OkHttpClient;
@@ -28,7 +27,9 @@ import java.util.List;
 @CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping(value = "/binance")
 @RestController
-public class BinanceController {
+public class BinanceController implements ISubject {
+
+    private List<IObserver> subs = new ArrayList<>();
 
     OkHttpClient httpClient = new OkHttpClient();
 
@@ -150,6 +151,7 @@ public class BinanceController {
             for (Product product : productsToTradeIn) {
                 NewOrder order = NewOrder.marketBuy(product.getSymbol(), candleCollectionService.getQuantity());
                 client.newOrder(order);
+                notifySubs();
             }
 
         placeOrderResponse.setSuccess(true);
@@ -199,5 +201,22 @@ public class BinanceController {
         }
 
         return ResponseEntity.ok(true);
+    }
+
+    @Override
+    public void subscribe(IObserver sub) {
+        subs.add(sub);
+    }
+
+    @Override
+    public void unsubscribe(IObserver sub) {
+        subs.remove(sub);
+    }
+
+    @Override
+    public void notifySubs() {
+        for (IObserver sub : subs) {
+            sub.update();
+        }
     }
 }
