@@ -28,7 +28,7 @@ import java.util.List;
 @CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping(value = "/binance")
 @RestController
-public class BinanceController implements ISubject {
+public class BinanceController {
 
     OkHttpClient httpClient = new OkHttpClient();
 
@@ -44,8 +44,6 @@ public class BinanceController implements ISubject {
 
     @Autowired
     private CandleCollectionService candleCollectionService;
-
-    private List<IObserver> subs = new ArrayList<>();
 
     @GetMapping(value = "/list")
     public ResponseEntity<GetProductCollectionResponse> getAllProducts() {
@@ -96,24 +94,24 @@ public class BinanceController implements ISubject {
     }
 
 
-    @PostMapping(value = "/getUserOrders")
-    public ResponseEntity<OrderResponse> getAllOrders(@RequestBody User user) {
-        List<Order> allOrders = new ArrayList<>();
-        OrderResponse orderResponse = new OrderResponse();
-        try {
-            for (Product product : userService.getUserProducts(user.getUserId())) {
-                List<Order> allProductOrders = client.getAllOrders(new AllOrdersRequest(product.getSymbol()));
-                allOrders.addAll(allProductOrders);
-            }
-        } catch(Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-
-        orderResponse.setSuccess(true);
-        orderResponse.setOrders(allOrders);
-
-        return ResponseEntity.ok(orderResponse);
-    }
+//    @PostMapping(value = "/getUserOrders")
+//    public ResponseEntity<OrderResponse> getAllOrders(@RequestBody User user) {
+//        List<Order> allOrders = new ArrayList<>();
+//        OrderResponse orderResponse = new OrderResponse();
+//        try {
+//            for (Product product : userService.getUserProducts(user.getUserId())) {
+//                List<Order> allProductOrders = client.getAllOrders(new AllOrdersRequest(product.getSymbol()));
+//                allOrders.addAll(allProductOrders);
+//            }
+//        } catch(Exception e) {
+//            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+//        }
+//
+//        orderResponse.setSuccess(true);
+//        orderResponse.setOrders(allOrders);
+//
+//        return ResponseEntity.ok(orderResponse);
+//    }
 
     @PostMapping(value = "/getAllOpenOrders")
     public ResponseEntity<OrderResponse> getAllOpenOrders(@RequestBody User user) {
@@ -186,7 +184,6 @@ public class BinanceController implements ISubject {
 //                NewOrder order = (NewOrder.marketBuy(product.getSymbol(), "0.003")).stopPrice(candleCollectionService.getPrice());
 //                NewOrder order = new NewOrder(product.getSymbol(), OrderSide.BUY, OrderType.TAKE_PROFIT, TimeInForce.IOC, "0.003", "0");
                 client.newOrder(order);
-                notifySubs();
 
             }
 
@@ -237,22 +234,5 @@ public class BinanceController implements ISubject {
         }
 
         return ResponseEntity.ok(true);
-    }
-
-    @Override
-    public void subscribe(IObserver sub) {
-        subs.add(sub);
-    }
-
-    @Override
-    public void unsubscribe(IObserver sub) {
-        subs.remove(sub);
-    }
-
-    @Override
-    public void notifySubs() {
-        for (IObserver sub : subs) {
-            sub.update();
-        }
     }
 }

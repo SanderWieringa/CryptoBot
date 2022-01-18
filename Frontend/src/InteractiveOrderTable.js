@@ -7,9 +7,6 @@ export const InteractiveOrderTable = (props) => {
   const [data, setData] = useState({ orders: [] });
   const [select, setSelection] = useState([]);
   const [quantity, setMessage] = useState();
-  // const inputChange = (e) => {
-  //   setMessage({ ...price, [e.target.name]: e.target.value });
-  // };
   let token = jwt(localStorage.getItem("jwtToken"), { header: true });
   const userToGetOrders = {
     userId: token.userId,
@@ -123,20 +120,20 @@ export const InteractiveOrderTable = (props) => {
     },
   ];
 
-  useEffect(() => {
-    const requestOptions = {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      mode: "cors",
-      body: JSON.stringify(userToGetOrders),
-    };
-    fetch("http://localhost:3337/binance/getUserOrders", requestOptions)
-      .then((response) => response.json())
-      .then((json) => setData(json))
-      .catch(function (error) {
-        console.log(error);
-      });
-  }, []);
+  // useEffect(() => {
+  //   const requestOptions = {
+  //     method: "POST",
+  //     headers: { "Content-Type": "application/json" },
+  //     mode: "cors",
+  //     body: JSON.stringify(userToGetOrders),
+  //   };
+  //   fetch("http://localhost:3337/binance/getUserOrders", requestOptions)
+  //     .then((response) => response.json())
+  //     .then((json) => setData(json))
+  //     .catch(function (error) {
+  //       console.log(error);
+  //     });
+  // }, []);
 
   const handleGetOpenOrders = () => {
     let token = jwt(localStorage.getItem("jwtToken"), { header: true });
@@ -262,15 +259,6 @@ export const InteractiveOrderTable = (props) => {
     console.log("quantity: ", quantity);
     let messageContent = quantity;
 
-    // console.log("select: ", select);
-    // for (let index = 0; index < select.length; index++) {
-    //   const element = select[index];
-    //   console.log("select.element.orderId: ", element.orderId);
-    // }
-    // console.log("orderId: ", select);
-    // let messageContent = select;
-    // console.log("1messageContent: ", messageContent);
-
     if (messageContent && global.stompClient) {
       const marginMessage = {
         sender: global.userId,
@@ -295,6 +283,8 @@ export const InteractiveOrderTable = (props) => {
     if (message.type === "CONNECT") {
       console.log("here3");
       console.log("message: ", message);
+      console.log("message.content: ", message.content);
+      setData(message.content);
       messageElement.classList.add("event-message");
     } else if (message.type === "DISCONNECT") {
       messageElement.classList.add("event-message");

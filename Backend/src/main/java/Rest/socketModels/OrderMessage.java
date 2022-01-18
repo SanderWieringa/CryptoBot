@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Builder
 public class OrderMessage {
 
@@ -12,7 +14,7 @@ public class OrderMessage {
     private MessageType type;
     @Getter
     @Setter
-    private Order content;
+    private List<Order> content;
     @Getter
     private int sender;
 
