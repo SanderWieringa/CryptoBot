@@ -93,26 +93,6 @@ public class BinanceController {
         client.newOrderTest(NewOrder.marketBuy("BTCUSDT", "100"));
     }
 
-
-//    @PostMapping(value = "/getUserOrders")
-//    public ResponseEntity<OrderResponse> getAllOrders(@RequestBody User user) {
-//        List<Order> allOrders = new ArrayList<>();
-//        OrderResponse orderResponse = new OrderResponse();
-//        try {
-//            for (Product product : userService.getUserProducts(user.getUserId())) {
-//                List<Order> allProductOrders = client.getAllOrders(new AllOrdersRequest(product.getSymbol()));
-//                allOrders.addAll(allProductOrders);
-//            }
-//        } catch(Exception e) {
-//            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-//        }
-//
-//        orderResponse.setSuccess(true);
-//        orderResponse.setOrders(allOrders);
-//
-//        return ResponseEntity.ok(orderResponse);
-//    }
-
     @PostMapping(value = "/getAllOpenOrders")
     public ResponseEntity<OrderResponse> getAllOpenOrders(@RequestBody User user) {
         List<Order> allOpenOrders = new ArrayList<>();
@@ -169,22 +149,7 @@ public class BinanceController {
         try {
             for (Product product : productsToTradeIn) {
                 NewOrder order = NewOrder.marketBuy(product.getSymbol(), candleCollectionService.getQuantity());
-//                order.stopPrice(candleCollectionService.getPrice());
-//                NewOrder order = NewOrder.marketBuy(product.getSymbol(), "0.003");
-//                NewOrder order1 = order.stopPrice(candleCollectionService.getPrice());
-//                client.newOrderTest(order1);
-//                NewOrder order = new NewOrder(product.getSymbol(), OrderSide.BUY, OrderType.TAKE_PROFIT, TimeInForce.GTC, "0.003");
-//                client.newOrder(order);
-//                NewOrder order1 = NewOrder.marketBuy(product.getSymbol(), "0.003");
-                //                order.stopPrice(candleCollectionService.getPrice());
-//                NewOrder order2 = new NewOrder(product.getSymbol(), OrderSide.BUY, OrderType.TAKE_PROFIT, TimeInForce.GTC, "0.003");
-//                client.newOrder(order2);
-//                NewOrder order = new NewOrder( product.getSymbol(), OrderSide.BUY, OrderType.TAKE_PROFIT, "0.003");
-
-//                NewOrder order = (NewOrder.marketBuy(product.getSymbol(), "0.003")).stopPrice(candleCollectionService.getPrice());
-//                NewOrder order = new NewOrder(product.getSymbol(), OrderSide.BUY, OrderType.TAKE_PROFIT, TimeInForce.IOC, "0.003", "0");
                 client.newOrder(order);
-
             }
 
         placeOrderResponse.setSuccess(true);

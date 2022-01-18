@@ -35,32 +35,6 @@ export const ProductTable = (props) => {
       });
   }, []);
 
-  // const handlePlaceUserOrder = () => {
-  //   let token = jwt(localStorage.getItem("jwtToken"), { header: true });
-  //   const userToSubscribe = {
-  //     userId: token.userId,
-  //     username: "",
-  //     password: "",
-  //     coinsToTradeIn: [],
-  //   };
-  //   const requestOptions = {
-  //     method: "POST",
-  //     headers: { "Content-Type": "application/json" },
-  //     mode: "cors",
-  //     body: JSON.stringify(userToSubscribe),
-  //   };
-  //   fetch(
-  //     "http://localhost:3337/binance/placeUserTakeProfitOrder",
-  //     requestOptions
-  //   )
-  //     .then(function (response) {
-  //       console.log(response);
-  //     })
-  //     .catch(function (error) {
-  //       console.log(error);
-  //     });
-  // };
-
   const handleUnsubscribe = () => {
     fetch("http://localhost:3337/binance/unsubscribe")
       .then(function (response) {
@@ -207,13 +181,6 @@ export const ProductTable = (props) => {
         >
           Interactive Orders
         </button>
-        {/* <button
-          onClick={() => {
-            handlePlaceUserOrder();
-          }}
-        >
-          Place User Order
-        </button> */}
         <button
           onClick={() => {
             auth.logout(() => {

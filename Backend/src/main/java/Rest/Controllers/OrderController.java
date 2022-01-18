@@ -24,13 +24,15 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @Controller
-public class OrderController implements IObserver {
+@Transactional
+public class OrderController {
 
     @Autowired
     private CandleCollectionService candleCollectionService;
@@ -57,7 +59,8 @@ public class OrderController implements IObserver {
 
         List<Order> allOrders = new ArrayList<>();
         Objects.requireNonNull(headerAccessor.getSessionAttributes()).put("userId", orderMessage.getSender());
-        for (Product product : userService.getUserProducts(orderMessage.getSender())) {
+        List<Product> userProducts = userService.getUserProducts(orderMessage.getSender());
+        for (Product product : userProducts) {
             List<Order> allProductOrders = client.getAllOrders(new AllOrdersRequest(product.getSymbol()));
             allOrders.addAll(allProductOrders);
         }
@@ -84,10 +87,4 @@ public class OrderController implements IObserver {
 //        return ResponseEntity.ok(orderResponse);
 //    }
 
-
-
-    @Override
-    public void update() {
-
-    }
 }

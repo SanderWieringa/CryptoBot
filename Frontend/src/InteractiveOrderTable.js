@@ -4,7 +4,7 @@ import jwt from "jwt-decode";
 import Stomp from "stompjs";
 
 export const InteractiveOrderTable = (props) => {
-  const [data, setData] = useState({ orders: [] });
+  const [data, setData] = useState([]);
   const [select, setSelection] = useState([]);
   const [quantity, setMessage] = useState();
   let token = jwt(localStorage.getItem("jwtToken"), { header: true });
@@ -111,7 +111,6 @@ export const InteractiveOrderTable = (props) => {
       width: 150,
       hide: true,
     },
-
     {
       field: "updateTime",
       headerName: "UpdateTime",
@@ -119,60 +118,6 @@ export const InteractiveOrderTable = (props) => {
       hide: true,
     },
   ];
-
-  // useEffect(() => {
-  //   const requestOptions = {
-  //     method: "POST",
-  //     headers: { "Content-Type": "application/json" },
-  //     mode: "cors",
-  //     body: JSON.stringify(userToGetOrders),
-  //   };
-  //   fetch("http://localhost:3337/binance/getUserOrders", requestOptions)
-  //     .then((response) => response.json())
-  //     .then((json) => setData(json))
-  //     .catch(function (error) {
-  //       console.log(error);
-  //     });
-  // }, []);
-
-  const handleGetOpenOrders = () => {
-    let token = jwt(localStorage.getItem("jwtToken"), { header: true });
-    const userToGetOpenOrders = {
-      userId: token.userId,
-      username: "",
-      password: "",
-      coinsToTradeIn: [],
-    };
-    const requestOptions = {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      mode: "cors",
-      body: JSON.stringify(userToGetOpenOrders),
-    };
-    fetch("http://localhost:3337/binance/getAllOpenOrders", requestOptions)
-      .then((response) => response.json())
-      .then((json) => setData(json))
-      .then(console.log("data: ", data))
-      .catch(function (error) {
-        console.log(error);
-      });
-  };
-
-  const handleGetUserOrders = () => {
-    const requestOptions = {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      mode: "cors",
-      body: JSON.stringify(userToGetOrders),
-    };
-    fetch("http://localhost:3337/binance/getUserOrders", requestOptions)
-      .then((response) => response.json())
-      .then((json) => setData(json))
-      .then(console.log("data: ", data))
-      .catch(function (error) {
-        console.log(error);
-      });
-  };
 
   const handlePlaceUserOrder = () => {
     let token = jwt(localStorage.getItem("jwtToken"), { header: true });
@@ -224,7 +169,7 @@ export const InteractiveOrderTable = (props) => {
     global.stompClient.send(
       "/app/orders.newUser",
       {},
-      JSON.stringify({ sender: global.userId, type: "CONNECT" })
+      JSON.stringify({ sender: global.userId, content: [], type: "CONNECT" })
     );
   };
 
@@ -285,6 +230,7 @@ export const InteractiveOrderTable = (props) => {
       console.log("message: ", message);
       console.log("message.content: ", message.content);
       setData(message.content);
+
       messageElement.classList.add("event-message");
     } else if (message.type === "DISCONNECT") {
       messageElement.classList.add("event-message");
@@ -318,20 +264,6 @@ export const InteractiveOrderTable = (props) => {
         >
           Place User Order
         </button>
-        <button
-          onClick={() => {
-            handleGetOpenOrders();
-          }}
-        >
-          Get All Open Orders
-        </button>
-        <button
-          onClick={() => {
-            handleGetUserOrders();
-          }}
-        >
-          Get All Orders
-        </button>
         <div className="main row justify-content-center h-100">
           <form id="login-form" name="login-form" onSubmit={(e) => connect(e)}>
             <div className="input-group">
@@ -359,46 +291,20 @@ export const InteractiveOrderTable = (props) => {
                 </button>
               </form>
             </div>
-            {/* <div className="col-md-8 col-xl-6">
-              <div className="card-header">
-                <div className="d-flex bd-highlight"></div>
-              </div>
-
-              <div className="card-body">
-                <div id="chat"></div>
-              </div>
-
-
-
-              <form
-                id="message-controls"
-                name="message-controls"
-                className="card-footer"
-                onSubmit={(e) => sendMessage(e)}
-              >
-                <div className="input-group">
-                  <div className="input-group-append">
-                    <button className="fas fa-location-arrow" type="submit">
-                      Send Message
-                    </button>
-                  </div>
-                </div>
-              </form>
-            </div> */}
           </div>
         </div>
       </div>
       <div style={{ height: 580, width: "100%" }}>
         <DataGrid
           getRowId={(r) => r.orderId}
-          rows={data.orders}
+          rows={data}
           columns={orderColumns}
           pageSize={9}
           checkboxSelection
           disableSelectionOnClick
           onSelectionModelChange={(ids) => {
             const selectedIDs = new Set(ids);
-            const selectedRowData = data.orders.filter((row) =>
+            const selectedRowData = data.filter((row) =>
               selectedIDs.has(row.orderId)
             );
             console.log("selectedRowData: ", selectedRowData);
