@@ -45,6 +45,11 @@ public class BinanceController {
     @Autowired
     private CandleCollectionService candleCollectionService;
 
+    @RequestMapping("/hello")
+    public @ResponseBody String greeting() {
+        return "Hello, World";
+    }
+
     @GetMapping(value = "/list")
     public ResponseEntity<GetProductCollectionResponse> getAllProducts() {
         GetProductCollectionResponse productResponse = new GetProductCollectionResponse();
