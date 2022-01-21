@@ -57,6 +57,8 @@ public class OrderController {
 
         System.out.println("orderMessage.getSender: " + orderMessage.getSender());
 
+        System.out.println("jenkins");
+
         List<Order> allOrders = new ArrayList<>();
         Objects.requireNonNull(headerAccessor.getSessionAttributes()).put("userId", orderMessage.getSender());
         List<Product> userProducts = userService.getUserProducts(orderMessage.getSender());
