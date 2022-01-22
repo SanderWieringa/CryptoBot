@@ -53,9 +53,8 @@ public class UserCollectionService {
         userCollectionRepository.save(user);
     }
 
-    public User loadUserByUsername(String username) throws UsernameNotFoundException {
+    public User loadUserByUsername(String username) {
         return convertOptionalUser(userCollectionRepository.findByUsername(username));
-
     }
 
     public User getUserById(int userId) {

@@ -1,11 +1,9 @@
 package Rest.Services;
 
 import Rest.Entities.Product;
-import com.binance.api.client.BinanceApiCallback;
 import com.binance.api.client.BinanceApiWebSocketClient;
 import com.binance.api.client.domain.event.CandlestickEvent;
 import com.binance.api.client.domain.market.CandlestickInterval;
-import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -57,7 +55,9 @@ public class MarketService {
                     candleStickEvent.setTakerBuyBaseAssetVolume(response.getTakerBuyBaseAssetVolume());
                     candleStickEvent.setTakerBuyQuoteAssetVolume(response.getTakerBuyQuoteAssetVolume());
                     candleStickEvent.setBarFinal(response.getBarFinal());
-                    if (candleStickEvent.getBarFinal()) {
+
+                    Boolean barFinal = candleStickEvent.getBarFinal();
+                    if (Boolean.TRUE.equals(barFinal)) {
                         candleCollectionService.addCandlestickEvent(candleStickEvent);
                     }
                     System.out.println(candleStickEvent.toString());

@@ -24,7 +24,7 @@ function App() {
           />
           <ProtectedRoute exact path="/products" component={ProductTable} />
           <ProtectedRoute exact path="/account" component={Account} />
-          <ProtectedRoute exact path="/orders" component={OrderTable} />
+          {/* <ProtectedRoute exact path="/orders" component={OrderTable} /> */}
         </Switch>
       </div>
     </div>

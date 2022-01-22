@@ -1,9 +1,5 @@
 package Rest.Responses;
 
-import com.binance.api.client.domain.account.Order;
-
-import java.util.List;
-
 public class PlaceOrderResponse {
     private boolean success;
 

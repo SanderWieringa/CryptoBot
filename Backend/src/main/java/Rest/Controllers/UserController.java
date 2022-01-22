@@ -6,14 +6,12 @@ import Rest.Responses.*;
 import Rest.Services.UserCollectionService;
 import Rest.Services.UserService;
 import Rest.util.JwtUtil;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.nio.file.AccessDeniedException;
-import java.util.ArrayList;
 import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:3000/")

@@ -45,7 +45,6 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter
                 .antMatchers("/binance/serverTime").permitAll()
                 .antMatchers("/binance/subscribe").permitAll()
                 .antMatchers("/binance/unsubscribe").permitAll()
-                .antMatchers("/binance/placeMarketOrder").permitAll()
                 .antMatchers("/binance/placeTestMarketOrder").permitAll()
                 .antMatchers("/binance/placeUserMarketOrders").permitAll()
                 .antMatchers("/binance/placeUserTakeProfitOrder").permitAll()

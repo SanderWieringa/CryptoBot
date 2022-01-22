@@ -8,7 +8,6 @@ import com.binance.api.client.domain.OrderSide;
 import com.binance.api.client.domain.OrderType;
 import com.binance.api.client.domain.TimeInForce;
 import com.binance.api.client.domain.account.*;
-import com.binance.api.client.domain.account.request.AllOrdersRequest;
 import com.binance.api.client.domain.account.request.OrderRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import okhttp3.OkHttpClient;
@@ -45,7 +44,7 @@ public class BinanceController {
     @Autowired
     private CandleCollectionService candleCollectionService;
 
-    @RequestMapping("/hello")
+    @GetMapping("/hello")
     public @ResponseBody String greeting() {
         return "Hello, World";
     }
@@ -80,19 +79,6 @@ public class BinanceController {
         return ResponseEntity.ok(productResponse);
     }
 
-    @GetMapping(value = "/ping")
-    public void testConnection() {
-        client.ping();
-    }
-
-    @GetMapping(value = "/serverTime")
-    public Long getServerTime() {
-        long serverTime = client.getServerTime();
-        System.out.println(serverTime);
-
-        return serverTime;
-    }
-
     @PostMapping(value = "/placeTestMarketOrder")
     public void placeTestMarketOrder() {
         client.newOrderTest(NewOrder.marketBuy("BTCUSDT", "100"));
@@ -104,8 +90,8 @@ public class BinanceController {
         OrderResponse orderResponse = new OrderResponse();
         try {
             for (Product product : userService.getUserProducts(user.getUserId())) {
-                List<Order> AllOpenOrders = client.getOpenOrders(new OrderRequest(product.getSymbol()));
-                allOpenOrders.addAll(AllOpenOrders);
+                List<Order> allOpenOrdersOrders = client.getOpenOrders(new OrderRequest(product.getSymbol()));
+                allOpenOrders.addAll(allOpenOrdersOrders);
             }
         } catch(Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -115,24 +101,6 @@ public class BinanceController {
         orderResponse.setOrders(allOpenOrders);
 
         return ResponseEntity.ok(orderResponse);
-    }
-
-    @PostMapping(value = "/placeMarketOrder")
-    public ResponseEntity<String> placeMarketOrder() {
-        NewOrderResponse newOrderResponse = client
-                .newOrder(NewOrder
-                        .marketBuy("BTCUSDT", "0.003")
-                        .newOrderRespType(NewOrderResponseType.FULL));
-
-        try {
-
-            List<Trade> fills = newOrderResponse.getFills();
-            System.out.println(newOrderResponse.getClientOrderId());
-        } catch(Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-
-        return ResponseEntity.ok(newOrderResponse.getClientOrderId());
     }
 
     @PostMapping(value = "/placeStopLossOrder")
@@ -175,7 +143,6 @@ public class BinanceController {
                         .newOrder(NewOrder
                                 .marketBuy(product.getSymbol(), "0.003")
                                 .newOrderRespType(NewOrderResponseType.FULL));
-                System.out.println(newOrderResponse.getClientOrderId());
             }
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

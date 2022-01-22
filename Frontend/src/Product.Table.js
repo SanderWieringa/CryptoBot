@@ -174,13 +174,13 @@ export const ProductTable = (props) => {
         >
           Start Trading
         </button>
-        <button
+        {/* <button
           onClick={() => {
             handleInteractiveOrders();
           }}
         >
           Interactive Orders
-        </button>
+        </button> */}
         <button
           onClick={() => {
             auth.logout(() => {

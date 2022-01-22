@@ -36,6 +36,7 @@ public class  UserService {
             for (Product productToDelete : productsToDelete) {
                 if (allProducts.get(iterator).getId() == productToDelete.getId()) {
                     allProducts.remove(iterator);
+                    iterator--;
                 }
             }
         }
