@@ -57,7 +57,7 @@ public class OrderController {
 
         System.out.println("orderMessage.getSender: " + orderMessage.getSender());
 
-        System.out.println("jenkins7");
+        System.out.println("jenkins8");
 
         List<Order> allOrders = new ArrayList<>();
         Objects.requireNonNull(headerAccessor.getSessionAttributes()).put("userId", orderMessage.getSender());
