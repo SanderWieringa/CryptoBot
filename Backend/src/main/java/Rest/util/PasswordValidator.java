@@ -17,7 +17,7 @@ public class PasswordValidator {
         byte[] testHash = secretKeyFactory.generateSecret(spec).getEncoded();
 
         int diff = hash.length ^ testHash.length;
-        for(int i = 0; i < hash.length && i < hash.length; i++) {
+        for(int i = 0; i < hash.length && i < testHash.length; i++) {
             diff |= hash[i] ^ testHash[i];
         }
         return diff == 0;
