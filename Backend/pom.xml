@@ -88,7 +88,6 @@
 		<dependency>
 			<groupId>com.binance.api</groupId>
 			<artifactId>binance-api-client</artifactId>
-			<systemPath>C:/Users/guita/Documents/GitHub/CryptoBot/Backend/binance-api-client-1.0.1.jar</systemPath>
 			<scope>system</scope>
 			<version>1.0.1</version>
 			<type>jar</type>
