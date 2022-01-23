@@ -29,6 +29,9 @@ import java.util.List;
 @RestController
 public class BinanceController {
 
+    @Autowired
+    private OrderController orderController;
+
     OkHttpClient httpClient = new OkHttpClient();
 
     private final ClientCreatorService clientCreatorService = new ClientCreatorService();
@@ -123,6 +126,7 @@ public class BinanceController {
             for (Product product : productsToTradeIn) {
                 NewOrder order = NewOrder.marketBuy(product.getSymbol(), candleCollectionService.getQuantity());
                 client.newOrder(order);
+                orderController.updateOrders();
             }
 
         placeOrderResponse.setSuccess(true);

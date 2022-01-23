@@ -1,13 +1,19 @@
 package Rest.Services;
 
+import Rest.Controllers.OrderController;
 import com.binance.api.client.BinanceApiRestClient;
 import com.binance.api.client.domain.account.NewOrder;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.binance.api.client.domain.event.CandlestickEvent;
 import java.util.*;
 
 @Service
 public class CandleCollectionService {
+
+    @Autowired
+    private OrderController orderController;
+
     private final TreeMap<Long, CandlestickEvent> candlestickByCloseTime = new TreeMap<>();
 
     private String price = "0.001";
@@ -20,7 +26,10 @@ public class CandleCollectionService {
 
     private final BinanceApiRestClient client = clientCreatorService.createBinanceApiRestClient();
 
-    public void addCandlestickEvent(CandlestickEvent candlestickEvent) {
+    private int userId;
+
+    public void addCandlestickEvent(CandlestickEvent candlestickEvent, int userId) {
+        setUserId(userId);
         checkCandles(candlestickEvent);
         candlestickByCloseTime.put(candlestickEvent.getCloseTime(), candlestickEvent);
     }
@@ -54,6 +63,7 @@ public class CandleCollectionService {
     public void placeOrder(CandlestickEvent candlestickEvent){
         NewOrder order = NewOrder.marketBuy(candlestickEvent.getSymbol(), getQuantity());
         client.newOrder(order);
+        orderController.updateOrders();
     }
 
     public boolean isOrderPlaced() {
@@ -78,6 +88,14 @@ public class CandleCollectionService {
 
     public void setQuantity(String quantity) {
         this.quantity = quantity;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
 }

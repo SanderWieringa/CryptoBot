@@ -61,8 +61,6 @@ export const Account = (props) => {
       mode: "cors",
       body: JSON.stringify(userToUpdate),
     };
-    console.log("select: ", select);
-    console.log("userToUpdate: ", userToUpdate);
     fetch("http://localhost:3337/account/removeUserProducts", requestOptions)
       .then((response) => response.json())
       .then((json) => setData(json))

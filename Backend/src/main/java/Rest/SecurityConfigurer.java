@@ -54,6 +54,7 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter
                 .antMatchers("/orders-websocket").permitAll()
                 .antMatchers("/app/orders.newUser").permitAll()
                 .antMatchers("/orders.send").permitAll()
+                .antMatchers("/topic/public").permitAll()
                 .antMatchers("/binance/hello").permitAll()
                 .anyRequest()
                 .authenticated()

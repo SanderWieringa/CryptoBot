@@ -58,7 +58,7 @@ public class MarketService {
 
                     Boolean barFinal = candleStickEvent.getBarFinal();
                     if (Boolean.TRUE.equals(barFinal)) {
-                        candleCollectionService.addCandlestickEvent(candleStickEvent);
+                        candleCollectionService.addCandlestickEvent(candleStickEvent, userId);
                     }
                     System.out.println(candleStickEvent.toString());
                 } else {

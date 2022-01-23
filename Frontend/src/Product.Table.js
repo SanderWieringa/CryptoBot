@@ -205,7 +205,6 @@ export const ProductTable = (props) => {
             const selectedRowData = data.products.filter((row) =>
               selectedIDs.has(row.id)
             );
-            console.log("selectedRowData: ", selectedRowData);
             setSelection(selectedRowData);
           }}
         />

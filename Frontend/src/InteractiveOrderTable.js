@@ -148,15 +148,11 @@ export const InteractiveOrderTable = (props) => {
   const connect = (e) => {
     e.preventDefault();
 
-    console.log("here1");
-
     let token = jwt(localStorage.getItem("jwtToken"), { header: true });
     global.userId = token.userId;
 
     if (global.userId) {
-      console.log("here2");
       const socket = new WebSocket("ws://localhost:3337/orders-websocket");
-      console.log("here5");
       global.stompClient = Stomp.over(socket);
 
       global.stompClient.connect({}, onConnected, onError);
@@ -164,7 +160,6 @@ export const InteractiveOrderTable = (props) => {
   };
 
   const onConnected = () => {
-    console.log("here4");
     global.stompClient.subscribe("/topic/public", onMessageReceived);
     global.stompClient.send(
       "/app/orders.newUser",
@@ -201,7 +196,6 @@ export const InteractiveOrderTable = (props) => {
 
     const quantity = data.get("quantity");
 
-    console.log("quantity: ", quantity);
     let messageContent = quantity;
 
     if (messageContent && global.stompClient) {
@@ -226,19 +220,16 @@ export const InteractiveOrderTable = (props) => {
     messageElement.className = "msg_container_send";
 
     if (message.type === "CONNECT") {
-      console.log("here3");
-      console.log("message: ", message);
-      console.log("message.content: ", message.content);
       setData(message.content);
 
       messageElement.classList.add("event-message");
     } else if (message.type === "DISCONNECT") {
       messageElement.classList.add("event-message");
       message.content = message.sender + " left!";
+    } else if (message.type === "UPDATE") {
+      setData(message.content);
     } else {
       messageElement.classList.add("chat-message");
-      console.log("herenew: ");
-      console.log("message: ", message);
       const avatarContainer = document.createElement("div");
       avatarContainer.className = "img_cont_msg";
       const avatarElement = document.createElement("div");
@@ -307,8 +298,6 @@ export const InteractiveOrderTable = (props) => {
             const selectedRowData = data.filter((row) =>
               selectedIDs.has(row.orderId)
             );
-            console.log("selectedRowData: ", selectedRowData);
-            console.log("orderId: ", selectedRowData.orderId);
             setSelection(selectedRowData);
           }}
         />

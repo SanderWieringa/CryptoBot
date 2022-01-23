@@ -150,7 +150,6 @@ export const OrderTable = (props) => {
     fetch("http://localhost:3337/binance/getAllOpenOrders", requestOptions)
       .then((response) => response.json())
       .then((json) => setData(json))
-      .then(console.log("data: ", data))
       .catch(function (error) {
         console.log(error);
       });
@@ -166,7 +165,6 @@ export const OrderTable = (props) => {
     fetch("http://localhost:3337/binance/getUserOrders", requestOptions)
       .then((response) => response.json())
       .then((json) => setData(json))
-      .then(console.log("data: ", data))
       .catch(function (error) {
         console.log(error);
       });
