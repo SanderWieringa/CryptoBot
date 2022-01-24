@@ -3,17 +3,8 @@ import { DataGrid } from "@material-ui/data-grid";
 import jwt from "jwt-decode";
 import Stomp from "stompjs";
 
-export const InteractiveOrderTable = (props) => {
+export const InteractiveOrderTable = () => {
   const [data, setData] = useState([]);
-  const [select, setSelection] = useState([]);
-  const [quantity, setMessage] = useState();
-  let token = jwt(localStorage.getItem("jwtToken"), { header: true });
-  const userToGetOrders = {
-    userId: token.userId,
-    username: "",
-    password: "",
-    coinsToTradeIn: [],
-  };
 
   const orderColumns = [
     {
@@ -119,6 +110,18 @@ export const InteractiveOrderTable = (props) => {
     },
   ];
 
+  useEffect(() => {
+    let token = jwt(localStorage.getItem("jwtToken"), { header: true });
+    global.userId = token.userId;
+
+    if (global.userId) {
+      const socket = new WebSocket("ws://localhost:3337/orders-websocket");
+      global.stompClient = Stomp.over(socket);
+
+      global.stompClient.connect({}, onConnected, onError);
+    }
+  }, []);
+
   const handlePlaceUserOrder = () => {
     let token = jwt(localStorage.getItem("jwtToken"), { header: true });
     const userToSubscribe = {
@@ -143,20 +146,6 @@ export const InteractiveOrderTable = (props) => {
       .catch(function (error) {
         console.log(error);
       });
-  };
-
-  const connect = (e) => {
-    e.preventDefault();
-
-    let token = jwt(localStorage.getItem("jwtToken"), { header: true });
-    global.userId = token.userId;
-
-    if (global.userId) {
-      const socket = new WebSocket("ws://localhost:3337/orders-websocket");
-      global.stompClient = Stomp.over(socket);
-
-      global.stompClient.connect({}, onConnected, onError);
-    }
   };
 
   const onConnected = () => {
@@ -255,17 +244,6 @@ export const InteractiveOrderTable = (props) => {
         >
           Place User Order
         </button>
-        <div className="main row justify-content-center h-100">
-          <form id="login-form" name="login-form" onSubmit={(e) => connect(e)}>
-            <div className="input-group">
-              <div className="input-group-append">
-                <button className="fas fa-location-arrow" type="submit">
-                  Join Lobby
-                </button>
-              </div>
-            </div>
-          </form>
-        </div>
         <div id="checkers-page" className="hide main">
           <div className="row justify-content-center h-100">
             <div className="body">
@@ -291,15 +269,6 @@ export const InteractiveOrderTable = (props) => {
           rows={data}
           columns={orderColumns}
           pageSize={9}
-          checkboxSelection
-          disableSelectionOnClick
-          onSelectionModelChange={(ids) => {
-            const selectedIDs = new Set(ids);
-            const selectedRowData = data.filter((row) =>
-              selectedIDs.has(row.orderId)
-            );
-            setSelection(selectedRowData);
-          }}
         />
       </div>
     </div>
